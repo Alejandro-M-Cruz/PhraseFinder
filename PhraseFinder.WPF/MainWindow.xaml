@@ -1,0 +1,40 @@
+﻿<Window x:Class="PhraseFinder.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PhraseFinder.WPF"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ToolBarTray Grid.Row="0" Margin="10, 3">
+            <ToolBar>
+                <Button>Añadir diccionario</Button>
+                <Separator /> 
+                <Button>Actualizar</Button>
+                <Separator /> 
+                <Button>Eliminar diccionario</Button>
+                <Separator /> 
+                <Button>Ver expresiones</Button>
+            </ToolBar>
+        </ToolBarTray>
+        <TextBox x:Name="ExampleTextBox" Grid.Row="1"></TextBox>
+        <Button Grid.Row="2" x:Name="ExampleButton" Content="Ejemplo" Click="ExampleButton_OnClick"></Button>
+        
+        <!--<Grid.DataContext>
+            <Binding Source="{}"></Binding>
+        </Grid.DataContext>-->
+        <!--<DataGrid Grid.Row="1" ItemsSource="{Binding PhraseDictionaries}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Nombre" Binding="{Binding Name}"/>
+                <DataGridTextColumn Header="Ruta" Binding="{Binding Path}"/>
+            </DataGrid.Columns>
+        </DataGrid>-->
+    </Grid>
+</Window>

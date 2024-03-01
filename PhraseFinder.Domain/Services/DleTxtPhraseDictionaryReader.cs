@@ -1,0 +1,119 @@
+using System.Text.RegularExpressions;
+using PhraseFinder.Domain.Models;
+
+namespace PhraseFinder.Domain.Services;
+
+// <summary>
+// Class <c>DleTxtReader</c> is a reader for the Diccionario de la Lengua Española (DLE) dictionary.
+// It should be a plain text file where each entry is separated by a blank line and has the following format:
+// <example>
+// tamboril#tamboril
+// [Etim]De tamborín.
+// 1. m. Tambor pequeño que, colgado del brazo, se toca con un solo palillo o baqueta, y, acompañando generalmente al
+// pito, se usa en algunas danzas populares.
+// [Sin]tamborín, tamborino, atabal, timbal, tambor.
+// [loc6]como tamboril en boda
+// 1. expr. coloq. U. para expresar que algo seguramente no ha de faltar.
+// [loc6]tamboril por gaita
+// 1. expr. coloq. U. para indicar que lo mismo le da a alguien una cosa que otra.
+// </example>
+// </summary>
+public class DleTxtPhraseDictionaryReader(string filePath) : IPhraseDictionaryReader
+{
+    private const string PhrasePrefix = "[loc6]";
+    private const string PhraseExamplePrefix = "[Ejem]";
+    private static readonly Regex PhraseDefinitionRegEx = new(
+        @"^\d+\.\s(loc\.|locs\.|expr\.)", RegexOptions.Compiled);
+
+    public async IAsyncEnumerable<Phrase> ReadPhraseEntriesAsync()
+    {
+        using var reader = new StreamReader(filePath);
+        string? currentLine;
+        string? currentWord = null;
+        Phrase? currentPhraseEntry = null;
+        while ((currentLine = await reader.ReadLineAsync()) != null)
+        {
+            if (string.IsNullOrWhiteSpace(currentLine) && currentPhraseEntry != null)
+            {
+                yield return currentPhraseEntry;
+                currentPhraseEntry = null;
+            }
+            else if (currentLine.Contains('#'))
+            {
+                currentWord = currentLine.Split('#')[1];
+            }
+            else if (currentLine.StartsWith(PhrasePrefix))
+            {
+                if (currentPhraseEntry != null)
+                {
+                    yield return currentPhraseEntry;
+                }
+                currentPhraseEntry = new Phrase
+                {
+                    Name = currentLine[PhrasePrefix.Length..],
+                    BaseWord = currentWord ?? ""
+                };
+            } 
+            else if (currentLine.StartsWith(PhraseExamplePrefix))
+            {
+                currentPhraseEntry?.Examples.Add(new PhraseExample {
+                    Example = currentLine[PhraseExamplePrefix.Length..]
+                });
+            }
+            else if (PhraseDefinitionRegEx.IsMatch(currentLine))
+            {
+                currentPhraseEntry?.Definitions.Add(new PhraseDefinition { Definition = currentLine });
+            } 
+        }
+        if (currentPhraseEntry != null)
+        {
+            yield return currentPhraseEntry;
+        }
+    }
+
+    public IEnumerable<Phrase> ReadPhraseEntries()
+    {
+        using var reader = new StreamReader(filePath);
+        string? currentLine;
+        string? currentWord = null;
+        Phrase? currentPhraseEntry = null;
+        while ((currentLine = reader.ReadLine()) != null)
+        {
+            if (string.IsNullOrWhiteSpace(currentLine) && currentPhraseEntry != null)
+            {
+                yield return currentPhraseEntry;
+                currentPhraseEntry = null;
+            }
+            else if (currentLine.Contains('#'))
+            {
+                currentWord = currentLine.Split('#')[1];
+            }
+            else if (currentLine.StartsWith(PhrasePrefix))
+            {
+                if (currentPhraseEntry != null)
+                {
+                    yield return currentPhraseEntry;
+                }
+                currentPhraseEntry = new Phrase
+                {
+                    Name = currentLine[PhrasePrefix.Length..],
+                    BaseWord = currentWord ?? ""
+                };
+            } 
+            else if (currentLine.StartsWith(PhraseExamplePrefix))
+            {
+                currentPhraseEntry?.Examples.Add(new PhraseExample {
+                    Example = currentLine[PhraseExamplePrefix.Length..]
+                });
+            }
+            else if (PhraseDefinitionRegEx.IsMatch(currentLine))
+            {
+                currentPhraseEntry?.Definitions.Add(new PhraseDefinition { Definition = currentLine });
+            } 
+        }
+        if (currentPhraseEntry != null)
+        {
+            yield return currentPhraseEntry;
+        }
+    }
+}

@@ -1,0 +1,13 @@
+# Editor files
+.vs 
+.idea
+.vscode
+
+# Database files
+*.accdb
+
+# Build outputs
+obj/
+
+# Binaries
+bin/

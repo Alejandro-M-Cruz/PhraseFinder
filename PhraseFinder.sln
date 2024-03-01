@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.WPF", "PhraseFinder.WPF\PhraseFinder.WPF.csproj", "{E374716E-90A4-4EA6-92D6-38BEA1F2F33B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.Domain", "PhraseFinder.Domain\PhraseFinder.Domain.csproj", "{E25B22EA-0C07-46BA-A9D2-97CB0BB36235}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.Domain.Tests", "PhraseFinder.Domain.Tests\PhraseFinder.Domain.Tests.csproj", "{639B035B-4A81-4A52-9242-04655328C3C5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.PerformanceTests", "PhraseFinder.PerformanceTests\PhraseFinder.PerformanceTests.csproj", "{0717D560-6DAA-48C4-A51A-8EFD5E93BC93}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.Data", "PhraseFinder.Data\PhraseFinder.Data.csproj", "{75730D3D-6D5A-4D44-8771-AFBD6FDADF1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhraseFinder.Data.Tests", "PhraseFinder.Data.Tests\PhraseFinder.Data.Tests.csproj", "{21B08096-AB54-46CB-8F5C-8F2E5573CE7B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E374716E-90A4-4EA6-92D6-38BEA1F2F33B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E374716E-90A4-4EA6-92D6-38BEA1F2F33B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E374716E-90A4-4EA6-92D6-38BEA1F2F33B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E374716E-90A4-4EA6-92D6-38BEA1F2F33B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E25B22EA-0C07-46BA-A9D2-97CB0BB36235}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E25B22EA-0C07-46BA-A9D2-97CB0BB36235}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E25B22EA-0C07-46BA-A9D2-97CB0BB36235}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E25B22EA-0C07-46BA-A9D2-97CB0BB36235}.Release|Any CPU.Build.0 = Release|Any CPU
+		{639B035B-4A81-4A52-9242-04655328C3C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{639B035B-4A81-4A52-9242-04655328C3C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{639B035B-4A81-4A52-9242-04655328C3C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{639B035B-4A81-4A52-9242-04655328C3C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0717D560-6DAA-48C4-A51A-8EFD5E93BC93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0717D560-6DAA-48C4-A51A-8EFD5E93BC93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0717D560-6DAA-48C4-A51A-8EFD5E93BC93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0717D560-6DAA-48C4-A51A-8EFD5E93BC93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75730D3D-6D5A-4D44-8771-AFBD6FDADF1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75730D3D-6D5A-4D44-8771-AFBD6FDADF1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75730D3D-6D5A-4D44-8771-AFBD6FDADF1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75730D3D-6D5A-4D44-8771-AFBD6FDADF1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21B08096-AB54-46CB-8F5C-8F2E5573CE7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21B08096-AB54-46CB-8F5C-8F2E5573CE7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21B08096-AB54-46CB-8F5C-8F2E5573CE7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21B08096-AB54-46CB-8F5C-8F2E5573CE7B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2FADFA0E-32CA-4946-A6B1-F4AECA00BF5F}
+	EndGlobalSection
+EndGlobal
