@@ -33,19 +33,9 @@ public partial class App : Application
     private static HostApplicationBuilder CreateApplicationBuilder()
     {
         HostApplicationBuilder builder = Host.CreateApplicationBuilder();
-
-        builder.Services.AddDbContext<PhraseFinderDbContext>(optionsBuilder =>
-        {
-            const Environment.SpecialFolder localAppDataFolder = Environment.SpecialFolder.LocalApplicationData;
-            string dbDirectory = Path.Join(Environment.GetFolderPath(localAppDataFolder), "PhraseFinder");
-            Directory.CreateDirectory(dbDirectory);
-            string dbPath = Path.Join(dbDirectory, "PhraseFinder.accdb");
-            optionsBuilder.UseJetOleDb($"Data Source={dbPath}");
-            Console.WriteLine($"Database path: {dbPath}");
-        });
-        builder.Services.AddSingleton<MainWindow>(provider =>
-            new MainWindow(provider.GetRequiredService<PhraseFinderDbContext>()));
-
+        builder.ConfigureDatabase();
+        builder.ConfigureViews();
+        builder.ConfigureServices();
         return builder;
     }
 }

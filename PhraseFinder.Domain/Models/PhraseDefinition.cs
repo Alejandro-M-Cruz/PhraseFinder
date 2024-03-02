@@ -12,6 +12,4 @@ public class PhraseDefinition
     public required string Definition { get; set; }
     
     public int PhraseId { get; set; }
-    
-    public required Phrase Phrase { get; set; }
 }

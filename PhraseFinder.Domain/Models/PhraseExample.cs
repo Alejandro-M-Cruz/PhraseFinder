@@ -12,6 +12,4 @@ public class PhraseExample
     public required string Example { get; set; }
     
     public int PhraseId { get; set; }
-    
-    public required Phrase Phrase { get; set; }
 }

@@ -7,6 +7,18 @@ public class PhraseEntry
     public ICollection<string> Definitions { get; } = [];
     public ICollection<string> Examples { get; } = [];
 
+    public Phrase ToPhrase()
+    {
+        return new Phrase
+        {
+            Name = Name,
+            RegExPattern = Name,
+            BaseWord = BaseWord,
+            Definitions = Definitions.Select(d => new PhraseDefinition { Definition = d }).ToList(),
+            Examples = Examples.Select(d => new PhraseExample { Example = d }).ToList()
+        };
+    }
+    
     public override bool Equals(object? obj)
     {
         if (obj is not PhraseEntry other)

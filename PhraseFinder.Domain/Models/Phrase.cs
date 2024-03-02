@@ -21,8 +21,6 @@ public class Phrase
     
     public int PhraseDictionaryId { get; set; }
     
-    public required PhraseDictionary PhraseDictionary { get; set; }
-
     public ICollection<PhraseDefinition> Definitions { get; set; } = [];
     
     public ICollection<PhraseExample> Examples { get; set; } = [];
