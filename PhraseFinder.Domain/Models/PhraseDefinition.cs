@@ -1,25 +1,17 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace PhraseFinder.Domain.Models;
 
 public class PhraseDefinition
 {
     public int PhraseDefinitionId { get; set; }
-    public required string Definition { get; init; }
+    
+    [Display(Name = "Definición")]
+    [StringLength(maximumLength: 1000, MinimumLength = 1,
+        ErrorMessage = "La definición debe tener entre 1 y 1000 caracteres")]
+    public required string Definition { get; set; }
     
     public int PhraseId { get; set; }
-    public Phrase Phrase { get; set; }
-
-    public override bool Equals(object? obj)
-    {
-        if (obj is not PhraseDefinition other)
-        {
-            return false;
-        }
-        
-        return Definition == other.Definition;
-    }
     
-    public override int GetHashCode()
-    {
-        return HashCode.Combine(Definition);
-    }
+    public required Phrase Phrase { get; set; }
 }

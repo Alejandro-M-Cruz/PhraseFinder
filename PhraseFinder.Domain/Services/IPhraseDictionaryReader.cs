@@ -4,6 +4,6 @@ namespace PhraseFinder.Domain.Services;
 
 public interface IPhraseDictionaryReader
 {
-    public IAsyncEnumerable<Phrase> ReadPhraseEntriesAsync();
-    public IEnumerable<Phrase> ReadPhraseEntries();
+    public IEnumerable<PhraseEntry> ReadPhraseEntries();
+    public IAsyncEnumerable<PhraseEntry> ReadPhraseEntriesAsync();
 }

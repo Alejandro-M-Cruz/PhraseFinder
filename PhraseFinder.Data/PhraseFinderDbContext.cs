@@ -9,7 +9,7 @@ public class PhraseFinderDbContext : DbContext
     public DbSet<PhraseDictionary> PhraseDictionaries { get; set; }
 
     public PhraseFinderDbContext(DbContextOptions<PhraseFinderDbContext> options) : base(options) { }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<PhraseDictionary>()

@@ -20,7 +20,7 @@ public class DleTxtPhraseDictionaryReaderTests(ITestOutputHelper output) : IDisp
     {
         _tempFilePath = await TestUtils.WriteToTempFileAsync(phraseDictionaryContent);
         var reader = new DleTxtPhraseDictionaryReader(_tempFilePath);
-        List<Phrase> actualPhrases = [];
+        List<PhraseEntry> actualPhrases = [];
         
         await foreach (var phraseEntry in reader.ReadPhraseEntriesAsync())
         {
@@ -33,7 +33,7 @@ public class DleTxtPhraseDictionaryReaderTests(ITestOutputHelper output) : IDisp
     [Fact]
     public async Task ReadPhrasesAsync_FromOneEntryWithTwoPhrases_ReturnsBothPhraseEntries()
     {
-        string phraseDictionaryContent = 
+        string phraseDictionaryContent =
             "tamboril#tamboril\r\n" +
             "[Etim]De tamborín.\r\n" +
             "1. m. Tambor pequeño que, colgado del brazo, se toca con un solo palillo o baqueta, y, acompañando " +
@@ -43,39 +43,28 @@ public class DleTxtPhraseDictionaryReaderTests(ITestOutputHelper output) : IDisp
             "1. expr. coloq. U. para expresar que algo seguramente no ha de faltar.\r\n" +
             "[Ejem]Ejemplo de tamboril en boda\r\n" +
             "[loc6]tamboril por gaita\r\n" +
-            "1. expr. coloq. U. para indicar que lo mismo le da a alguien una cosa que otra.\r\n"; 
+            "1. expr. coloq. U. para indicar que lo mismo le da a alguien una cosa que otra.\r\n";
         _tempFilePath = await TestUtils.WriteToTempFileAsync(phraseDictionaryContent);
         var reader = new DleTxtPhraseDictionaryReader(_tempFilePath);
-        List<Phrase> expectedPhraseEntries =
+        List<PhraseEntry> expectedPhraseEntries =
         [
-            new Phrase
+            new()
             {
-                Name = "como tamboril en boda", 
+                Name = "como tamboril en boda",
                 BaseWord = "tamboril",
-                Definitions =
-                {
-                    new PhraseDefinition
-                    {
-                        Definition = "1. expr. coloq. U. para expresar que algo seguramente no ha de faltar."
-                    }
-                },
-                Examples = { new PhraseExample { Example = "Ejemplo de tamboril en boda" } }
+                Definitions = { "1. expr. coloq. U. para expresar que algo seguramente no ha de faltar." },
+                Examples = { "Ejemplo de tamboril en boda" }
             },
-            new Phrase
+
+            new()
             {
-                Name = "tamboril por gaita", 
+                Name = "tamboril por gaita",
                 BaseWord = "tamboril",
-                Definitions = 
-                {
-                    new PhraseDefinition
-                    {
-                        Definition = "1. expr. coloq. U. para indicar que lo mismo le da a alguien una cosa que otra."
-                    }
-                }
+                Definitions = { "1. expr. coloq. U. para indicar que lo mismo le da a alguien una cosa que otra." }
             }
         ];
-        List<Phrase> actualPhrases = [];
-        
+        List<PhraseEntry> actualPhrases = [];
+
         await foreach (var phraseEntry in reader.ReadPhraseEntriesAsync())
         {
             actualPhrases.Add(phraseEntry);
@@ -107,41 +96,41 @@ public class DleTxtPhraseDictionaryReaderTests(ITestOutputHelper output) : IDisp
             "1. loc. verb. coloq. desus. Mojarse o enlodarse mucho.\r\n";
         _tempFilePath = await TestUtils.WriteToTempFileAsync(phraseDictionaryContent);
         var reader = new DleTxtPhraseDictionaryReader(_tempFilePath);
-        List<Phrase> expectedPhrases =
+        List<PhraseEntry> expectedPhraseEntries =
         [
-            new Phrase
+            new PhraseEntry
             {
                 Name = "beber alguien como una topinera",
                 BaseWord = "topinera",
-                Definitions = { new PhraseDefinition { Definition = "1. loc. verb. Beber mucho." } }
+                Definitions = { "1. loc. verb. Beber mucho." }
             },
-            new Phrase
+            new PhraseEntry
             {
                 Name = "echar alguien la zarpa",
                 BaseWord = "zarpa[1]",
                 Definitions =
                 {
-                    new PhraseDefinition { Definition = "1. loc. verb. coloq. Agarrar o asir con las manos o las uñas." },
-                    new PhraseDefinition { Definition = "2. loc. verb. coloq. Apoderarse de algo por violencia, engaño o sorpresa." }
+                    "1. loc. verb. coloq. Agarrar o asir con las manos o las uñas.",
+                    "2. loc. verb. coloq. Apoderarse de algo por violencia, engaño o sorpresa."
                 },
-                Examples = { new PhraseExample { Example = "Le echó la zarpa al último dulce." } }
+                Examples = { "Le echó la zarpa al último dulce." }
             },
-            new Phrase
+            new PhraseEntry
             {
-                Name = "hacerse alguien una zarpa", 
+                Name = "hacerse alguien una zarpa",
                 BaseWord = "zarpa[1]",
-                Definitions = { new PhraseDefinition { Definition = "1. loc. verb. coloq. desus. Mojarse o enlodarse mucho." } }
+                Definitions = { "1. loc. verb. coloq. desus. Mojarse o enlodarse mucho." }
             }
         ];
-        List<Phrase> actualPhrases = [];
-        
+        List<PhraseEntry> actualPhraseEntries = [];
+
         await foreach (var phraseEntry in reader.ReadPhraseEntriesAsync())
         {
-            actualPhrases.Add(phraseEntry);
+            actualPhraseEntries.Add(phraseEntry);
             output.WriteLine(phraseEntry.ToString());
         }
 
-        Assert.Equal(expectedPhrases, actualPhrases);
+        Assert.Equal(expectedPhraseEntries, actualPhraseEntries);
     }
 
     public void Dispose()

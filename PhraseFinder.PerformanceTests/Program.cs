@@ -85,7 +85,7 @@ var phraseDictionary = new PhraseDictionary
 {
     Name = "Dle",
     Format = PhraseDictionaryFormat.DleTxt,
-    Path = "D:\\Proyectos\\dotNet\\TFT\\DLE.txt",
+    FilePath = "D:\\Proyectos\\dotNet\\TFT\\DLE.txt",
 };
 dbContext.PhraseDictionaries.Add(phraseDictionary);
 await dbContext.SaveChangesAsync();

@@ -20,4 +20,8 @@
     <ProjectReference Include="..\PhraseFinder.Domain\PhraseFinder.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dtos\" />
+  </ItemGroup>
+
 </Project>

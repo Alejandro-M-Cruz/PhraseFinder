@@ -17,10 +17,10 @@ namespace PhraseFinder.Data.Migrations
                 {
                     PhraseDictionaryId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Jet:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "longchar", nullable: false),
-                    Description = table.Column<string>(type: "longchar", nullable: true),
+                    Name = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    Description = table.Column<string>(type: "longchar", maxLength: 1000, nullable: true),
                     Format = table.Column<int>(type: "integer", nullable: false),
-                    Path = table.Column<string>(type: "longchar", nullable: false),
+                    FilePath = table.Column<string>(type: "longchar", maxLength: 500, nullable: false),
                     AddedAt = table.Column<DateTime>(type: "datetime", nullable: false, defaultValueSql: "Now()")
                 },
                 constraints: table =>
@@ -34,9 +34,9 @@ namespace PhraseFinder.Data.Migrations
                 {
                     PhraseId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Jet:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "longchar", nullable: false),
-                    RegExPattern = table.Column<string>(type: "longchar", nullable: true),
-                    BaseWord = table.Column<string>(type: "longchar", nullable: false),
+                    Name = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    RegExPattern = table.Column<string>(type: "longchar", maxLength: 2000, nullable: false),
+                    BaseWord = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     PhraseDictionaryId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -56,7 +56,7 @@ namespace PhraseFinder.Data.Migrations
                 {
                     PhraseDefinitionId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Jet:Identity", "1, 1"),
-                    Definition = table.Column<string>(type: "longchar", nullable: false),
+                    Definition = table.Column<string>(type: "longchar", maxLength: 1000, nullable: false),
                     PhraseId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -76,7 +76,7 @@ namespace PhraseFinder.Data.Migrations
                 {
                     PhraseExampleId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Jet:Identity", "1, 1"),
-                    Example = table.Column<string>(type: "longchar", nullable: false),
+                    Example = table.Column<string>(type: "longchar", maxLength: 1000, nullable: false),
                     PhraseId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>

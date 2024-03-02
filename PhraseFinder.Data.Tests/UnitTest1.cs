@@ -15,7 +15,7 @@ public class UnitTest1(ITestOutputHelper output)
         {
             Name = "Dle",
             Format = PhraseDictionaryFormat.DleTxt,
-            Path = "C:\\Dle.txt"
+            FilePath = "C:\\Dle.txt"
         };
         context.PhraseDictionaries.Add(phraseDictionary);
         output.WriteLine(phraseDictionary.AddedAt.ToLongTimeString());
@@ -27,7 +27,7 @@ public class UnitTest1(ITestOutputHelper output)
             .Last(pd => pd.Name == "Dle");
         Assert.Equal("Dle", actualPhraseDictionary.Name);
         Assert.Equal(PhraseDictionaryFormat.DleTxt, actualPhraseDictionary.Format);
-        Assert.Equal("C:\\Dle.txt", actualPhraseDictionary.Path);
+        Assert.Equal("C:\\Dle.txt", actualPhraseDictionary.FilePath);
         output.WriteLine(actualPhraseDictionary.AddedAt.ToLongTimeString());
     }
 }

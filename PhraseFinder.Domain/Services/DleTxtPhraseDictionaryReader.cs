@@ -25,12 +25,12 @@ public class DleTxtPhraseDictionaryReader(string filePath) : IPhraseDictionaryRe
     private static readonly Regex PhraseDefinitionRegEx = new(
         @"^\d+\.\s(loc\.|locs\.|expr\.)", RegexOptions.Compiled);
 
-    public async IAsyncEnumerable<Phrase> ReadPhraseEntriesAsync()
+    public async IAsyncEnumerable<PhraseEntry> ReadPhraseEntriesAsync()
     {
         using var reader = new StreamReader(filePath);
         string? currentLine;
         string? currentWord = null;
-        Phrase? currentPhraseEntry = null;
+        PhraseEntry? currentPhraseEntry = null;
         while ((currentLine = await reader.ReadLineAsync()) != null)
         {
             if (string.IsNullOrWhiteSpace(currentLine) && currentPhraseEntry != null)
@@ -48,7 +48,7 @@ public class DleTxtPhraseDictionaryReader(string filePath) : IPhraseDictionaryRe
                 {
                     yield return currentPhraseEntry;
                 }
-                currentPhraseEntry = new Phrase
+                currentPhraseEntry = new PhraseEntry
                 {
                     Name = currentLine[PhrasePrefix.Length..],
                     BaseWord = currentWord ?? ""
@@ -56,13 +56,11 @@ public class DleTxtPhraseDictionaryReader(string filePath) : IPhraseDictionaryRe
             } 
             else if (currentLine.StartsWith(PhraseExamplePrefix))
             {
-                currentPhraseEntry?.Examples.Add(new PhraseExample {
-                    Example = currentLine[PhraseExamplePrefix.Length..]
-                });
+                currentPhraseEntry?.Examples.Add(currentLine[PhraseExamplePrefix.Length..]);
             }
             else if (PhraseDefinitionRegEx.IsMatch(currentLine))
             {
-                currentPhraseEntry?.Definitions.Add(new PhraseDefinition { Definition = currentLine });
+                currentPhraseEntry?.Definitions.Add(currentLine);
             } 
         }
         if (currentPhraseEntry != null)
@@ -71,12 +69,12 @@ public class DleTxtPhraseDictionaryReader(string filePath) : IPhraseDictionaryRe
         }
     }
 
-    public IEnumerable<Phrase> ReadPhraseEntries()
+    public IEnumerable<PhraseEntry> ReadPhraseEntries()
     {
         using var reader = new StreamReader(filePath);
         string? currentLine;
         string? currentWord = null;
-        Phrase? currentPhraseEntry = null;
+        PhraseEntry? currentPhraseEntry = null;
         while ((currentLine = reader.ReadLine()) != null)
         {
             if (string.IsNullOrWhiteSpace(currentLine) && currentPhraseEntry != null)
@@ -94,7 +92,7 @@ public class DleTxtPhraseDictionaryReader(string filePath) : IPhraseDictionaryRe
                 {
                     yield return currentPhraseEntry;
                 }
-                currentPhraseEntry = new Phrase
+                currentPhraseEntry = new PhraseEntry
                 {
                     Name = currentLine[PhrasePrefix.Length..],
                     BaseWord = currentWord ?? ""
@@ -102,13 +100,11 @@ public class DleTxtPhraseDictionaryReader(string filePath) : IPhraseDictionaryRe
             } 
             else if (currentLine.StartsWith(PhraseExamplePrefix))
             {
-                currentPhraseEntry?.Examples.Add(new PhraseExample {
-                    Example = currentLine[PhraseExamplePrefix.Length..]
-                });
+                currentPhraseEntry?.Examples.Add(currentLine[PhraseExamplePrefix.Length..]);
             }
             else if (PhraseDefinitionRegEx.IsMatch(currentLine))
             {
-                currentPhraseEntry?.Definitions.Add(new PhraseDefinition { Definition = currentLine });
+                currentPhraseEntry?.Definitions.Add(currentLine);
             } 
         }
         if (currentPhraseEntry != null)

@@ -30,16 +30,20 @@ namespace PhraseFinder.Data.Migrations
 
                     b.Property<string>("BaseWord")
                         .IsRequired()
-                        .HasColumnType("longchar");
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longchar");
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("PhraseDictionaryId")
                         .HasColumnType("integer");
 
                     b.Property<string>("RegExPattern")
+                        .IsRequired()
+                        .HasMaxLength(2000)
                         .HasColumnType("longchar");
 
                     b.HasKey("PhraseId");
@@ -58,6 +62,7 @@ namespace PhraseFinder.Data.Migrations
 
                     b.Property<string>("Definition")
                         .IsRequired()
+                        .HasMaxLength(1000)
                         .HasColumnType("longchar");
 
                     b.Property<int>("PhraseId")
@@ -83,6 +88,12 @@ namespace PhraseFinder.Data.Migrations
                         .HasDefaultValueSql("Now()");
 
                     b.Property<string>("Description")
+                        .HasMaxLength(1000)
+                        .HasColumnType("longchar");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasMaxLength(500)
                         .HasColumnType("longchar");
 
                     b.Property<int>("Format")
@@ -90,11 +101,8 @@ namespace PhraseFinder.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("longchar");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasColumnType("longchar");
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("PhraseDictionaryId");
 
@@ -110,6 +118,7 @@ namespace PhraseFinder.Data.Migrations
 
                     b.Property<string>("Example")
                         .IsRequired()
+                        .HasMaxLength(1000)
                         .HasColumnType("longchar");
 
                     b.Property<int>("PhraseId")

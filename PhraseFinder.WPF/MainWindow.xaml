@@ -4,37 +4,39 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PhraseFinder.WPF"
+        xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+        d:DesignHeight="450"
+        d:DesignWidth="800"
+        ui:Design.Background="{DynamicResource ApplicationBackgroundBrush}"
+        ui:Design.Foreground="{DynamicResource TextFillColorPrimaryBrush}"
+        Background="{DynamicResource ApplicationBackgroundBrush}"
+        Foreground="{DynamicResource TextFillColorPrimaryBrush}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    
+        Title="Base de datos de expresiones" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <ToolBarTray Grid.Row="0" Margin="10, 3">
-            <ToolBar>
-                <Button>Añadir diccionario</Button>
-                <Separator /> 
-                <Button>Actualizar</Button>
-                <Separator /> 
-                <Button>Eliminar diccionario</Button>
-                <Separator /> 
-                <Button>Ver expresiones</Button>
-            </ToolBar>
-        </ToolBarTray>
-        <TextBox x:Name="ExampleTextBox" Grid.Row="1"></TextBox>
-        <Button Grid.Row="2" x:Name="ExampleButton" Content="Ejemplo" Click="ExampleButton_OnClick"></Button>
-        
-        <!--<Grid.DataContext>
-            <Binding Source="{}"></Binding>
-        </Grid.DataContext>-->
-        <!--<DataGrid Grid.Row="1" ItemsSource="{Binding PhraseDictionaries}" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Nombre" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="Ruta" Binding="{Binding Path}"/>
-            </DataGrid.Columns>
-        </DataGrid>-->
+        <Grid Grid.Row="0" Margin="16, 6, 16, 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" Text="Diccionarios" FontSize="24" FontWeight="SemiBold"
+                       VerticalAlignment="Center" />
+            <Menu Grid.Column="1" FontSize="20">
+                <ui:MenuItem x:Name="PhraseDictionaryAddButton" Icon="{ui:SymbolIcon DocumentAdd20}"
+                             Click="PhraseDictionaryAddButton_OnClick" />
+                <Separator />
+                <ui:MenuItem x:Name="PhraseListButton" Icon="{ui:SymbolIcon TextBulletListLtr20, Filled=True}"
+                             IsEnabled="False" />
+                <Separator />
+                <ui:MenuItem x:Name="PhraseDictionaryDeleteButton" Icon="{ui:SymbolIcon Delete20, Filled=True}" 
+                             IsEnabled="False" Click="PhraseDictionaryDeleteButton_OnClick" />
+            </Menu>
+        </Grid>
+        <DataGrid Grid.Row="1" IsReadOnly="True" x:Name="PhraseDictionaryDataGrid" Margin="10"
+                  SelectedCellsChanged="PhraseDictionaryDataGrid_OnSelectedCellsChanged" />
     </Grid>
 </Window>

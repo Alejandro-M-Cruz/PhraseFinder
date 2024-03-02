@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Configuration;
+using System.Data;
+using System.IO;
 using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +12,7 @@ namespace PhraseFinder.WPF;
 public partial class App : Application
 {
     private readonly IHost _host = CreateApplicationBuilder().Build();
-    
+
     protected override async void OnStartup(StartupEventArgs eventArgs)
     {
         _host.Start();
