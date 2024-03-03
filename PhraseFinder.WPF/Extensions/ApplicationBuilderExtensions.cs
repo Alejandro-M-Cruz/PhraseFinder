@@ -6,7 +6,7 @@ using PhraseFinder.Data;
 using PhraseFinder.Data.Services;
 using PhraseFinder.WPF.ViewModels;
 
-namespace PhraseFinder.WPF;
+namespace PhraseFinder.WPF.Extensions;
 
 public static class ApplicationBuilderExtensions
 {
@@ -18,7 +18,7 @@ public static class ApplicationBuilderExtensions
             string dbDirectory = Path.Join(Environment.GetFolderPath(localAppDataFolder), "PhraseFinder");
             Directory.CreateDirectory(dbDirectory);
             string dbPath = Path.Join(dbDirectory, "PhraseFinder.accdb");
-            optionsBuilder.UseJetOleDb($"Data Source={dbPath}");
+            JetOleDbDbContextOptionsBuilderExtensions.UseJetOleDb(optionsBuilder, $"Data Source={dbPath}");
             Console.WriteLine($"Database path: {dbPath}");
         });
     }

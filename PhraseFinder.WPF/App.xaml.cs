@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PhraseFinder.Data;
+using PhraseFinder.WPF.Extensions;
 
 namespace PhraseFinder.WPF;
 

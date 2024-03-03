@@ -12,24 +12,20 @@ public class PhraseDictionariesViewModel : ViewModelBase
     public PhraseDictionary? SelectedPhraseDictionary
     {
         get => _selectedPhraseDictionary;
-        set
-        {
-            SetField(ref _selectedPhraseDictionary, value);
-            DeletePhraseDictionaryCommand.OnCanExecuteChanged();
-        }
+        set => SetField(ref _selectedPhraseDictionary, value);
     }
-
     public ObservableCollection<PhraseDictionary> PhraseDictionaries { get; } = [];
-
-    public ICommand LoadPhraseDictionariesCommand { get; }
-    public CommandBase DeletePhraseDictionaryCommand { get; }
+    private LoadPhraseDictionariesCommand LoadPhraseDictionariesCommand { get; }
+    public ICommand DeletePhraseDictionaryCommand { get; }
+    public ICommand NavigateToPhrasesCommand { get; }
+    public ICommand NavigateToAddPhraseDictionaryCommand { get; }
 
     public PhraseDictionariesViewModel(IPhraseDictionaryService phraseDictionaryService)
     {
-        DeletePhraseDictionaryCommand = 
-            new DeletePhraseDictionaryCommand(this, phraseDictionaryService);
-        LoadPhraseDictionariesCommand = 
-            new LoadPhraseDictionariesCommand(this, phraseDictionaryService);
+        LoadPhraseDictionariesCommand = new LoadPhraseDictionariesCommand(this, phraseDictionaryService);
         LoadPhraseDictionariesCommand.Execute(null);
+        DeletePhraseDictionaryCommand = new DeletePhraseDictionaryCommand(this, phraseDictionaryService);
+        NavigateToPhrasesCommand = new NavigateToPhrasesCommand(this);
+        NavigateToAddPhraseDictionaryCommand = new NavigateToAddPhraseDictionaryCommand();
     }
 }

@@ -8,6 +8,7 @@ public class MainViewModel : ViewModelBase
 
     public MainViewModel(IPhraseDictionaryService phraseDictionaryService)
     {
-        CurrentViewModel = new PhraseDictionariesViewModel(phraseDictionaryService);
+        //CurrentViewModel = new PhraseDictionariesViewModel(phraseDictionaryService);
+        CurrentViewModel= new AddPhraseDictionaryViewModel(phraseDictionaryService);
     }
 }

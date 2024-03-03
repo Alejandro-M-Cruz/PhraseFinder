@@ -10,7 +10,7 @@ public abstract class CommandBase : ICommand
 
     public event EventHandler? CanExecuteChanged;
 
-    public void OnCanExecuteChanged()
+    protected void OnCanExecuteChanged()
     {
         CanExecuteChanged?.Invoke(this, EventArgs.Empty);
     }

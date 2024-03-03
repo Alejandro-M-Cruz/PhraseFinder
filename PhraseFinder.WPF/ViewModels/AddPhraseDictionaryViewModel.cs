@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows.Input;
+using PhraseFinder.Data.Services;
 using PhraseFinder.Domain.Models;
+using PhraseFinder.WPF.Commands;
 
 namespace PhraseFinder.WPF.ViewModels;
 
@@ -14,6 +12,13 @@ public class AddPhraseDictionaryViewModel : ViewModelBase
     {
         get => _phraseDictionaryName;
         set => SetField(ref _phraseDictionaryName, value);
+    }
+
+    private PhraseDictionaryFormat? _selectedPhraseDictionaryFormat;
+    public PhraseDictionaryFormat? SelectedPhraseDictionaryFormat
+    {
+        get => _selectedPhraseDictionaryFormat;
+        set => SetField(ref _selectedPhraseDictionaryFormat, value);
     }
 
     private string? _phraseDictionaryDescription;
@@ -30,4 +35,11 @@ public class AddPhraseDictionaryViewModel : ViewModelBase
         set => SetField(ref _phraseDictionaryFilePath, value);
     }
 
+    public ICommand AddPhraseDictionaryCommand { get; }
+    public ICommand NavigateToPhraseDictionariesCommand { get; }
+
+    public AddPhraseDictionaryViewModel(IPhraseDictionaryService phraseDictionaryService)
+    {
+        AddPhraseDictionaryCommand = new AddPhraseDictionaryCommand(this, phraseDictionaryService);
+    }
 }
