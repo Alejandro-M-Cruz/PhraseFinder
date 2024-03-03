@@ -50,7 +50,7 @@ namespace PhraseFinder.Data.Migrations
 
                     b.HasIndex("PhraseDictionaryId");
 
-                    b.ToTable("Phrases");
+                    b.ToTable("Phrases", (string)null);
                 });
 
             modelBuilder.Entity("PhraseFinder.Domain.Models.PhraseDefinition", b =>
@@ -72,7 +72,7 @@ namespace PhraseFinder.Data.Migrations
 
                     b.HasIndex("PhraseId");
 
-                    b.ToTable("PhraseDefinition");
+                    b.ToTable("PhraseDefinition", (string)null);
                 });
 
             modelBuilder.Entity("PhraseFinder.Domain.Models.PhraseDictionary", b =>
@@ -106,7 +106,7 @@ namespace PhraseFinder.Data.Migrations
 
                     b.HasKey("PhraseDictionaryId");
 
-                    b.ToTable("PhraseDictionaries");
+                    b.ToTable("PhraseDictionaries", (string)null);
                 });
 
             modelBuilder.Entity("PhraseFinder.Domain.Models.PhraseExample", b =>
@@ -128,7 +128,7 @@ namespace PhraseFinder.Data.Migrations
 
                     b.HasIndex("PhraseId");
 
-                    b.ToTable("PhraseExample");
+                    b.ToTable("PhraseExample", (string)null);
                 });
 
             modelBuilder.Entity("PhraseFinder.Domain.Models.Phrase", b =>

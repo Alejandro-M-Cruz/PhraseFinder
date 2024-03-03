@@ -1,8 +1,9 @@
+using Microsoft.EntityFrameworkCore;
 using PhraseFinder.Domain.Models;
 
 namespace PhraseFinder.Data.Services;
 
-public class PhraseService(PhraseFinderDbContext dbContext) : IPhraseService
+public class PhraseService(DbContext dbContext) : IPhraseService
 {
     public IEnumerable<Phrase>? GetPhrasesAsync(PhraseDictionary phraseDictionary)
     {

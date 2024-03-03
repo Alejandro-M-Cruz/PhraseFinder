@@ -20,6 +20,8 @@ public class Phrase
     public required string BaseWord { get; set; }
     
     public int PhraseDictionaryId { get; set; }
+
+    public PhraseDictionary PhraseDictionary { get; set; }
     
     public ICollection<PhraseDefinition> Definitions { get; set; } = [];
     

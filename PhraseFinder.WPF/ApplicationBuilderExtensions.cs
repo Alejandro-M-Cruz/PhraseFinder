@@ -4,12 +4,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PhraseFinder.Data;
 using PhraseFinder.Data.Services;
+using PhraseFinder.WPF.ViewModels;
 
 namespace PhraseFinder.WPF;
 
 public static class ApplicationBuilderExtensions
 {
-    public static void ConfigureDatabase(this HostApplicationBuilder builder)
+    private static void AddDbContext(this HostApplicationBuilder builder)
     {
         builder.Services.AddDbContext<PhraseFinderDbContext>(optionsBuilder =>
         {
@@ -21,18 +22,32 @@ public static class ApplicationBuilderExtensions
             Console.WriteLine($"Database path: {dbPath}");
         });
     }
-    
-    public static void ConfigureViews(this HostApplicationBuilder builder)
+
+    private static void AddDbServices(this HostApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<IPhraseDictionaryService, PhraseDictionaryService>(provider =>
+            new PhraseDictionaryService(provider.GetRequiredService<PhraseFinderDbContext>()));
+        builder.Services.AddSingleton<IPhraseService, PhraseService>(provider =>
+            new PhraseService(provider.GetRequiredService<PhraseFinderDbContext>()));
+    }
+
+    private static void AddViewModels(this HostApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<MainViewModel>(provider =>
+            new MainViewModel(provider.GetRequiredService<IPhraseDictionaryService>()));
+    }
+
+    private static void AddViews(this HostApplicationBuilder builder)
     {
         builder.Services.AddSingleton<MainWindow>(provider =>
-            new MainWindow(provider.GetRequiredService<PhraseFinderDbContext>()));
+            new MainWindow { DataContext = provider.GetRequiredService<MainViewModel>() });
     }
-    
-    public static void ConfigureServices(this HostApplicationBuilder builder)
+
+    public static void AddServices(this HostApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<IPhraseDictionaryService, PhraseDictionaryService>(provider => 
-            new PhraseDictionaryService(provider.GetRequiredService<PhraseFinderDbContext>()));
-        builder.Services.AddSingleton<IPhraseService, PhraseService>(provider => 
-            new PhraseService(provider.GetRequiredService<PhraseFinderDbContext>()));
+        builder.AddDbContext();
+        builder.AddDbServices();
+        builder.AddViewModels();
+        builder.AddViews();
     }
 }

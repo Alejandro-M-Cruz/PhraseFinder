@@ -4,7 +4,7 @@ using Xunit.Abstractions;
 
 namespace PhraseFinder.Domain.Tests.Services;
 
-public class DleTxtPhraseDictionaryReaderTests(ITestOutputHelper output) : IDisposable
+public class DleTxtPhraseDictionaryReaderTests : IDisposable
 {
     private string? _tempFilePath;
     
@@ -127,7 +127,6 @@ public class DleTxtPhraseDictionaryReaderTests(ITestOutputHelper output) : IDisp
         await foreach (var phraseEntry in reader.ReadPhraseEntriesAsync())
         {
             actualPhraseEntries.Add(phraseEntry);
-            output.WriteLine(phraseEntry.ToString());
         }
 
         Assert.Equal(expectedPhraseEntries, actualPhraseEntries);

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PhraseFinder.Domain.Models;
 using PhraseFinder.Domain.Services;
 
@@ -5,33 +6,31 @@ namespace PhraseFinder.Data.Services;
 
 public class PhraseDictionaryService(PhraseFinderDbContext dbContext) : IPhraseDictionaryService
 {
-    public async Task AddPhraseDictionaryAsync(string filePath)
+    public async Task<IEnumerable<PhraseDictionary>> GetPhraseDictionariesAsync()
     {
-        var dleTxtReader = PhraseDictionaryReaderFactory.CreateReader(
-            PhraseDictionaryFormat.DleTxt, 
-            filePath: filePath);
-        List<Phrase> phrases = [];
-        await foreach (var phraseEntry in dleTxtReader.ReadPhraseEntriesAsync())
-        {
-            phrases.Add(phraseEntry.ToPhrase());
-        }
-        var phraseDictionary = new PhraseDictionary
-        {
-            Name = "New Dictionary",
-            Format = PhraseDictionaryFormat.DleTxt,
-            FilePath = filePath,
-            Phrases = phrases
-        };
-        await AddPhraseDictionaryAsync(phraseDictionary);
+        return await dbContext.PhraseDictionaries.ToListAsync();
     }
 
     public async Task AddPhraseDictionaryAsync(PhraseDictionary phraseDictionary)
     {
-        await dbContext.PhraseDictionaries.AddAsync(phraseDictionary);
+        var dleTxtReader = PhraseDictionaryReaderFactory.CreateReader(
+            PhraseDictionaryFormat.DleTxt, 
+            filePath: phraseDictionary.FilePath);
+        await foreach (var phraseEntry in dleTxtReader.ReadPhraseEntriesAsync())
+        {
+            phraseDictionary.Phrases.Add(phraseEntry.ToPhrase());
+        }
+        dbContext.PhraseDictionaries.Add(phraseDictionary);
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task UpdatePhraseDictionaryAsync(PhraseDictionary phraseDictionary)
+    {
+        dbContext.PhraseDictionaries.Update(phraseDictionary);
         await dbContext.SaveChangesAsync();
     }
     
-    public async Task RemovePhraseDictionaryAsync(PhraseDictionary phraseDictionary)
+    public async Task DeletePhraseDictionaryAsync(PhraseDictionary phraseDictionary)
     {
         dbContext.PhraseDictionaries.Remove(phraseDictionary);
         await dbContext.SaveChangesAsync();

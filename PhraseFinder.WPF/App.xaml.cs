@@ -1,7 +1,4 @@
-﻿using System.Configuration;
-using System.Data;
-using System.IO;
-using System.Windows;
+﻿using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,9 +30,7 @@ public partial class App : Application
     private static HostApplicationBuilder CreateApplicationBuilder()
     {
         HostApplicationBuilder builder = Host.CreateApplicationBuilder();
-        builder.ConfigureDatabase();
-        builder.ConfigureViews();
-        builder.ConfigureServices();
+        builder.AddServices();
         return builder;
     }
 }

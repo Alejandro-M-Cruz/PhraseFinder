@@ -4,6 +4,20 @@ namespace PhraseFinder.Domain.Models;
 
 public enum PhraseDictionaryFormat
 {
-    [Display(Name = "DLE (Diccionario de la lengua española) en texto plano")] 
+    [Display(Name = "DLE en texto plano")] 
     DleTxt
 }
+
+public static class PhraseDictionaryFormatExtensions
+{
+    public static string GetDisplayName(this PhraseDictionaryFormat format)
+    {
+        var displayAttribute = format.GetType()
+            .GetField(format.ToString())
+            ?.GetCustomAttributes(typeof(DisplayAttribute), inherit: false)
+            .FirstOrDefault() as DisplayAttribute;
+        return displayAttribute?.Name ?? format.ToString();
+    }
+}
+
+

@@ -4,7 +4,8 @@ namespace PhraseFinder.Data.Services;
 
 public interface IPhraseDictionaryService
 {
-    public Task AddPhraseDictionaryAsync(string filePath);
+    public Task<IEnumerable<PhraseDictionary>> GetPhraseDictionariesAsync();
     public Task AddPhraseDictionaryAsync(PhraseDictionary phraseDictionary);
-    public Task RemovePhraseDictionaryAsync(PhraseDictionary phraseDictionary);
+    public Task UpdatePhraseDictionaryAsync(PhraseDictionary phraseDictionary);
+    public Task DeletePhraseDictionaryAsync(PhraseDictionary phraseDictionary);
 }
