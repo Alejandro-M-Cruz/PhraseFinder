@@ -13,6 +13,6 @@
     d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
     mc:Ignorable="d">
 
-    <!--<views:PhraseDictionariesView DataContext="{Binding CurrentViewModel}" />-->
-    <views:AddPhraseDictionaryView DataContext="{Binding CurrentViewModel}" />
+    <views:PhraseDictionariesView DataContext="{Binding CurrentViewModel}" />
+    <!--<views:AddPhraseDictionaryView DataContext="{Binding CurrentViewModel}" />-->
 </Window>

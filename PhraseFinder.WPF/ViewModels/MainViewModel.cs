@@ -1,14 +1,15 @@
-﻿using PhraseFinder.Data.Services;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using PhraseFinder.Data.Services;
 
 namespace PhraseFinder.WPF.ViewModels;
 
-public class MainViewModel : ViewModelBase
+public class MainViewModel : ObservableObject
 {
-    public ViewModelBase CurrentViewModel { get; }
+    public ObservableObject CurrentViewModel { get; }
 
     public MainViewModel(IPhraseDictionaryService phraseDictionaryService)
     {
-        //CurrentViewModel = new PhraseDictionariesViewModel(phraseDictionaryService);
-        CurrentViewModel= new AddPhraseDictionaryViewModel(phraseDictionaryService);
+        CurrentViewModel = new PhraseDictionariesViewModel(phraseDictionaryService);
+        //CurrentViewModel = new AddPhraseDictionaryViewModel(phraseDictionaryService);
     }
 }

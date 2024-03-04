@@ -1,45 +1,49 @@
-﻿using System.Windows.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using PhraseFinder.Data.Services;
 using PhraseFinder.Domain.Models;
-using PhraseFinder.WPF.Commands;
 
 namespace PhraseFinder.WPF.ViewModels;
 
-public class AddPhraseDictionaryViewModel : ViewModelBase
+public partial class AddPhraseDictionaryViewModel(
+    IPhraseDictionaryService phraseDictionaryService) : ObservableObject
 {
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AddPhraseDictionaryCommand))]
     private string? _phraseDictionaryName = string.Empty;
-    public string? PhraseDictionaryName
-    {
-        get => _phraseDictionaryName;
-        set => SetField(ref _phraseDictionaryName, value);
-    }
 
-    private PhraseDictionaryFormat? _selectedPhraseDictionaryFormat;
-    public PhraseDictionaryFormat? SelectedPhraseDictionaryFormat
-    {
-        get => _selectedPhraseDictionaryFormat;
-        set => SetField(ref _selectedPhraseDictionaryFormat, value);
-    }
-
+    [ObservableProperty] 
     private string? _phraseDictionaryDescription;
-    public string? PhraseDictionaryDescription
-    {
-        get => _phraseDictionaryDescription;
-        set => SetField(ref _phraseDictionaryDescription, value);
-    }
 
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AddPhraseDictionaryCommand))]
+    private PhraseDictionaryFormat? _selectedPhraseDictionaryFormat;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(AddPhraseDictionaryCommand))]
     private string? _phraseDictionaryFilePath;
-    public string? PhraseDictionaryFilePath
+
+    [RelayCommand(CanExecute = nameof(CanAddPhraseDictionary))]
+    public async Task AddPhraseDictionary()
     {
-        get => _phraseDictionaryFilePath;
-        set => SetField(ref _phraseDictionaryFilePath, value);
+        var phraseDictionary = new PhraseDictionary
+        {
+            Name = PhraseDictionaryName!,
+            Format = (PhraseDictionaryFormat)SelectedPhraseDictionaryFormat!,
+            Description = PhraseDictionaryDescription,
+            FilePath = PhraseDictionaryFilePath!
+        };
+        await phraseDictionaryService.AddPhraseDictionaryAsync(phraseDictionary);
     }
 
-    public ICommand AddPhraseDictionaryCommand { get; }
-    public ICommand NavigateToPhraseDictionariesCommand { get; }
+    public bool CanAddPhraseDictionary =>
+        !string.IsNullOrWhiteSpace(PhraseDictionaryName) &&
+        !string.IsNullOrWhiteSpace(PhraseDictionaryFilePath) &&
+        SelectedPhraseDictionaryFormat != null;
 
-    public AddPhraseDictionaryViewModel(IPhraseDictionaryService phraseDictionaryService)
+    [RelayCommand]
+    public void NavigateToPhraseDictionaries()
     {
-        AddPhraseDictionaryCommand = new AddPhraseDictionaryCommand(this, phraseDictionaryService);
+        throw new NotImplementedException();
     }
 }

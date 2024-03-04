@@ -21,9 +21,15 @@
                     <Setter Property="Padding" Value="5" />
                 </Style>
             </Menu.Resources>
-            <MenuItem x:Name="PhraseDictionaryAddButton" Header="Añadir" />
+            <MenuItem
+                x:Name="PhraseDictionaryAddButton"
+                Command="{Binding NavigateToAddPhraseDictionaryCommand}"
+                Header="Añadir" />
             <Separator />
-            <MenuItem x:Name="PhraseListButton" Header="Listar expresiones" />
+            <MenuItem
+                x:Name="PhraseListButton"
+                Command="{Binding NavigateToPhrasesCommand}"
+                Header="Listar expresiones" />
             <Separator />
             <MenuItem
                 x:Name="PhraseDictionaryDeleteButton"
@@ -36,6 +42,6 @@
             Margin="10"
             IsReadOnly="True"
             ItemsSource="{Binding PhraseDictionaries}"
-            SelectedItem="{Binding SelectedPhraseDictionary, UpdateSourceTrigger=PropertyChanged}" />
+            SelectedItem="{Binding SelectedPhraseDictionary}" />
     </Grid>
 </UserControl>

@@ -18,23 +18,20 @@ public static class ApplicationBuilderExtensions
             string dbDirectory = Path.Join(Environment.GetFolderPath(localAppDataFolder), "PhraseFinder");
             Directory.CreateDirectory(dbDirectory);
             string dbPath = Path.Join(dbDirectory, "PhraseFinder.accdb");
-            JetOleDbDbContextOptionsBuilderExtensions.UseJetOleDb(optionsBuilder, $"Data Source={dbPath}");
+            optionsBuilder.UseJetOleDb($"Data Source={dbPath}");
             Console.WriteLine($"Database path: {dbPath}");
         });
     }
 
     private static void AddDbServices(this HostApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<IPhraseDictionaryService, PhraseDictionaryService>(provider =>
-            new PhraseDictionaryService(provider.GetRequiredService<PhraseFinderDbContext>()));
-        builder.Services.AddSingleton<IPhraseService, PhraseService>(provider =>
-            new PhraseService(provider.GetRequiredService<PhraseFinderDbContext>()));
+        builder.Services.AddSingleton<IPhraseDictionaryService, PhraseDictionaryService>();
+        builder.Services.AddSingleton<IPhraseService, PhraseService>();
     }
 
     private static void AddViewModels(this HostApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<MainViewModel>(provider =>
-            new MainViewModel(provider.GetRequiredService<IPhraseDictionaryService>()));
+        builder.Services.AddSingleton<MainViewModel>();
     }
 
     private static void AddViews(this HostApplicationBuilder builder)
