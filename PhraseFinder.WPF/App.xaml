@@ -1,12 +1,29 @@
-﻿<Application x:Class="PhraseFinder.WPF.App"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:PhraseFinder.WPF">
+﻿<Application
+    x:Class="PhraseFinder.WPF.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:PhraseFinder.WPF.Converters"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:viewModels="clr-namespace:PhraseFinder.WPF.ViewModels"
+    xmlns:views="clr-namespace:PhraseFinder.WPF.Views">
     <Application.Resources>
         <ResourceDictionary>
+
             <ResourceDictionary.MergedDictionaries>
-                
+                <hc:ThemeResources />
+                <hc:Theme />
             </ResourceDictionary.MergedDictionaries>
+
+            <converters:EnumDisplayNameConverter x:Key="EnumDisplayNameConverter" />
+
+            <DataTemplate DataType="{x:Type viewModels:PhraseDictionariesViewModel}">
+                <views:PhraseDictionariesView />
+            </DataTemplate>
+
+            <DataTemplate DataType="{x:Type viewModels:AddPhraseDictionaryViewModel}">
+                <views:AddPhraseDictionaryView />
+            </DataTemplate>
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>

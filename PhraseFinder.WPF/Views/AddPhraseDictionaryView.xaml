@@ -2,99 +2,93 @@
     x:Class="PhraseFinder.WPF.Views.AddPhraseDictionaryView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:PhraseFinder.WPF.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:extensions="clr-namespace:PhraseFinder.WPF.Extensions"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:local="clr-namespace:PhraseFinder.WPF.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:models="clr-namespace:PhraseFinder.Domain.Models;assembly=PhraseFinder.Domain"
     xmlns:viewModels="clr-namespace:PhraseFinder.WPF.ViewModels"
-    xmlns:converters="clr-namespace:PhraseFinder.WPF.Converters"
     d:DataContext="{d:DesignInstance viewModels:AddPhraseDictionaryViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
-    
-    <UserControl.Resources>
-        <converters:EnumDisplayNameConverter x:Key="EnumDisplayNameConverter" />
-    </UserControl.Resources>
-    
-    <Grid Margin="20">
+
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-
-        <Grid.Resources>
-            <Style TargetType="TextBox">
-                <Setter Property="Margin" Value="0,10" />
-            </Style>
-            <Style TargetType="Label">
-                <Setter Property="Margin" Value="0,10,15,10" />
-            </Style>
-            <Style TargetType="ComboBox">
-                <Setter Property="Margin" Value="0,10" />
-            </Style>
-            <Style TargetType="Button">
-                <Setter Property="Padding" Value="20,10" />
-                <Setter Property="Margin" Value="20,10" />
-            </Style>
-        </Grid.Resources>
 
         <TextBlock
-            Grid.ColumnSpan="2"
-            Padding="0,0,0,30"
+            Padding="10,20"
             FontSize="24"
-            Text="Añadiendo diccionario de expresiones"
-            TextAlignment="Center" />
+            Text="Añadiendo diccionario"
+            TextAlignment="Center"
+            TextTrimming="CharacterEllipsis" />
 
-        <Label
-            Grid.Row="1"
-            Grid.Column="0"
-            Content="Nombre" />
-        <TextBox
-            Grid.Row="1"
-            Grid.Column="1"
-            Text="{Binding PhraseDictionaryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        <Label
-            Grid.Row="2"
-            Grid.Column="0"
-            Content="Descripción (opcional)" />
-        <TextBox
-            Grid.Row="2"
-            Grid.Column="1"
-            Text="{Binding PhraseDictionaryDescription, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
-        <Label
-            Grid.Row="3"
-            Grid.Column="0"
-            Content="Formato" />
-        <ComboBox
-            Grid.Row="3"
-            Grid.Column="1"
-            ItemsSource="{extensions:EnumValues EnumType=models:PhraseDictionaryFormat}"
-            SelectedItem="{Binding SelectedPhraseDictionaryFormat, Mode=TwoWay}">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock 
-                        Text="{Binding Converter={StaticResource EnumDisplayNameConverter}}" />
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        <StackPanel
-            Grid.Row="4"
-            Grid.Column="0"
-            Grid.ColumnSpan="2"
-            HorizontalAlignment="Center"
-            Orientation="Horizontal">
-            <Button Command="{Binding AddPhraseDictionaryCommand}" Content="Add" />
-            <Button Content="Cancel" />
-        </StackPanel>
+        <hc:ScrollViewer Grid.Row="1" IsInertiaEnabled="True">
+            <hc:SimpleStackPanel
+                MaxWidth="300"
+                VerticalAlignment="Center"
+                Orientation="Vertical">
+                <hc:TextBox
+                    Margin="10,15"
+                    hc:InfoElement.Necessary="True"
+                    hc:InfoElement.Placeholder=""
+                    hc:TitleElement.Title="Nombre"
+                    hc:TitleElement.TitlePlacement="Top"
+                    Text="{Binding PhraseDictionaryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <hc:TextBox
+                    Margin="10,15"
+                    hc:InfoElement.Necessary="False"
+                    hc:InfoElement.Placeholder="Diccionario de la lengua española, 3a edición en formato TXT..."
+                    hc:TitleElement.Title="Descripción"
+                    hc:TitleElement.TitlePlacement="Top"
+                    AcceptsReturn="True"
+                    SpellCheck.IsEnabled="True"
+                    Text="{Binding PhraseDictionaryDescription, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
+                    TextWrapping="Wrap"
+                    VerticalScrollBarVisibility="Visible" />
+                <hc:ComboBox
+                    Margin="10,15"
+                    hc:InfoElement.Necessary="True"
+                    hc:TitleElement.Title="Formato"
+                    hc:TitleElement.TitlePlacement="Top"
+                    ItemsSource="{extensions:EnumValues EnumType=models:PhraseDictionaryFormat}"
+                    SelectedIndex="0"
+                    SelectedItem="{Binding SelectedPhraseDictionaryFormat, Mode=TwoWay}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Converter={StaticResource EnumDisplayNameConverter}}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </hc:ComboBox>
+                <Button
+                    Margin="10,20"
+                    HorizontalAlignment="Stretch"
+                    hc:IconElement.Geometry="{StaticResource SearchGeometry}"
+                    hc:IconElement.Width="12"
+                    Content="Seleccionar fichero"
+                    Style="{StaticResource ButtonPrimary}" />
+
+                <StackPanel
+                    Margin="10,20"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <Button
+                        Margin="10,0"
+                        Command="{Binding NavigateToPhraseDictionariesCommand}"
+                        Content="Cancelar"
+                        Style="{StaticResource ButtonWarning}" />
+                    <hc:ProgressButton
+                        Margin="10,0"
+                        Command="{Binding AddPhraseDictionaryCommand}"
+                        Content="Confirmar"
+                        Style="{StaticResource ProgressButtonSuccess}" />
+                </StackPanel>
+            </hc:SimpleStackPanel>
+        </hc:ScrollViewer>
     </Grid>
 </UserControl>

@@ -2,11 +2,13 @@
 using CommunityToolkit.Mvvm.Input;
 using PhraseFinder.Data.Services;
 using PhraseFinder.Domain.Models;
+using PhraseFinder.WPF.Navigation;
 
 namespace PhraseFinder.WPF.ViewModels;
 
-public partial class AddPhraseDictionaryViewModel(
-    IPhraseDictionaryService phraseDictionaryService) : ObservableObject
+internal partial class AddPhraseDictionaryViewModel(
+    IPhraseDictionaryService phraseDictionaryService,
+    INavigationService navigationService) : ObservableObject
 {
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddPhraseDictionaryCommand))]
@@ -44,6 +46,6 @@ public partial class AddPhraseDictionaryViewModel(
     [RelayCommand]
     public void NavigateToPhraseDictionaries()
     {
-        throw new NotImplementedException();
+        navigationService.NavigateTo<PhraseDictionariesViewModel>();
     }
 }

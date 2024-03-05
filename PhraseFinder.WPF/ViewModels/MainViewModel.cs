@@ -1,15 +1,16 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using PhraseFinder.Data.Services;
+using PhraseFinder.WPF.Navigation;
 
 namespace PhraseFinder.WPF.ViewModels;
 
-public class MainViewModel : ObservableObject
+internal partial class MainViewModel : ObservableObject
 {
-    public ObservableObject CurrentViewModel { get; }
+    [ObservableProperty]
+    private INavigationService _navigation;
 
-    public MainViewModel(IPhraseDictionaryService phraseDictionaryService)
+    public MainViewModel(INavigationService navigation)
     {
-        CurrentViewModel = new PhraseDictionariesViewModel(phraseDictionaryService);
-        //CurrentViewModel = new AddPhraseDictionaryViewModel(phraseDictionaryService);
+        _navigation = navigation;
+        _navigation.NavigateTo<PhraseDictionariesViewModel>();
     }
 }

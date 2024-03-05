@@ -2,7 +2,7 @@
 
 namespace PhraseFinder.WPF.Extensions;
 
-public class EnumValuesExtension : MarkupExtension
+internal class EnumValuesExtension : MarkupExtension
 {
     public Type? EnumType { get; set; }
 

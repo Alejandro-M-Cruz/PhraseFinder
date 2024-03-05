@@ -1,16 +1,18 @@
+using System.ComponentModel;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PhraseFinder.Data;
 using PhraseFinder.Data.Services;
+using PhraseFinder.WPF.Navigation;
 using PhraseFinder.WPF.ViewModels;
 
 namespace PhraseFinder.WPF.Extensions;
 
-public static class ApplicationBuilderExtensions
+internal static class ApplicationBuilderExtensions
 {
-    private static void AddDbContext(this HostApplicationBuilder builder)
+    private static void AddDbContext(this IHostApplicationBuilder builder)
     {
         builder.Services.AddDbContext<PhraseFinderDbContext>(optionsBuilder =>
         {
@@ -23,28 +25,41 @@ public static class ApplicationBuilderExtensions
         });
     }
 
-    private static void AddDbServices(this HostApplicationBuilder builder)
+    public static void AddDbServices(this IHostApplicationBuilder builder)
     {
         builder.Services.AddSingleton<IPhraseDictionaryService, PhraseDictionaryService>();
         builder.Services.AddSingleton<IPhraseService, PhraseService>();
     }
 
-    private static void AddViewModels(this HostApplicationBuilder builder)
+    private static void AddViewModels(this IHostApplicationBuilder builder)
     {
         builder.Services.AddSingleton<MainViewModel>();
+        builder.Services.AddSingleton<PhraseDictionariesViewModel>();
+        builder.Services.AddSingleton<AddPhraseDictionaryViewModel>();
     }
 
-    private static void AddViews(this HostApplicationBuilder builder)
+    private static void AddViews(this IHostApplicationBuilder builder)
     {
         builder.Services.AddSingleton<MainWindow>(provider =>
             new MainWindow { DataContext = provider.GetRequiredService<MainViewModel>() });
+
     }
 
-    public static void AddServices(this HostApplicationBuilder builder)
+    private static void AddNavigation(this IHostApplicationBuilder builder)
+    {
+        builder.Services.AddSingleton<Func<Type, INotifyPropertyChanged>>(serviceProvider =>
+        {
+            return viewModelType => (INotifyPropertyChanged)serviceProvider.GetRequiredService(viewModelType);
+        });
+        builder.Services.AddSingleton<INavigationService, NavigationService>();
+    }
+
+    public static void AddServices(this IHostApplicationBuilder builder)
     {
         builder.AddDbContext();
         builder.AddDbServices();
         builder.AddViewModels();
         builder.AddViews();
+        builder.AddNavigation();
     }
 }
