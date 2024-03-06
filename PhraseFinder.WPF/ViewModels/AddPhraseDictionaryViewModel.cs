@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Win32;
 using PhraseFinder.Data.Services;
 using PhraseFinder.Domain.Models;
 using PhraseFinder.WPF.Navigation;
@@ -25,6 +26,14 @@ internal partial class AddPhraseDictionaryViewModel(
     [NotifyCanExecuteChangedFor(nameof(AddPhraseDictionaryCommand))]
     private string? _phraseDictionaryFilePath;
 
+    public bool CanAddPhraseDictionary =>
+        !string.IsNullOrWhiteSpace(PhraseDictionaryName) &&
+        !string.IsNullOrWhiteSpace(PhraseDictionaryFilePath) &&
+        SelectedPhraseDictionaryFormat != null;
+
+    [ObservableProperty]
+    private bool _isDictionaryBeingAdded;
+
     [RelayCommand(CanExecute = nameof(CanAddPhraseDictionary))]
     public async Task AddPhraseDictionary()
     {
@@ -35,13 +44,24 @@ internal partial class AddPhraseDictionaryViewModel(
             Description = PhraseDictionaryDescription,
             FilePath = PhraseDictionaryFilePath!
         };
+        IsDictionaryBeingAdded = true;
         await phraseDictionaryService.AddPhraseDictionaryAsync(phraseDictionary);
+        IsDictionaryBeingAdded = false;
+        navigationService.NavigateTo<PhraseDictionariesViewModel>();
     }
 
-    public bool CanAddPhraseDictionary =>
-        !string.IsNullOrWhiteSpace(PhraseDictionaryName) &&
-        !string.IsNullOrWhiteSpace(PhraseDictionaryFilePath) &&
-        SelectedPhraseDictionaryFormat != null;
+    [RelayCommand]
+    public void PickPhraseDictionaryFile()
+    {
+        OpenFileDialog openFileDialog = new()
+        {
+            Multiselect = false
+        };
+        if (openFileDialog.ShowDialog() == true)
+        {
+            PhraseDictionaryFilePath = openFileDialog.FileName;
+        }
+    }
 
     [RelayCommand]
     public void NavigateToPhraseDictionaries()

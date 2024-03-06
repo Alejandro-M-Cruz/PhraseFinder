@@ -34,15 +34,14 @@ internal static class ApplicationBuilderExtensions
     private static void AddViewModels(this IHostApplicationBuilder builder)
     {
         builder.Services.AddSingleton<MainViewModel>();
-        builder.Services.AddSingleton<PhraseDictionariesViewModel>();
-        builder.Services.AddSingleton<AddPhraseDictionaryViewModel>();
+        builder.Services.AddTransient<PhraseDictionariesViewModel>();
+        builder.Services.AddTransient<AddPhraseDictionaryViewModel>();
     }
 
     private static void AddViews(this IHostApplicationBuilder builder)
     {
         builder.Services.AddSingleton<MainWindow>(provider =>
             new MainWindow { DataContext = provider.GetRequiredService<MainViewModel>() });
-
     }
 
     private static void AddNavigation(this IHostApplicationBuilder builder)

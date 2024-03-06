@@ -4,7 +4,7 @@ namespace PhraseFinder.Domain.Extensions;
 
 public static class EnumExtensions
 {
-    public static string? GetDisplayName(this Enum value)
+    public static string GetDisplayName(this Enum value)
     {
         var displayAttribute = value.GetType()
             .GetField(value.ToString())

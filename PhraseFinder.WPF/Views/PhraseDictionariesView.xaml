@@ -23,8 +23,9 @@
             </Grid.ColumnDefinitions>
             <TextBlock
                 VerticalAlignment="Center"
-                FontSize="36"
+                FontSize="32"
                 Text="Diccionarios"
+                TextAlignment="Left"
                 TextTrimming="CharacterEllipsis" />
             <StackPanel Grid.Column="1" Orientation="Horizontal">
                 <Button
@@ -36,7 +37,8 @@
                     Command="{Binding NavigateToAddPhraseDictionaryCommand}"
                     FontSize="16"
                     Style="{StaticResource ButtonPrimary}"
-                    ToolTip="Añadir un diccionario" />
+                    ToolTip="Añadir un diccionario"
+                    ToolTipService.InitialShowDelay="500" />
                 <Button
                     Height="40"
                     Margin="10,0"
@@ -46,17 +48,20 @@
                     Command="{Binding NavigateToPhrasesCommand}"
                     FontSize="16"
                     Style="{StaticResource ButtonInfo}"
-                    ToolTip="Ver expresiones y locuciones del diccionario seleccionado" />
+                    ToolTip="Ver expresiones y locuciones del diccionario seleccionado"
+                    ToolTipService.InitialShowDelay="500" />
                 <Button
                     Height="40"
                     Margin="10,0,0,0"
                     hc:IconElement.Geometry="{StaticResource DeleteFillCircleGeometry}"
                     hc:IconElement.Height="18"
                     hc:IconElement.Width="18"
+                    hc:Poptip.IsOpen="True"
                     Command="{Binding DeletePhraseDictionaryCommand}"
                     FontSize="16"
                     Style="{StaticResource ButtonDanger}"
-                    ToolTip="Eliminar el diccinario seleccionado" />
+                    ToolTip="Eliminar el diccinario seleccionado"
+                    ToolTipService.InitialShowDelay="500" />
             </StackPanel>
         </Grid>
 
