@@ -10,6 +10,9 @@
     <Compile Update="Views\AddPhraseDictionaryView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\DeleteConfirmationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\PhraseDictionariesView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -19,6 +22,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\AddPhraseDictionaryView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\DeleteConfirmationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PhraseDictionariesView.xaml">

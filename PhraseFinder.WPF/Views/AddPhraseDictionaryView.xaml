@@ -68,15 +68,27 @@
                 </hc:ComboBox>
 
                 <Button
-                    Margin="10, 20, 10, 10"
+                    Margin="10,20,10,0"
                     HorizontalAlignment="Stretch"
                     hc:IconElement.Geometry="{StaticResource SearchGeometry}"
                     hc:IconElement.Width="12"
                     Command="{Binding PickPhraseDictionaryFileCommand}"
                     Content="Seleccionar fichero"
+                    IsEnabled="{Binding PhraseDictionaryFilePath, Converter={StaticResource NullableToBooleanConverter}}"
                     Style="{StaticResource ButtonPrimary}" />
 
-                <TextBlock Margin="10,10" />
+                <hc:Tag
+                    Margin="10"
+                    Content="{Binding PhraseDictionaryFilePath, Mode=OneWay}"
+                    Selectable="False"
+                    ShowCloseButton="True"
+                    Visibility="{Binding PhraseDictionaryFilePath, Converter={StaticResource NullableToVisibilityConverter}}">
+                    <hc:Interaction.Triggers>
+                        <hc:EventTrigger EventName="Closed">
+                            <hc:EventToCommand Command="{Binding UnpickPhraseDictionaryFileCommand}" PassEventArgsToCommand="False" />
+                        </hc:EventTrigger>
+                    </hc:Interaction.Triggers>
+                </hc:Tag>
 
                 <hc:SimpleStackPanel
                     Margin="10,20"

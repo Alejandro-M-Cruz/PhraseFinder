@@ -1,9 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using HandyControl.Controls;
 using PhraseFinder.Data.Services;
 using PhraseFinder.Domain.Models;
 using PhraseFinder.WPF.Navigation;
+using PhraseFinder.WPF.Views;
 
 namespace PhraseFinder.WPF.ViewModels;
 
@@ -11,7 +13,7 @@ internal partial class PhraseDictionariesViewModel : ObservableObject
 {
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(
-        nameof(DeletePhraseDictionaryCommand), 
+        nameof(DisplayDeleteConfirmationDialogCommand), 
         nameof(NavigateToPhrasesCommand))]
     private PhraseDictionary? _selectedPhraseDictionary;
 
@@ -43,15 +45,25 @@ internal partial class PhraseDictionariesViewModel : ObservableObject
         }
     }
 
+    private Dialog? _deleteConfirmationDialog;
+
+    [RelayCommand(CanExecute = nameof(IsPhraseDictionarySelected))]
+    public void DisplayDeleteConfirmationDialog()
+    {
+        _deleteConfirmationDialog = Dialog.Show(new DeleteConfirmationDialog()
+        {
+            Title = "¿Está seguro de que desea eliminar este diccionario? " +
+                    "Se borrarán las expresiones y locuciones que contiene.",
+            ConfirmButtonCommand = DeletePhraseDictionaryCommand
+        });
+    }
+
     [RelayCommand(CanExecute = nameof(IsPhraseDictionarySelected))]
     public async Task DeletePhraseDictionary()
     {
-        if (SelectedPhraseDictionary != null)
-        {
-            await _phraseDictionaryService.DeletePhraseDictionaryAsync(
-                               SelectedPhraseDictionary);
-            PhraseDictionaries.Remove(SelectedPhraseDictionary);
-        }
+        _deleteConfirmationDialog?.Close();
+        await _phraseDictionaryService.DeletePhraseDictionaryAsync(SelectedPhraseDictionary!);
+        PhraseDictionaries.Remove(SelectedPhraseDictionary!);
     }
 
     [RelayCommand(CanExecute = nameof(IsPhraseDictionarySelected))]

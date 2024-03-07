@@ -57,7 +57,7 @@
                     hc:IconElement.Height="18"
                     hc:IconElement.Width="18"
                     hc:Poptip.IsOpen="True"
-                    Command="{Binding DeletePhraseDictionaryCommand}"
+                    Command="{Binding DisplayDeleteConfirmationDialogCommand}"
                     FontSize="16"
                     Style="{StaticResource ButtonDanger}"
                     ToolTip="Eliminar el diccinario seleccionado"

@@ -23,16 +23,23 @@ internal partial class AddPhraseDictionaryViewModel(
     private PhraseDictionaryFormat? _selectedPhraseDictionaryFormat;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(AddPhraseDictionaryCommand))]
+    [NotifyCanExecuteChangedFor(
+        nameof(AddPhraseDictionaryCommand),
+        nameof(PickPhraseDictionaryFileCommand),
+        nameof(UnpickPhraseDictionaryFileCommand))]
     private string? _phraseDictionaryFilePath;
+
+    [ObservableProperty]
+    private bool _isDictionaryBeingAdded;
+
+    private bool IsPhraseDictionaryFilePicked => PhraseDictionaryFilePath != null;
+
+    private bool IsPhraseDictionaryFileNotPicked => PhraseDictionaryFilePath == null;
 
     public bool CanAddPhraseDictionary =>
         !string.IsNullOrWhiteSpace(PhraseDictionaryName) &&
         !string.IsNullOrWhiteSpace(PhraseDictionaryFilePath) &&
         SelectedPhraseDictionaryFormat != null;
-
-    [ObservableProperty]
-    private bool _isDictionaryBeingAdded;
 
     [RelayCommand(CanExecute = nameof(CanAddPhraseDictionary))]
     public async Task AddPhraseDictionary()
@@ -50,7 +57,7 @@ internal partial class AddPhraseDictionaryViewModel(
         navigationService.NavigateTo<PhraseDictionariesViewModel>();
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(IsPhraseDictionaryFileNotPicked))]
     public void PickPhraseDictionaryFile()
     {
         OpenFileDialog openFileDialog = new()
@@ -61,6 +68,12 @@ internal partial class AddPhraseDictionaryViewModel(
         {
             PhraseDictionaryFilePath = openFileDialog.FileName;
         }
+    }
+
+    [RelayCommand(CanExecute = nameof(IsPhraseDictionaryFilePicked))]
+    public void UnpickPhraseDictionaryFile()
+    {
+        PhraseDictionaryFilePath = null;
     }
 
     [RelayCommand]

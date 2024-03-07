@@ -16,6 +16,8 @@
 
             <converters:EnumDisplayNameConverter x:Key="EnumDisplayNameConverter" />
             <converters:BooleanVisibilityConverter x:Key="BooleanVisibilityConverter" />
+            <converters:NullableToVisibilityConverter x:Key="NullableToVisibilityConverter" />
+            <converters:NullableToVisibilityConverter x:Key="NullableToBooleanConverter" />
 
             <DataTemplate DataType="{x:Type viewModels:PhraseDictionariesViewModel}">
                 <views:PhraseDictionariesView />
