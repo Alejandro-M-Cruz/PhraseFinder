@@ -12,15 +12,16 @@ public class TestDatabaseFixture
     {
         lock (Lock)
         {
-            if (!_databaseInitialized)
+            if (_databaseInitialized)
             {
-                using (var context = CreateContext())
-                {
-                    context.Database.EnsureDeleted();
-                    context.Database.EnsureCreated();
-                }
-                _databaseInitialized = true;
+                return;
             }
+            using (var context = CreateContext())
+            {
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+            }
+            _databaseInitialized = true;
         }
     }
 

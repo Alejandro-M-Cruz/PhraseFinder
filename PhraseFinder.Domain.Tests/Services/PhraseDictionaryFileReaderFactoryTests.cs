@@ -4,16 +4,16 @@ using PhraseFinder.Domain.Services;
 
 namespace PhraseFinder.Domain.Tests.Services;
 
-public class PhraseDictionaryReaderFactoryTests
+public class PhraseDictionaryFileReaderFactoryTests
 {
     [Fact]
     public void CreateReader_WithValidPhraseDictionaryFormat_ReturnsPhraseDictionaryReader()
     {
         var format = PhraseDictionaryFormat.DleTxt;
 
-        var reader = PhraseDictionaryReaderFactory.CreateReader(format, filePath: "example.txt");
+        var reader = PhraseDictionaryFileReaderFactory.CreateReader(format, filePath: "example.txt");
 
-        Assert.IsType<DleTxtPhraseDictionaryReader>(reader);
+        Assert.IsType<DleTxtPhraseDictionaryFileFileReader>(reader);
     }
     
     [Fact]
@@ -22,6 +22,6 @@ public class PhraseDictionaryReaderFactoryTests
         var format = (PhraseDictionaryFormat)int.MaxValue;
 
         Assert.Throws<InvalidEnumArgumentException>(() =>
-            PhraseDictionaryReaderFactory.CreateReader(format, filePath: "example.txt"));
+            PhraseDictionaryFileReaderFactory.CreateReader(format, filePath: "example.txt"));
     }
 }

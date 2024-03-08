@@ -6,6 +6,7 @@ public interface IPhraseDictionaryService
 {
     public Task<IEnumerable<PhraseDictionary>> GetPhraseDictionariesAsync();
     public Task AddPhraseDictionaryAsync(PhraseDictionary phraseDictionary);
+    public Task AddPhraseDictionaryFromFileAsync(PhraseDictionary phraseDictionary);
     public Task UpdatePhraseDictionaryAsync(PhraseDictionary phraseDictionary);
     public Task DeletePhraseDictionaryAsync(PhraseDictionary phraseDictionary);
 }

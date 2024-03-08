@@ -6,7 +6,7 @@ using PhraseFinder.Data;
 using PhraseFinder.Domain.Models;
 using PhraseFinder.Domain.Services;
 
-var dleTxtReader = PhraseDictionaryReaderFactory.CreateReader(
+var dleTxtReader = PhraseDictionaryFileReaderFactory.CreateReader(
     PhraseDictionaryFormat.DleTxt, 
     filePath: "D:\\Proyectos\\dotNet\\TFT\\DLE.txt");
 

@@ -13,7 +13,13 @@ public class PhraseDictionaryService(PhraseFinderDbContext dbContext) : IPhraseD
 
     public async Task AddPhraseDictionaryAsync(PhraseDictionary phraseDictionary)
     {
-        var dleTxtReader = PhraseDictionaryReaderFactory.CreateReader(
+        dbContext.PhraseDictionaries.Add(phraseDictionary);
+        await dbContext.SaveChangesAsync();
+    }
+
+    public async Task AddPhraseDictionaryFromFileAsync(PhraseDictionary phraseDictionary)
+    {
+        var dleTxtReader = PhraseDictionaryFileReaderFactory.CreateReader(
             PhraseDictionaryFormat.DleTxt, 
             filePath: phraseDictionary.FilePath);
         await foreach (var phraseEntry in dleTxtReader.ReadPhraseEntriesAsync())

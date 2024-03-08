@@ -1,10 +1,9 @@
 using PhraseFinder.Domain.Models;
 using PhraseFinder.Domain.Services;
-using Xunit.Abstractions;
 
 namespace PhraseFinder.Domain.Tests.Services;
 
-public class DleTxtPhraseDictionaryReaderTests : IDisposable
+public class DleTxtPhraseDictionaryFileFileReaderTests : IDisposable
 {
     private string? _tempFilePath;
     
@@ -19,7 +18,7 @@ public class DleTxtPhraseDictionaryReaderTests : IDisposable
     public async Task ReadPhrasesAsync_FromFileWithNoPhrases_ReturnsNoPhraseEntries(string phraseDictionaryContent)
     {
         _tempFilePath = await TestUtils.WriteToTempFileAsync(phraseDictionaryContent);
-        var reader = new DleTxtPhraseDictionaryReader(_tempFilePath);
+        var reader = new DleTxtPhraseDictionaryFileFileReader(_tempFilePath);
         List<PhraseEntry> actualPhrases = [];
         
         await foreach (var phraseEntry in reader.ReadPhraseEntriesAsync())
@@ -45,7 +44,7 @@ public class DleTxtPhraseDictionaryReaderTests : IDisposable
             "[loc6]tamboril por gaita\r\n" +
             "1. expr. coloq. U. para indicar que lo mismo le da a alguien una cosa que otra.\r\n";
         _tempFilePath = await TestUtils.WriteToTempFileAsync(phraseDictionaryContent);
-        var reader = new DleTxtPhraseDictionaryReader(_tempFilePath);
+        var reader = new DleTxtPhraseDictionaryFileFileReader(_tempFilePath);
         List<PhraseEntry> expectedPhraseEntries =
         [
             new()
@@ -95,7 +94,7 @@ public class DleTxtPhraseDictionaryReaderTests : IDisposable
             "[loc6]hacerse alguien una zarpa\r\n" +
             "1. loc. verb. coloq. desus. Mojarse o enlodarse mucho.\r\n";
         _tempFilePath = await TestUtils.WriteToTempFileAsync(phraseDictionaryContent);
-        var reader = new DleTxtPhraseDictionaryReader(_tempFilePath);
+        var reader = new DleTxtPhraseDictionaryFileFileReader(_tempFilePath);
         List<PhraseEntry> expectedPhraseEntries =
         [
             new PhraseEntry

@@ -28,6 +28,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PhraseFinder.Data\PhraseFinder.Data.csproj" />
+    <ProjectReference Include="..\PhraseFinder.Domain.Tests\PhraseFinder.Domain.Tests.csproj" />
   </ItemGroup>
 
 </Project>

@@ -52,7 +52,7 @@ internal partial class AddPhraseDictionaryViewModel(
             FilePath = PhraseDictionaryFilePath!
         };
         IsDictionaryBeingAdded = true;
-        await phraseDictionaryService.AddPhraseDictionaryAsync(phraseDictionary);
+        await phraseDictionaryService.AddPhraseDictionaryFromFileAsync(phraseDictionary);
         IsDictionaryBeingAdded = false;
         navigationService.NavigateTo<PhraseDictionariesViewModel>();
     }
