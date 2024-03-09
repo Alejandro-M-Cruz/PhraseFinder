@@ -36,6 +36,7 @@ internal static class ApplicationBuilderExtensions
         builder.Services.AddSingleton<MainViewModel>();
         builder.Services.AddTransient<PhraseDictionariesViewModel>();
         builder.Services.AddTransient<AddPhraseDictionaryViewModel>();
+        builder.Services.AddTransient<PhrasesViewModel>();
     }
 
     private static void AddViews(this IHostApplicationBuilder builder)

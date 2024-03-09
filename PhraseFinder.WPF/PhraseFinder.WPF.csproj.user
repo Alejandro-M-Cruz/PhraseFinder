@@ -16,6 +16,9 @@
     <Compile Update="Views\PhraseDictionariesView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="Views\PhrasesView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="MainWindow.xaml">
@@ -28,6 +31,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\PhraseDictionariesView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PhrasesView.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

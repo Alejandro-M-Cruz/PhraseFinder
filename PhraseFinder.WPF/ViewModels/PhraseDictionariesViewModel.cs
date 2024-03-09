@@ -1,9 +1,12 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using HandyControl.Controls;
+using HandyControl.Tools.Extension;
 using PhraseFinder.Data.Services;
 using PhraseFinder.Domain.Models;
+using PhraseFinder.WPF.Messages;
 using PhraseFinder.WPF.Navigation;
 using PhraseFinder.WPF.Views;
 
@@ -35,14 +38,11 @@ internal partial class PhraseDictionariesViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task LoadPhraseDictionaries()
+    public async Task LoadPhraseDictionaries()
     {
         var phraseDictionaries = 
             await _phraseDictionaryService.GetPhraseDictionariesAsync();
-        foreach (var phraseDictionary in phraseDictionaries)
-        {
-            PhraseDictionaries.Add(phraseDictionary);
-        }
+        PhraseDictionaries.AddRange(phraseDictionaries);
     }
 
     private Dialog? _deleteConfirmationDialog;
@@ -69,7 +69,15 @@ internal partial class PhraseDictionariesViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(IsPhraseDictionarySelected))]
     public void NavigateToPhrases()
     {
-        throw new NotImplementedException();
+        WeakReferenceMessenger
+            .Default
+            .Register<PhraseDictionariesViewModel, PhraseDictionaryRequestMessage>(
+                this, 
+                (recipient, message) =>
+                {
+                    message.Reply(recipient.SelectedPhraseDictionary!);
+                });
+        _navigationService.NavigateTo<PhrasesViewModel>();
     }
 
     [RelayCommand]
