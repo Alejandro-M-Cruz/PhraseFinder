@@ -13,15 +13,16 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <hc:SimpleStackPanel Margin="20,10,30,0" Orientation="Horizontal">
             <Button
-                hc:IconElement.Geometry="{StaticResource LeftGeometry}"
+                Margin="0,0,10,0"
                 VerticalAlignment="Center"
-                Margin="0, 0, 10, 0"
+                hc:IconElement.Geometry="{StaticResource LeftGeometry}"
                 Command="{Binding NavigateToPhraseDictionariesCommand}"
                 Style="{StaticResource ButtonIcon}" />
             <hc:SimpleStackPanel Orientation="Horizontal">
@@ -31,22 +32,41 @@
                     Text="{Binding PhraseDictionary.Name}"
                     TextAlignment="Left"
                     TextTrimming="CharacterEllipsis" />
-                <TextBlock VerticalAlignment="Center" Text="(fecha de creación: " Margin="10, 0, 5, 0"></TextBlock>
-                <TextBlock VerticalAlignment="Center" Text="{Binding PhraseDictionary.AddedAt}" />
-                <TextBlock VerticalAlignment="Center" Text=")"></TextBlock>
+                <TextBlock
+                    Margin="10,0,5,0"
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    Text="(fecha de creación: " />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    Text="{Binding PhraseDictionary.AddedAt}" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="14"
+                    Text=")" />
             </hc:SimpleStackPanel>
         </hc:SimpleStackPanel>
 
+        <hc:SearchBar
+            Grid.Row="1"
+            MaxWidth="400"
+            Margin="20,15,20,0"
+            Padding="7,7"
+            Command="{Binding SearchPhrasesCommand}"
+            FontSize="15"
+            Text="{Binding SearchText, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}" />
+
         <DataGrid
             x:Name="PhraseDictionaryDataGrid"
-            Grid.Row="1"
+            Grid.Row="2"
             Margin="20"
             hc:DataGridAttach.ShowSelectAllButton="False"
             AutoGenerateColumns="False"
             FontSize="16"
             HeadersVisibility="All"
             IsReadOnly="True"
-            ItemsSource="{Binding Phrases}"
+            ItemsSource="{Binding DisplayedPhrases}"
             RowHeaderWidth="60"
             SelectedItem="{Binding SelectedPhrase, Mode=OneWayToSource}"
             SelectionMode="Single">
@@ -62,7 +82,42 @@
                 <DataGridTextColumn Binding="{Binding RegExPattern}" Header="Expresión regular" />
             </DataGrid.Columns>
         </DataGrid>
-        
-        <hc:Pagination Grid.Row="2" IsJumpEnabled="True" PageIndex="1" MaxPageCount="1000" HorizontalAlignment="Right" Margin="30, 0, 30, 20" />
+
+        <hc:SimpleStackPanel
+            Grid.Row="3"
+            HorizontalAlignment="Right"
+            Orientation="Horizontal">
+            <ComboBox
+                VerticalAlignment="Top"
+                hc:TitleElement.MarginOnTheLeft="0, 4, 10, 5"
+                hc:TitleElement.Title="Elementos por página"
+                hc:TitleElement.TitlePlacement="Left"
+                FontSize="14"
+                ItemsSource="{Binding ElementsPerPageOptions}"
+                SelectedIndex="{Binding DefaultElementsPerPageIndex, Mode=OneTime}"
+                SelectedValue="{Binding ElementsPerPage, Mode=OneWayToSource}"
+                Style="{StaticResource ComboBoxExtend}">
+                <hc:Interaction.Triggers>
+                    <hc:EventTrigger EventName="SelectionChanged">
+                        <hc:EventToCommand Command="{Binding LoadPhrasesForCurrentPageCommand}" PassEventArgsToCommand="False" />
+                    </hc:EventTrigger>
+                </hc:Interaction.Triggers>
+            </ComboBox>
+            <hc:Pagination
+                Margin="30,0,30,20"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Center"
+                AutoHiding="False"
+                FontSize="14"
+                IsJumpEnabled="True"
+                MaxPageCount="{Binding TotalPages, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                PageIndex="{Binding CurrentPage, Mode=TwoWay}">
+                <hc:Interaction.Triggers>
+                    <hc:EventTrigger EventName="PageUpdated">
+                        <hc:EventToCommand Command="{Binding LoadPhrasesForCurrentPageCommand}" PassEventArgsToCommand="False" />
+                    </hc:EventTrigger>
+                </hc:Interaction.Triggers>
+            </hc:Pagination>
+        </hc:SimpleStackPanel>
     </Grid>
 </UserControl>
