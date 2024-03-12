@@ -126,8 +126,7 @@ public class PhraseDictionaryServiceTests : IDisposable
                     Name = "test",
                     RegExPattern = "test",
                     BaseWord = "test",
-                    Definitions = [],
-                    Examples = [],
+                    Definitions = []
                 }
             }
         };

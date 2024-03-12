@@ -12,7 +12,7 @@ using PhraseFinder.Data;
 namespace PhraseFinder.Data.Migrations
 {
     [DbContext(typeof(PhraseFinderDbContext))]
-    [Migration("20240302170944_InitialSchema")]
+    [Migration("20240312191039_InitialSchema")]
     partial class InitialSchema
     {
         /// <inheritdoc />
@@ -78,6 +78,28 @@ namespace PhraseFinder.Data.Migrations
                     b.ToTable("PhraseDefinition");
                 });
 
+            modelBuilder.Entity("PhraseFinder.Domain.Models.PhraseDefinitionExample", b =>
+                {
+                    b.Property<int>("PhraseDefinitionExampleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Jet:ValueGenerationStrategy", JetValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Example")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("longchar");
+
+                    b.Property<int>("PhraseDefinitionId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("PhraseDefinitionExampleId");
+
+                    b.HasIndex("PhraseDefinitionId");
+
+                    b.ToTable("PhraseDefinitionExample");
+                });
+
             modelBuilder.Entity("PhraseFinder.Domain.Models.PhraseDictionary", b =>
                 {
                     b.Property<int>("PhraseDictionaryId")
@@ -112,28 +134,6 @@ namespace PhraseFinder.Data.Migrations
                     b.ToTable("PhraseDictionaries");
                 });
 
-            modelBuilder.Entity("PhraseFinder.Domain.Models.PhraseExample", b =>
-                {
-                    b.Property<int>("PhraseExampleId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Jet:ValueGenerationStrategy", JetValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Example")
-                        .IsRequired()
-                        .HasMaxLength(1000)
-                        .HasColumnType("longchar");
-
-                    b.Property<int>("PhraseId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("PhraseExampleId");
-
-                    b.HasIndex("PhraseId");
-
-                    b.ToTable("PhraseExample");
-                });
-
             modelBuilder.Entity("PhraseFinder.Domain.Models.Phrase", b =>
                 {
                     b.HasOne("PhraseFinder.Domain.Models.PhraseDictionary", "PhraseDictionary")
@@ -147,30 +147,29 @@ namespace PhraseFinder.Data.Migrations
 
             modelBuilder.Entity("PhraseFinder.Domain.Models.PhraseDefinition", b =>
                 {
-                    b.HasOne("PhraseFinder.Domain.Models.Phrase", "Phrase")
+                    b.HasOne("PhraseFinder.Domain.Models.Phrase", null)
                         .WithMany("Definitions")
                         .HasForeignKey("PhraseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Phrase");
                 });
 
-            modelBuilder.Entity("PhraseFinder.Domain.Models.PhraseExample", b =>
+            modelBuilder.Entity("PhraseFinder.Domain.Models.PhraseDefinitionExample", b =>
                 {
-                    b.HasOne("PhraseFinder.Domain.Models.Phrase", "Phrase")
+                    b.HasOne("PhraseFinder.Domain.Models.PhraseDefinition", null)
                         .WithMany("Examples")
-                        .HasForeignKey("PhraseId")
+                        .HasForeignKey("PhraseDefinitionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Phrase");
                 });
 
             modelBuilder.Entity("PhraseFinder.Domain.Models.Phrase", b =>
                 {
                     b.Navigation("Definitions");
+                });
 
+            modelBuilder.Entity("PhraseFinder.Domain.Models.PhraseDefinition", b =>
+                {
                     b.Navigation("Examples");
                 });
 

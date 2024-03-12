@@ -25,8 +25,6 @@ public class Phrase
     
     public ICollection<PhraseDefinition> Definitions { get; set; } = [];
     
-    public ICollection<PhraseExample> Examples { get; set; } = [];
-
     public override string ToString()
     {
         return Name;

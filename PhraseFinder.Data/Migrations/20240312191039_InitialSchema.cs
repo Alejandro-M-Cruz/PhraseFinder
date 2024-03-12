@@ -71,22 +71,22 @@ namespace PhraseFinder.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PhraseExample",
+                name: "PhraseDefinitionExample",
                 columns: table => new
                 {
-                    PhraseExampleId = table.Column<int>(type: "integer", nullable: false)
+                    PhraseDefinitionExampleId = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Jet:Identity", "1, 1"),
                     Example = table.Column<string>(type: "longchar", maxLength: 1000, nullable: false),
-                    PhraseId = table.Column<int>(type: "integer", nullable: false)
+                    PhraseDefinitionId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PhraseExample", x => x.PhraseExampleId);
+                    table.PrimaryKey("PK_PhraseDefinitionExample", x => x.PhraseDefinitionExampleId);
                     table.ForeignKey(
-                        name: "FK_PhraseExample_Phrases_PhraseId",
-                        column: x => x.PhraseId,
-                        principalTable: "Phrases",
-                        principalColumn: "PhraseId",
+                        name: "FK_PhraseDefinitionExample_PhraseDefinition_PhraseDefinitionId",
+                        column: x => x.PhraseDefinitionId,
+                        principalTable: "PhraseDefinition",
+                        principalColumn: "PhraseDefinitionId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -96,9 +96,9 @@ namespace PhraseFinder.Data.Migrations
                 column: "PhraseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PhraseExample_PhraseId",
-                table: "PhraseExample",
-                column: "PhraseId");
+                name: "IX_PhraseDefinitionExample_PhraseDefinitionId",
+                table: "PhraseDefinitionExample",
+                column: "PhraseDefinitionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Phrases_PhraseDictionaryId",
@@ -110,10 +110,10 @@ namespace PhraseFinder.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "PhraseDefinition");
+                name: "PhraseDefinitionExample");
 
             migrationBuilder.DropTable(
-                name: "PhraseExample");
+                name: "PhraseDefinition");
 
             migrationBuilder.DropTable(
                 name: "Phrases");

@@ -4,8 +4,8 @@ public class PhraseEntry
 {
     public required string Name { get; init; }
     public required string BaseWord { get; init; }
-    public ICollection<string> Definitions { get; } = [];
-    public ICollection<string> Examples { get; } = [];
+    public IDictionary<string, ICollection<string>> DefinitionToExamples { get; } = 
+        new Dictionary<string, ICollection<string>>();
 
     public Phrase ToPhrase()
     {
@@ -14,8 +14,19 @@ public class PhraseEntry
             Name = Name,
             RegExPattern = Name,
             BaseWord = BaseWord,
-            Definitions = Definitions.Select(d => new PhraseDefinition { Definition = d }).ToList(),
-            Examples = Examples.Select(d => new PhraseExample { Example = d }).ToList()
+            Definitions = DefinitionToExamples.Select(d =>
+            {
+                return new PhraseDefinition
+                {
+                    Definition = d.Key, 
+                    Examples = d.Value
+                        .Select(example => new PhraseDefinitionExample
+                        {
+                            Example = example
+                        })
+                        .ToList()
+                };
+            }).ToList(),
         };
     }
     
@@ -26,13 +37,17 @@ public class PhraseEntry
             return false;
         }
 
-        return Name == other.Name && BaseWord == other.BaseWord &&
-               Definitions.SequenceEqual(other.Definitions) && 
-               Examples.SequenceEqual(other.Examples);
+        return Name == other.Name && BaseWord == other.BaseWord && 
+               DefinitionToExamplesEquals(other.DefinitionToExamples);
+    }
+
+    private bool DefinitionToExamplesEquals(IDictionary<string, ICollection<string>> other)
+    {
+        return DefinitionToExamples.All(d => other[d.Key].SequenceEqual(d.Value));
     }
     
     public override int GetHashCode()
     {
-        return HashCode.Combine(Name, BaseWord, Definitions, Examples);
+        return HashCode.Combine(Name, BaseWord, DefinitionToExamples);
     }
 }
