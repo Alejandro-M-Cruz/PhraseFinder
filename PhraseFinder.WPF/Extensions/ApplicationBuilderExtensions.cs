@@ -16,10 +16,10 @@ internal static class ApplicationBuilderExtensions
     {
         builder.Services.AddDbContext<PhraseFinderDbContext>(optionsBuilder =>
         {
-            const Environment.SpecialFolder localAppDataFolder = Environment.SpecialFolder.LocalApplicationData;
+            const Environment.SpecialFolder localAppDataFolder = Environment.SpecialFolder.ApplicationData;
             string dbDirectory = Path.Join(Environment.GetFolderPath(localAppDataFolder), "PhraseFinder");
             Directory.CreateDirectory(dbDirectory);
-            string dbPath = Path.Join(dbDirectory, "PhraseFinder.accdb");
+            string dbPath = Path.Join(dbDirectory, "expresiones-y-locuciones.accdb");
             optionsBuilder.UseJetOleDb($"Data Source={dbPath}");
             Console.WriteLine($"Database path: {dbPath}");
         });

@@ -13,7 +13,7 @@ public partial class App : Application
 {
     private readonly IHost _host = CreateApplicationBuilder().Build();
 
-    protected override async void OnStartup(StartupEventArgs eventArgs)
+    protected override void OnStartup(StartupEventArgs eventArgs)
     {
         ConfigHelper.Instance.SetLang("es");
         var spanish = new CultureInfo("es-ES");
@@ -21,7 +21,7 @@ public partial class App : Application
         CultureInfo.DefaultThreadCurrentUICulture = spanish;
         _host.Start();
         var dbContext = _host.Services.GetRequiredService<PhraseFinderDbContext>();
-        await dbContext.Database.MigrateAsync();
+        dbContext.Database.Migrate();
         Window mainWindow = _host.Services.GetRequiredService<MainWindow>();
         mainWindow.Show();
         base.OnStartup(eventArgs);

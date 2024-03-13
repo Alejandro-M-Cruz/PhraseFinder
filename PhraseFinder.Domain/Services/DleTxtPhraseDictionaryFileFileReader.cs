@@ -23,7 +23,7 @@ public class DleTxtPhraseDictionaryFileFileReader(string filePath) : IPhraseDict
     private const string PhrasePrefix = "[loc6]";
     private const string PhraseExamplePrefix = "[Ejem]";
     private static readonly Regex PhraseDefinitionRegEx = new(
-        @"^\d+\.\s(loc\.|locs\.|expr\.)", RegexOptions.Compiled);
+        @"^\d+\.\s(loc\.|locs\.|expr\.|adv\.)", RegexOptions.Compiled);
 
     public async IAsyncEnumerable<PhraseEntry> ReadPhraseEntriesAsync()
     {

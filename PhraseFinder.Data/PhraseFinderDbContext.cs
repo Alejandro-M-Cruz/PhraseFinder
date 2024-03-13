@@ -12,8 +12,13 @@ public class PhraseFinderDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<PhraseDictionary>()
+        modelBuilder
+            .Entity<PhraseDictionary>()
             .Property(pd => pd.AddedAt)
             .HasDefaultValueSql("Now()");
+        modelBuilder
+            .Entity<PhraseDictionary>()
+            .Property(pd => pd.Format)
+            .HasConversion<string>();
     }
 }
