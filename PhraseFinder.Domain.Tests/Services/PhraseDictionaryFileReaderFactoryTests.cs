@@ -13,7 +13,7 @@ public class PhraseDictionaryFileReaderFactoryTests
 
         var reader = PhraseDictionaryFileReaderFactory.CreateReader(format, filePath: "example.txt");
 
-        Assert.IsType<DleTxtPhraseDictionaryFileFileReader>(reader);
+        Assert.IsType<DleTxtPhraseDictionaryFileReader>(reader);
     }
     
     [Fact]

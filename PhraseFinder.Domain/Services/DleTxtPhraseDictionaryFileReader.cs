@@ -18,7 +18,7 @@ namespace PhraseFinder.Domain.Services;
 // 1. expr. coloq. U. para indicar que lo mismo le da a alguien una cosa que otra.
 // </example>
 // </summary>
-public class DleTxtPhraseDictionaryFileFileReader(string filePath) : IPhraseDictionaryFileReader
+public class DleTxtPhraseDictionaryFileReader(string filePath) : IPhraseDictionaryFileReader
 {
     private const string PhrasePrefix = "[loc6]";
     private const string PhraseExamplePrefix = "[Ejem]";

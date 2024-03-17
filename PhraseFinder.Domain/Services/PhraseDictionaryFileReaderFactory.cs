@@ -9,7 +9,7 @@ public static class PhraseDictionaryFileReaderFactory
     {
         return format switch
         {
-            PhraseDictionaryFormat.DleTxt => new DleTxtPhraseDictionaryFileFileReader(filePath),
+            PhraseDictionaryFormat.DleTxt => new DleTxtPhraseDictionaryFileReader(filePath),
             _ => throw new InvalidEnumArgumentException()
         };
     }

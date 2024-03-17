@@ -7,7 +7,7 @@ namespace PhraseFinder.Domain.Services;
 public class PhraseGenderProcessor
 {
     private static readonly Regex GenderRegex = new(
-        @"\w+(o|os|e|es),\s(\w{1,2})(a|as)", RegexOptions.Compiled);
+        @"\w+(o.?|os|e|es),\s(\w{1,2})(a|as)", RegexOptions.Compiled);
 
     public string[] ProcessPhrase(string phrase)
     {

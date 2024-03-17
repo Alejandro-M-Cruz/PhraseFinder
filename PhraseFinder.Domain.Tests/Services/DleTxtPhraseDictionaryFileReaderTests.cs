@@ -3,7 +3,7 @@ using PhraseFinder.Domain.Services;
 
 namespace PhraseFinder.Domain.Tests.Services;
 
-public class DleTxtPhraseDictionaryFileFileReaderTests : IDisposable
+public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
 {
     private string? _tempFilePath;
     
@@ -18,7 +18,7 @@ public class DleTxtPhraseDictionaryFileFileReaderTests : IDisposable
     public async Task ReadPhraseEntriesAsync_FromFileWithNoPhrases_ReturnsNoPhraseEntries(string phraseDictionaryContent)
     {
         _tempFilePath = await TestUtils.WriteToTempFileAsync(phraseDictionaryContent);
-        var reader = new DleTxtPhraseDictionaryFileFileReader(_tempFilePath);
+        var reader = new DleTxtPhraseDictionaryFileReader(_tempFilePath);
         List<PhraseEntry> actualPhrases = [];
         
         await foreach (var phraseEntry in reader.ReadPhraseEntriesAsync())
@@ -44,7 +44,7 @@ public class DleTxtPhraseDictionaryFileFileReaderTests : IDisposable
             "[loc6]tamboril por gaita\r\n" +
             "1. expr. coloq. U. para indicar que lo mismo le da a alguien una cosa que otra.\r\n";
         _tempFilePath = await TestUtils.WriteToTempFileAsync(phraseDictionaryContent);
-        var reader = new DleTxtPhraseDictionaryFileFileReader(_tempFilePath);
+        var reader = new DleTxtPhraseDictionaryFileReader(_tempFilePath);
         List<PhraseEntry> expectedPhraseEntries =
         [
             new()
@@ -105,7 +105,7 @@ public class DleTxtPhraseDictionaryFileFileReaderTests : IDisposable
             "[loc6]hacerse alguien una zarpa\r\n" +
             "1. loc. verb. coloq. desus. Mojarse o enlodarse mucho.\r\n";
         _tempFilePath = await TestUtils.WriteToTempFileAsync(phraseDictionaryContent);
-        var reader = new DleTxtPhraseDictionaryFileFileReader(_tempFilePath);
+        var reader = new DleTxtPhraseDictionaryFileReader(_tempFilePath);
         List<PhraseEntry> expectedPhraseEntries =
         [
             new PhraseEntry
@@ -185,7 +185,7 @@ public class DleTxtPhraseDictionaryFileFileReaderTests : IDisposable
             "[Ejem]Empinó la bota y la dejó temblando.\r\n" +
             "[Ejem]Segundo ejemplo.\r\n";
         _tempFilePath = await TestUtils.WriteToTempFileAsync(phraseDictionaryContent);
-        var reader = new DleTxtPhraseDictionaryFileFileReader(_tempFilePath);
+        var reader = new DleTxtPhraseDictionaryFileReader(_tempFilePath);
         List<PhraseEntry> expectedPhraseEntries =
         [
             new PhraseEntry
