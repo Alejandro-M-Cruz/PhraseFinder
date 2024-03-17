@@ -22,8 +22,8 @@ public class DleTxtPhraseDictionaryFileFileReader(string filePath) : IPhraseDict
 {
     private const string PhrasePrefix = "[loc6]";
     private const string PhraseExamplePrefix = "[Ejem]";
-    private static readonly Regex PhraseDefinitionRegEx = new(
-        @"^\d+\.\s(loc\.|locs\.|expr\.|adv\.)", RegexOptions.Compiled);
+    public static readonly Regex PhraseDefinitionRegEx = new(
+        @"^\d+\.\s(loc\.|locs\.|expr\.|exprs\.)", RegexOptions.Compiled);
 
     public async IAsyncEnumerable<PhraseEntry> ReadPhraseEntriesAsync()
     {
@@ -58,10 +58,10 @@ public class DleTxtPhraseDictionaryFileFileReader(string filePath) : IPhraseDict
                 };
                 currentPhraseDefinition = null;
             } 
-            else if (PhraseDefinitionRegEx.IsMatch(currentLine))
+            else if (PhraseDefinitionRegEx.IsMatch(currentLine) && currentPhraseEntry != null)
             {
                 currentPhraseDefinition = currentLine;
-                currentPhraseEntry?.DefinitionToExamples.Add(currentPhraseDefinition, []);
+                currentPhraseEntry.DefinitionToExamples.Add(currentPhraseDefinition, []);
             }
             else if (currentLine.StartsWith(PhraseExamplePrefix) && currentPhraseDefinition != null)
             {

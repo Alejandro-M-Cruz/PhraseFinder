@@ -2,8 +2,8 @@ namespace PhraseFinder.Domain.Models;
 
 public class PhraseEntry
 {
-    public required string Name { get; init; }
-    public required string BaseWord { get; init; }
+    public required string Name { get; set; }
+    public required string BaseWord { get; set; }
     public IDictionary<string, ICollection<string>> DefinitionToExamples { get; } = 
         new Dictionary<string, ICollection<string>>();
 
@@ -20,7 +20,7 @@ public class PhraseEntry
                 {
                     Definition = d.Key, 
                     Examples = d.Value
-                        .Select(example => new PhraseDefinitionExample
+                        .Select(example => new PhraseExample
                         {
                             Example = example
                         })

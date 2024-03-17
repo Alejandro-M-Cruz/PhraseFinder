@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PhraseFinder.Domain.Models;
 
 [Table("Ejemplos")]
-public class PhraseDefinitionExample
+public class PhraseExample
 {
     [Column("ID")]
-    public int PhraseDefinitionExampleId { get; set; }
+    public int PhraseExampleId { get; set; }
 
     [Column("Ejemplo")]
     [Display(Name = "Ejemplo")]

@@ -18,5 +18,5 @@ public class PhraseDefinition
     [Column("ID de expresión o locución")]
     public int PhraseId { get; set; }
 
-    public ICollection<PhraseDefinitionExample> Examples { get; set; } = [];
+    public ICollection<PhraseExample> Examples { get; set; } = [];
 }
