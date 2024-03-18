@@ -7,7 +7,7 @@ using PhraseFinder.Domain.Services;
 
 namespace PhraseFinder.Domain.PerformanceTests;
 
-public static class PerformanceTestUtils
+public static partial class PerformanceTestUtils
 {
     private static readonly PhraseFinderDbContext _dbContext;
     private static readonly IPhraseDictionaryFileReader _reader;
@@ -127,14 +127,47 @@ public static class PerformanceTestUtils
     public static void RegexMatchGroupsExample()
     {
         var regex = new Regex(
-            @"(\b(\w+(o|o[a-rt-zA-RT-Z]|e)),\s\b(\w{1,2}a)|\b(\w+(os|es)),\s\b(\w{1,2}as))",
+            @"\b\w*(\w)(o(s|)),\s\w?\1(a\3)\b|\b\w*([a-kA-Km-zM-Z])(e(s|)),\s\w?\5(a\7)\b|\b\w+(o([a-rA-Rt-zT-Z])),\s(\10(a))\b",
             RegexOptions.Compiled);
-        var phrase = "pecador, ra de mí";
-        var matches = regex.Matches(phrase);
-        foreach (var match in matches.AsEnumerable())
+        List<string> phrases = ["alguno, na que otro, tra", "algunos, nas que otros, tras", "señores, ras"];
+        foreach (var phrase in phrases)
         {
-            Console.WriteLine($"Match: {match.Value}");
-            Console.WriteLine($"Groups: [{string.Join(";", match.Groups.Values)}]");
+            var matches = regex.Matches(phrase);
+            Console.WriteLine($"Phrase: {phrase}");
+            foreach (var match in matches.AsEnumerable())
+            {
+                Console.WriteLine($"Match: {match.Value}");
+                Console.WriteLine($"Group successes: [{string.Join(";", match.Groups.Values.Select(g => g.Success.ToString()))}]");
+                Console.WriteLine($"Group indexes: [{string.Join(";", match.Groups.Values.Select(g => g.Index.ToString()))}]");
+                Console.WriteLine($"Groups: [{string.Join(";", match.Groups.Values)}]");
+            }
+            Console.WriteLine();
         }
-    } 
+    }
+
+    private static readonly Regex SampleCompiledRegex = new(
+        @"(\b(\w+(o|o[a-rt-zA-RT-Z]|e)),\s\b(\w{1,2}a)|\b(\w+(os|es)),\s\b(\w{1,2}as))",
+        RegexOptions.Compiled);
+
+    [GeneratedRegex(@"(\b(\w+(o|o[a-rt-zA-RT-Z]|e)),\s\b(\w{1,2}a)|\b(\w+(os|es)),\s\b(\w{1,2}as))")]
+    private static partial Regex SampleGeneratedRegex();
+
+    public static void CompiledVsGeneratedRegex()
+    {
+        var phrase = "pecador, ra de mí";
+        var stopwatch = Stopwatch.StartNew();
+        for (var i = 0; i < 1_000_000; i++)
+        {
+            var match = SampleCompiledRegex.Match(phrase);
+        }
+        stopwatch.Stop();
+        Console.WriteLine($"Compiled regex: {stopwatch.ElapsedMilliseconds} ms");
+        stopwatch.Restart();
+        for (var i = 0; i < 1_000_000; i++)
+        {
+            var match = SampleGeneratedRegex().Match(phrase);
+        }
+        stopwatch.Stop();
+        Console.WriteLine($"Generated regex: {stopwatch.ElapsedMilliseconds} ms");
+    }
 }

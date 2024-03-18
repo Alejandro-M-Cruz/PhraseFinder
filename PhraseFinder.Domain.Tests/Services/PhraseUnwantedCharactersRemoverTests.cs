@@ -5,25 +5,49 @@ namespace PhraseFinder.Domain.Tests.Services;
 public class PhraseUnwantedCharactersRemoverTests
 {
     [Fact]
-    public void RemoveVide_WhenPhraseDoesNotContainVide_ReturnsPhrase()
+    public void RemoveVideSection_WhenPhraseDoesNotContainVideSection_ReturnsPhrase()
     {
-        var phrase = "a buena cuenta";
+        var phrase = "dar bandazos";
         var phraseUnwantedCharactersRemover = new PhraseUnwantedCharactersRemover();
 
-        var result = phraseUnwantedCharactersRemover.RemoveVide(phrase);
+        var result = phraseUnwantedCharactersRemover.RemoveVideSection(phrase);
 
         Assert.Equal(phrase, result);
     }
 
     [Fact]
-    public void RemoveVide_WhenPhraseContainsVide_ReturnsPhraseWithoutVide()
+    public void RemoveVideSection_WhenPhraseContainsVideSection_ReturnsPhraseWithoutVideSection()
     {
         var phrase = "sobre manera V. sobremanera.";
         var phraseUnwantedCharactersRemover = new PhraseUnwantedCharactersRemover();
 
-        var result = phraseUnwantedCharactersRemover.RemoveVide(phrase);
+        var result = phraseUnwantedCharactersRemover.RemoveVideSection(phrase);
 
         Assert.Equal("sobre manera", result);
+    }
+
+    [Fact]
+    public void RemoveByAllusionSection_WhenPhraseDoesNotContainByAllusionSection_ReturnsPhrase()
+    {
+        var phrase = "a Roma por todo";
+        var phraseUnwantedCharactersRemover = new PhraseUnwantedCharactersRemover();
+
+        var result = phraseUnwantedCharactersRemover.RemoveByAllusionSection(phrase);
+
+        Assert.Equal(phrase, result);
+    }
+
+    [Fact]
+    public void RemoveByAllusionSection_WhenPhraseContainsByAllusionSection_ReturnsPhraseWithoutByAllusionSection()
+    {
+        var phrase =
+            "saber más que Lepe, o que Lepe, Lepijo y su hijo Por alus. a Pedro de Lepe, 1641-1700, " +
+            "obispo de Calahorra y La Calzada, autor de un conocido catecismo.";
+        var phraseUnwantedCharactersRemover = new PhraseUnwantedCharactersRemover();
+
+        var result = phraseUnwantedCharactersRemover.RemoveByAllusionSection(phrase);
+
+        Assert.Equal("saber más que Lepe, o que Lepe, Lepijo y su hijo", result);
     }
 
     [Fact]
