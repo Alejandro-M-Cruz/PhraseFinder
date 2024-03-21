@@ -1,9 +1,6 @@
-﻿using System.Diagnostics;
-using System.Net.NetworkInformation;
+﻿namespace PhraseFinder.Domain.Services.PhraseSplitters;
 
-namespace PhraseFinder.Domain.Services;
-
-public class PhraseSplitter
+public class VariantPhraseSplitter : IPhraseSplitter
 {
     private static readonly IDictionary<int, int> WordsToOverwrite = new Dictionary<int, int>
     {

@@ -1,26 +1,26 @@
-﻿using PhraseFinder.Domain.Services;
+﻿using PhraseFinder.Domain.Services.PhraseSplitters;
 using Xunit.Abstractions;
 
-namespace PhraseFinder.Domain.Tests.Services;
+namespace PhraseFinder.Domain.Tests.Services.PhraseSplitters;
 
-public class PhraseSplitterTests(ITestOutputHelper output)
+public class VariantPhraseSplitterTests
 {
-    private readonly PhraseSplitter _phraseSplitter = new();
+    private readonly VariantPhraseSplitter _variantPhraseSplitter = new();
 
     [Fact]
     public void SplitPhrase_WhenPhraseHasOnlyOneVariant_ReturnsSinglePhrase()
     {
         var phrase = "a buena cuenta";
-        
-        var result = _phraseSplitter.SplitPhrase(phrase);
-        
+
+        var result = _variantPhraseSplitter.SplitPhrase(phrase);
+
         Assert.Single(result);
         Assert.Equal(phrase, result[0]);
     }
 
     [Theory]
     [InlineData(
-        "echar aceite al fuego, o en el fuego", 
+        "echar aceite al fuego, o en el fuego",
         new[] { "echar aceite al fuego", "echar aceite en el fuego" })]
     [InlineData(
         "abrir alguien cuenta, o una cuenta",
@@ -42,7 +42,7 @@ public class PhraseSplitterTests(ITestOutputHelper output)
         new[] { "de cuenta de alguien", "de cuenta y riesgo de alguien" })]
     public void SplitPhrase_WhenPhraseHasTwoVariants_ReturnsTwoPhrases(string phrase, string[] expectedPhrases)
     {
-        var result = _phraseSplitter.SplitPhrase(phrase);
+        var result = _variantPhraseSplitter.SplitPhrase(phrase);
 
         Assert.Equal(expectedPhrases, result);
     }

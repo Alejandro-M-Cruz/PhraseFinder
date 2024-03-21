@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using PhraseFinder.Data;
 using PhraseFinder.Domain.Models;
-using PhraseFinder.Domain.Services;
+using PhraseFinder.Domain.Services.FileReaders;
 
 namespace PhraseFinder.Domain.PerformanceTests;
 
@@ -48,9 +48,8 @@ public static partial class PerformanceTestUtils
         {
             var phrase = new Phrase
             {
-                Name = phraseEntry.Name,
+                Value = phraseEntry.Name,
                 BaseWord = phraseEntry.BaseWord,
-                RegExPattern = phraseEntry.BaseWord,
                 PhraseDictionaryId = phraseDictionary.PhraseDictionaryId,
                 Definitions = phraseEntry.DefinitionToExamples
                     .Select(kvp => new PhraseDefinition
@@ -71,7 +70,7 @@ public static partial class PerformanceTestUtils
     {
         var oneWordPhrases =
             from p in _dbContext.Phrases.Include(p => p.Definitions).ToList()
-            where !p.Name.Trim().Contains(' ')
+            where !p.Value.Trim().Contains(' ')
             select p;
 
         using var writer = new StreamWriter("oneWordPhrases.csv");
@@ -94,7 +93,7 @@ public static partial class PerformanceTestUtils
             foreach (var d in p.Definitions)
             {
                 types.Add(d.Definition.Split('.')[1]);
-                writer.WriteLine($"{p.BaseWord};{p.Name};{d.Definition}");
+                writer.WriteLine($"{p.BaseWord};{p.Value};{d.Definition}");
             }
         }
 
@@ -110,13 +109,13 @@ public static partial class PerformanceTestUtils
         var stopwatch = Stopwatch.StartNew();
         var phrasesThatMatchRegex =             
             from p in _dbContext.Phrases.AsEnumerable()
-            where regex.IsMatch(p.Name)
+            where regex.IsMatch(p.Value)
             select p;
         using var writer = new StreamWriter(filePath);
         int n = 0;
         foreach (var p in phrasesThatMatchRegex)
         {
-            writer.WriteLine($"{p.Name} ({p.BaseWord})");
+            writer.WriteLine($"{p.Value} ({p.BaseWord})");
             n++;
         }
         stopwatch.Stop();

@@ -123,8 +123,7 @@ public class PhraseDictionaryServiceTests : IDisposable
             {
                 new Phrase
                 {
-                    Name = "test",
-                    RegExPattern = "test",
+                    Value = "test",
                     BaseWord = "test",
                     Definitions = []
                 }

@@ -77,9 +77,8 @@
             </DataGrid.RowHeaderTemplate>
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding PhraseId}" Header="ID" />
-                <DataGridTextColumn Binding="{Binding Name}" Header="Nombre" />
+                <DataGridTextColumn Binding="{Binding Value}" Header="Expresión o locución" />
                 <DataGridTextColumn Binding="{Binding BaseWord}" Header="Palabra base" />
-                <DataGridTextColumn Binding="{Binding RegExPattern}" Header="Expresión regular" />
             </DataGrid.Columns>
         </DataGrid>
 

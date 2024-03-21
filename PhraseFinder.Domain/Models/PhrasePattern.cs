@@ -9,12 +9,15 @@ public class PhrasePattern
     [Column("ID")]
     public int PhrasePatternId { get; set; }
 
-    [Column("Nombre")]
+    [Column("Expresión o locución de origen")]
     [MaxLength(255)]
-    public string Name { get; set; }
+    public required string Source { get; set; }
 
     [Column("Patrón")]
-    public string Pattern { get; set; }
+    public required string Pattern { get; set; }
+
+    [Column("Verificado")] 
+    public required bool IsVerified { get; set; } = true;
 
     [Column("ID de expresión o locución")]
     public int PhraseId { get; set; }

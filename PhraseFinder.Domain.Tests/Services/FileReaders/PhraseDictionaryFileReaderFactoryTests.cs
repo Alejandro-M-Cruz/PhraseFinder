@@ -1,8 +1,8 @@
 using System.ComponentModel;
 using PhraseFinder.Domain.Models;
-using PhraseFinder.Domain.Services;
+using PhraseFinder.Domain.Services.FileReaders;
 
-namespace PhraseFinder.Domain.Tests.Services;
+namespace PhraseFinder.Domain.Tests.Services.FileReaders;
 
 public class PhraseDictionaryFileReaderFactoryTests
 {
@@ -15,7 +15,7 @@ public class PhraseDictionaryFileReaderFactoryTests
 
         Assert.IsType<DleTxtPhraseDictionaryFileReader>(reader);
     }
-    
+
     [Fact]
     public void CreateReader_WithUnsupportedDictionaryFormat_ThrowsInvalidEnumArgumentException()
     {

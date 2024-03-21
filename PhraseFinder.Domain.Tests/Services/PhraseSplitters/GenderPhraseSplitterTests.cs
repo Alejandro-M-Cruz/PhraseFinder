@@ -1,10 +1,10 @@
-﻿using PhraseFinder.Domain.Services;
+﻿using PhraseFinder.Domain.Services.PhraseSplitters;
 
-namespace PhraseFinder.Domain.Tests.Services;
+namespace PhraseFinder.Domain.Tests.Services.PhraseSplitters;
 
-public class PhraseGenderSplitterTests
+public class GenderPhraseSplitterTests
 {
-    private readonly PhraseGenderSplitter _phraseGenderSplitter = new();
+    private readonly GenderPhraseSplitter _splitter = new();
 
     [Theory]
     [InlineData("a buena cuenta")]
@@ -13,7 +13,7 @@ public class PhraseGenderSplitterTests
     [InlineData("encendérsele, iluminársele, o prendérsele, la bombilla a alguien")]
     public void SplitPhrase_WhenPhraseHasNoGender_ReturnsPhrase(string phrase)
     {
-        var result = _phraseGenderSplitter.SplitPhrase(phrase);
+        var result = _splitter.SplitPhrase(phrase);
 
         Assert.Single(result);
         Assert.Equal(phrase, result[0]);
@@ -33,17 +33,17 @@ public class PhraseGenderSplitterTests
         "muy señores, ras",
         "muy señores", "muy señoras")]
     [InlineData(
-        "presidente, ta", 
+        "presidente, ta",
         "presidente", "presidenta")]
     [InlineData(
         "ni muerto, ta",
         "ni muerto", "ni muerta")]
     public void SplitPhrase_WhenPhraseHasGender_ReturnsPhrases(
-        string phrase, 
+        string phrase,
         string expectedPhrase1,
         string expectedPhrase2)
     {
-        var result = _phraseGenderSplitter.SplitPhrase(phrase);
+        var result = _splitter.SplitPhrase(phrase);
 
         Assert.Equal(new[] { expectedPhrase1, expectedPhrase2 }, result);
     }

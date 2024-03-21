@@ -1,12 +1,12 @@
 using PhraseFinder.Domain.Models;
-using PhraseFinder.Domain.Services;
+using PhraseFinder.Domain.Services.FileReaders;
 
-namespace PhraseFinder.Domain.Tests.Services;
+namespace PhraseFinder.Domain.Tests.Services.FileReaders;
 
 public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
 {
     private string? _tempFilePath;
-    
+
     [Theory]
     [InlineData("")]
     [InlineData(
@@ -20,7 +20,7 @@ public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
         _tempFilePath = await TestUtils.WriteToTempFileAsync(phraseDictionaryContent);
         var reader = new DleTxtPhraseDictionaryFileReader(_tempFilePath);
         List<PhraseEntry> actualPhrases = [];
-        
+
         await foreach (var phraseEntry in reader.ReadPhraseEntriesAsync())
         {
             actualPhrases.Add(phraseEntry);
@@ -51,10 +51,10 @@ public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
             {
                 Name = "como tamboril en boda",
                 BaseWord = "tamboril",
-                DefinitionToExamples = 
+                DefinitionToExamples =
                 {
                     {
-                        "1. expr. coloq. U. para expresar que algo seguramente no ha de faltar.", 
+                        "1. expr. coloq. U. para expresar que algo seguramente no ha de faltar.",
                        ["Ejemplo de tamboril en boda"]
                     }
                 }
@@ -139,7 +139,7 @@ public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
                 BaseWord = "zarpa[1]",
                 DefinitionToExamples =
                 {
-                    { 
+                    {
                         "1. loc. verb. coloq. desus. Mojarse o enlodarse mucho.",
                         []
                     }

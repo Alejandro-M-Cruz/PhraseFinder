@@ -2,15 +2,7 @@
 using System.Runtime.Serialization;
 using CoreWCF;
 
-namespace PhraseFinder.WCF.Services;
-
-[DataContract]
-public class EchoMessage
-{
-    [DataMember]
-    [AllowNull]
-    public string Text { get; set; }
-}
+namespace PhraseFinder.WCF;
 
 [DataContract]
 public class EchoFault
@@ -27,9 +19,18 @@ public interface IEchoService
     string Echo(string text);
 
     [OperationContract]
-    string ComplexEcho(EchoMessage message);
+    string ComplexEcho(EchoMessage text);
 
     [OperationContract]
     [FaultContract(typeof(EchoFault))]
     string FailEcho(string text);
+
+}
+
+[DataContract]
+public class EchoMessage
+{
+    [AllowNull]
+    [DataMember]
+    public string Text { get; set; }
 }

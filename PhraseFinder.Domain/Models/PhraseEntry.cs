@@ -11,8 +11,7 @@ public class PhraseEntry
     {
         return new Phrase
         {
-            Name = Name,
-            RegExPattern = Name,
+            Value = Name,
             BaseWord = BaseWord,
             Definitions = DefinitionToExamples.Select(d =>
             {

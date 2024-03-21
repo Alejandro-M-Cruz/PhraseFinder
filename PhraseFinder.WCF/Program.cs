@@ -1,7 +1,7 @@
 using CoreWCF;
 using CoreWCF.Configuration;
 using CoreWCF.Description;
-using PhraseFinder.WCF.Services;
+using PhraseFinder.WCF;
 
 var builder = WebApplication.CreateBuilder(args);
 

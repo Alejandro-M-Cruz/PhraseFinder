@@ -9,16 +9,9 @@ public class Phrase
     [Column("ID")]
     public int PhraseId { get; set; }
 
-    [Column("Nombre")]
-    [StringLength(maximumLength: 255, MinimumLength = 1,
-        ErrorMessage = "El nombre debe tener entre 1 y 255 caracteres")]
-    public required string Name { get; set; }
-
-    [Column("Expresión regular")]
-    [Display(Name = "Expresión regular")]
-    [StringLength(maximumLength: 2000, MinimumLength = 1,
-        ErrorMessage = "El patrón de expresión regular debe tener entre 1 y 2000 caracteres")]
-    public required string RegExPattern { get; set; }
+    [Column("Expresión o locución")]
+    [MaxLength(255)]
+    public required string Value { get; set; }
 
     [Column("Palabra base")]
     [StringLength(maximumLength: 255, MinimumLength = 1,
@@ -34,6 +27,6 @@ public class Phrase
     
     public override string ToString()
     {
-        return Name;
+        return Value;
     }
 }

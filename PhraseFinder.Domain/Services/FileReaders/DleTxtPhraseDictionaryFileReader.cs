@@ -1,7 +1,7 @@
 using System.Text.RegularExpressions;
 using PhraseFinder.Domain.Models;
 
-namespace PhraseFinder.Domain.Services;
+namespace PhraseFinder.Domain.Services.FileReaders;
 
 // <summary>
 // Class <c>DleTxtReader</c> is a reader for the Diccionario de la Lengua Española (DLE) dictionary.
@@ -57,7 +57,7 @@ public class DleTxtPhraseDictionaryFileReader(string filePath) : IPhraseDictiona
                     BaseWord = currentWord ?? ""
                 };
                 currentPhraseDefinition = null;
-            } 
+            }
             else if (PhraseDefinitionRegEx.IsMatch(currentLine) && currentPhraseEntry != null)
             {
                 currentPhraseDefinition = currentLine;

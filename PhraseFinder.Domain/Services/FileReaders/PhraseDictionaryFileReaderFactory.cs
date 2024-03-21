@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using PhraseFinder.Domain.Models;
 
-namespace PhraseFinder.Domain.Services;
+namespace PhraseFinder.Domain.Services.FileReaders;
 
 public static class PhraseDictionaryFileReaderFactory
 {
@@ -13,5 +13,5 @@ public static class PhraseDictionaryFileReaderFactory
             _ => throw new InvalidEnumArgumentException()
         };
     }
-    
+
 }

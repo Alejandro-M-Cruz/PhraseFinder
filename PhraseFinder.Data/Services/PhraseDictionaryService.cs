@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PhraseFinder.Domain.Models;
-using PhraseFinder.Domain.Services;
+using PhraseFinder.Domain.Services.FileReaders;
 
 namespace PhraseFinder.Data.Services;
 
