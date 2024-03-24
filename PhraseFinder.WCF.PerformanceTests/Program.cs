@@ -1,11 +1,31 @@
-﻿using PhraseFinderService;
+﻿using System.Diagnostics;
+using PhraseFinderServiceReference;
 
-// Instantiate the Service wrapper specifying the binding and optionally the Endpoint URL. The BasicHttpBinding could be used instead.
-var client = new EchoServiceClient(EchoServiceClient.EndpointConfiguration.WSHttpBinding_IEchoService, "https://localhost:5001/EchoService/WSHttps");
+var client = new PhraseFinderServiceClient();
 
-var simpleResult = await client.EchoAsync("Hello");
-Console.WriteLine(simpleResult);
+var text = 
+	"alguno, na que otro, tra texto de ejemplo.\n esto es un texto de ejemplo";
 
-var msg = new EchoMessage() { Text = "Hello2" };
-var msgResult = await client.ComplexEchoAsync(msg);
-Console.WriteLine(msgResult);
+var stopwatch = Stopwatch.StartNew();
+var foundPhrases = await client.FindPhrasesAsync(text);
+stopwatch.Stop();
+
+Console.WriteLine($"Elapsed time: {stopwatch.ElapsedMilliseconds} ms");
+
+foreach (var phrase in foundPhrases)
+{
+	Console.WriteLine($"Phrase: {phrase.Phrase}");
+	Console.WriteLine($"Start index: {phrase.StartIndex}");
+	Console.WriteLine($"End index: {phrase.EndIndex}");
+	Console.WriteLine($"Length: {phrase.Length}");
+
+	foreach (var definitionToExamples in phrase.DefinitionToExamples)
+	{
+		Console.WriteLine($"Definition: {definitionToExamples.Key}");
+		foreach (var example in definitionToExamples.Value)
+		{
+			Console.WriteLine($"Example: {example}");
+		}
+	}
+}
+

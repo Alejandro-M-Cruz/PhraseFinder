@@ -1,0 +1,54 @@
+﻿@page
+@using PhraseFinderServiceReference
+@model PhraseFinder.WebApp.Pages.PhrasesModel
+@{
+	ViewData["Title"] = "Expr. y loc. encontradas";
+
+	FoundPhrase? prevPhrase = null;
+}
+
+<div class="container">
+	<h2>Expresiones y locuciones encontradas:</h2>
+
+	<p style="white-space: pre-line;">
+		@{
+			var n = 0;
+			foreach (var phrase in Model.FoundPhrases)
+			{
+				n++;
+				<span>@Model.Text[(prevPhrase?.EndIndex ?? 0)..phrase.StartIndex]</span><a href="#phrase-@n" class="text-danger fw-bold">@Model.Text.Substring(phrase.StartIndex, phrase.Length)</a><sup class="text-danger fw-bold">@n</sup> prevPhrase = phrase;
+			}
+			<span>@Model.Text[(prevPhrase?.EndIndex ?? 0)..]</span>
+		}
+	</p>
+	
+	@{
+		n = 0;
+
+		foreach (var phrase in Model.FoundPhrases)
+		{
+			n++;
+
+			<div id="phrase-@n" class="card">
+				<div class="card-header">
+					<span class="card-subtitle fw-bolder">@n</span>
+				</div>
+				<div class="card-body">
+					<h3 class="card-title">
+						@phrase.Phrase
+					</h3>
+					@foreach (var definitionToExamples in phrase.DefinitionToExamples)
+					{
+						<p>@definitionToExamples.Key</p>
+						<ul class="list-group">
+							@foreach (var example in definitionToExamples.Value)
+							{
+								<li class="list-group-item">@example</li>
+							}
+						</ul>
+					}
+				</div>
+			</div>
+		}
+	}
+</div>
