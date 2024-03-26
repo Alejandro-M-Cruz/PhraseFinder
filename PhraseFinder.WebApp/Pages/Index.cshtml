@@ -1,79 +1,23 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Inicio";
+	Layout = "_InputLayout";
+    ViewData["Title"] = "Introducir un texto";
 }
 
-<div class="container">
-    <form method="post" asp-page="Index" class="card">
-	    <ul class="card-header pb-0 nav nav-tabs justify-content-center" role="tablist">
-		    <li class="nav-item" role="presentation">
-			    <button 
-				    class="nav-link active"
-				    id="textarea-tab"
-				    data-bs-toggle="tab"
-				    data-bs-target="#textarea-tab-pane"
-				    type="reset"
-				    role="tab"
-				    aria-controls="textarea-tab-pane"
-				    aria-selected="true">
-				    Introducir texto
-			    </button>
-		    </li>
-		    <li class="nav-item" role="presentation">
-			    <button
-				    class="nav-link"
-				    id="file-input-tab"
-				    data-bs-toggle="tab"
-				    data-bs-target="#file-input-tab-pane"
-				    type="reset"
-				    role="tab"
-				    aria-controls="fine-input-tab-pane"
-				    aria-selected="false">
-				    Subir fichero
-			    </button>
-		    </li>
-	    </ul>
-	    <div class="card-body">
-		    <div class="tab-content">
-			    <div
-				    class="card-body tab-pane fade show active"
-				    id="textarea-tab-pane"
-				    role="tabpanel"
-				    aria-labelledby="textarea-tab"
-				    tabindex="0">
-				    <p class="text-center">
-					    Introduzca un texto para detectar todas las expresiones y locuciones que contenga:
-				    </p>
-				    <textarea asp-for="Text" class="form-control" placeholder="En algún lugar de la mancha, ..." rows="20"></textarea>
-			    </div>
-			    <div
-				    class="tab-pane fade"
-				    id="file-input-tab-pane"
-				    role="tabpanel"
-				    aria-labelledby="file-input-tab"
-				    tabindex="0">
-				    <p class="text-center">
-					    Seleccione un fichero de texto plano para detectar todas las expresiones y locuciones que contenga:
-				    </p>
-				    <input asp-for="TextFile" type="file" class="form-control mx-auto" style="max-width: 300px">
-			    </div>
-		    </div>
-			<div class="text-danger mx-sm-3" asp-validation-summary="All"></div>
-		    <div class="d-flex flex-row m-3 justify-content-around justify-content-md-center gap-md-5">
-			    <button type="reset" class="btn btn-outline-danger">
-				    Restablecer
-			    </button>
-			    <button type="submit" class="btn btn-primary" disabled="@Model.CanSubmit">
-				    Confirmar
-			    </button>
-		    </div>
-	    </div>
-    </form>
-</div>
-
-@section Scripts {
-	@{
-		<partial name="Shared/_ValidationScriptsPartial" />
-	}
-}
+<form method="post" class="d-flex flex-column">
+    <p class="text-center">
+	    Introduzca un texto para detectar todas las expresiones y locuciones que contenga:
+    </p>
+    <textarea asp-for="Text" class="form-control" placeholder="En algún lugar de la mancha, ..." rows="20"></textarea>
+    <span asp-validation-for="Text" class="text-danger mt-3 mx-1 mx-sm-3"></span>
+	<div asp-validation-summary="ModelOnly" class="text-danger mt-3 mx-1 mx-sm-3"></div>
+    <div class="d-flex flex-row m-3 justify-content-around justify-content-md-center gap-md-5">
+	    <button type="reset" class="btn btn-outline-danger">
+		    Restablecer
+	    </button>
+	    <button type="submit" class="btn btn-primary">
+		    Confirmar
+	    </button>
+    </div>
+</form>

@@ -4,40 +4,31 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace PhraseFinder.WebApp.Pages;
 
-public class IndexModel(ILogger<IndexModel> logger) : PageModel
+public class IndexModel : PageModel
 {
     [BindProperty]
+    [Required(ErrorMessage = "Por favor, introduzca un texto")]
     [MaxLength(10_000, ErrorMessage = "El texto es demasiado largo (máximo 10.000 caracteres)")]
+    [MinLength(3, ErrorMessage= "El texto es demasiado corto (mínimo 3 caracteres)")]
     public string Text { get; set; } = "";
-    
-    [BindProperty]
-    [MaxLength(10_000, ErrorMessage = "El fichero de texto es demasiado grande (máximo 10MB)")]
-    public IFormFile? TextFile { get; set; }
-
-    [BindProperty]
-    public bool CanSubmit => !string.IsNullOrWhiteSpace(Text) || TextFile != null;
 
     public void OnGet()
     {
-        
     }
 
-    public async Task<IActionResult> OnPostAsync()
+    public IActionResult OnPost()
     {
-        if (!CanSubmit)
-        {
-            ModelState.AddModelError(string.Empty, "Introduzca un texto o seleccione un fichero de texto plano.");
+	    if (!ModelState.IsValid)
+	    {
+			return Page();
+		}
+
+	    if (string.IsNullOrWhiteSpace(Text))
+	    {
+            ModelState.AddModelError(nameof(Text), "Por favor, introduzca un texto");
             return Page();
-        }
+	    }
 
-        if (TextFile != null)
-        {
-            using var reader = new StreamReader(TextFile.OpenReadStream());
-            Text = await reader.ReadToEndAsync();
-        }
-
-        Console.WriteLine($"Text: {Text}");
-        Console.WriteLine(TextFile?.Name ?? "No file selected");
         return RedirectToPage("/Phrases", new { text = Text });
     }
 }

@@ -3,6 +3,9 @@ using PhraseFinderServiceReference;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+
 // builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceClient>();
 builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceDev>();
 

@@ -15,7 +15,7 @@ public class PhrasesModel(IPhraseFinderService phraseFinder) : PageModel
     [BindProperty] 
     public bool IsLoading { get; set; }
 
-    public async Task OnGetAsync()
+    public async Task OnGetAsync(string? text, string? filePath)
     {
         FoundPhrases = await phraseFinder.FindPhrasesAsync(Text);
     }
