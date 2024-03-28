@@ -10,9 +10,7 @@ public class PhraseDefinition
     public int PhraseDefinitionId { get; set; }
 
     [Column("Definición")]
-    [Display(Name = "Definición")]
-    [StringLength(maximumLength: 1000, MinimumLength = 1,
-        ErrorMessage = "La definición debe tener entre 1 y 1000 caracteres")]
+    [MaxLength(1000)]
     public required string Definition { get; set; }
 
     [Column("ID de expresión o locución")]

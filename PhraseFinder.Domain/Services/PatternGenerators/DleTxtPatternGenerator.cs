@@ -8,15 +8,15 @@ public class DleTxtPatternGenerator(
     IPhraseCleaner phraseCleaner,
     IPhraseSplitter[] phraseSplitters) : IPatternGenerator
 {
-    public IEnumerable<PhrasePattern> GeneratePatterns(Phrase phrase)
+    public IEnumerable<Phrase> GeneratePatterns(Phrase phrase)
     {
         var cleanPhrase = phraseCleaner.CleanPhrase(phrase.Value);
-        return ApplySplitters(cleanPhrase).Select(split => new PhrasePattern
+        return ApplySplitters(cleanPhrase).Select(split => phrase with
         {
-            Source = cleanPhrase,
+            Value = cleanPhrase,
+            Variant = split,
             Pattern = split,
-            IsVerified = !cleanPhrase.Contains("Tb.") && !cleanPhrase.Contains(", "),
-            PhraseId = phrase.PhraseId
+            Reviewed = !cleanPhrase.Contains("Tb.") && !cleanPhrase.Contains(", "),
         });
     }
 

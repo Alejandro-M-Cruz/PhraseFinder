@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PhraseFinder.Domain.Models;
 
 [Table("Expresiones y locuciones")]
-public class Phrase
+public record Phrase
 {
     [Column("ID")]
     public int PhraseId { get; set; }
@@ -14,9 +14,19 @@ public class Phrase
     public required string Value { get; set; }
 
     [Column("Palabra base")]
-    [StringLength(maximumLength: 255, MinimumLength = 1,
-        ErrorMessage = "La palabra base debe tener entre 1 y 255 caracteres")]
+    [MaxLength(255)]
     public required string BaseWord { get; set; }
+
+    [Column("Variante")]
+    [MaxLength(255)]
+    public string Variant { get; set; }
+
+    [Column("Patrón")]
+    [MaxLength(255)]
+    public string Pattern { get; set; }
+
+    [Column("Revisado")] 
+    public bool Reviewed { get; set; } = false;
 
     [Column("ID de diccionario")]
     public int PhraseDictionaryId { get; set; }
@@ -27,6 +37,6 @@ public class Phrase
     
     public override string ToString()
     {
-        return Value;
+        return $"{Value}; {Variant}; {Pattern}";
     }
 }

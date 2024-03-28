@@ -27,6 +27,7 @@ internal static class ApplicationBuilderExtensions
 
     public static void AddDbServices(this IHostApplicationBuilder builder)
     {
+
         builder.Services.AddSingleton<IPhraseDictionaryService, PhraseDictionaryService>();
         builder.Services.AddSingleton<IPhraseService, PhraseService>();
     }

@@ -32,6 +32,12 @@ public class TwoVariantPhraseSplitter : IPhraseSplitter
 		var secondVariant = "";
 
 		Console.WriteLine(lastPart);
+
+		if (firstPartWords.Length == 1)
+		{
+			return [firstPart + lastPart, secondPart + lastPart];
+		}
+
 		if (firstPartWords.FirstOrDefault() == secondPartWords.FirstOrDefault())
 		{
 			secondVariant = string.Join(' ', secondPartWords);
@@ -50,6 +56,6 @@ public class TwoVariantPhraseSplitter : IPhraseSplitter
 				break;
 		}
 
-		return [firstPart + lastPart, secondVariant + lastPart];
+		return [firstPart + lastPart, (secondVariant + lastPart).Trim()];
 	}
 }

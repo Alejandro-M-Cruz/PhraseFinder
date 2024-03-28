@@ -4,5 +4,7 @@ namespace PhraseFinder.Data.Services;
 
 public interface IPhraseService
 {
-    public IEnumerable<Phrase> GetPhrases(PhraseDictionary phraseDictionary);
+    public IQueryable<Phrase> GetPhrases(
+	    PhraseDictionary phraseDictionary, 
+	    PhraseQueryOptions options);
 }

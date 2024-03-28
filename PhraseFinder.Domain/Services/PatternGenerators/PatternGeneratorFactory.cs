@@ -15,11 +15,15 @@ public static class PatternGeneratorFactory
                 IPhraseSplitter[] splitters = 
                 [
                     new TbPhraseSplitter(), 
-                    new GenderPhraseSplitter()
+                    new GenderPhraseSplitter(),
+                    new TwoVariantPhraseSplitter()
                 ];
                 return new DleTxtPatternGenerator(new DleTxtPhraseCleaner(), splitters);
             default: 
-                throw new InvalidEnumArgumentException();
+                throw new InvalidEnumArgumentException(
+	                nameof(format),
+	                (int)format,
+	                typeof(PhraseDictionaryFormat));
         }
     }
 }

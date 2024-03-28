@@ -11,28 +11,21 @@ public class PhraseDictionary
     public int PhraseDictionaryId { get; set; }
 
     [Column("Nombre")]
-    [Display(Name = "Nombre")]
-    [StringLength(maximumLength: 255, MinimumLength = 1, ErrorMessage="El nombre debe tener entre 1 y 255 caracteres")]
+    [MaxLength(255)]
     public required string Name { get; set; }
 
     [Column("Descripción")]
-    [Display(Name = "Descripción")]
-    [StringLength(maximumLength: 1000, MinimumLength = 1,
-        ErrorMessage = "La descripción debe tener entre 1 y 1000 caracteres")]
+    [MaxLength(1000)]
     public string? Description { get; set; }
 
     [Column("Formato")]
-    [Display(Name = "Formato")]
     public required PhraseDictionaryFormat Format { get; set; }
 
     [Column("Ruta del fichero")]
-    [Display(Name = "Ruta del fichero")]
-    [StringLength(maximumLength: 500, MinimumLength = 1,
-        ErrorMessage = "La ruta del fichero debe tener entre 1 y 500 caracteres")]
+    [MaxLength(255)]
     public required string FilePath { get; set; }
 
     [Column("Fecha de creación")]
-    [Display(Name = "Fecha de creación")]
     public DateTime AddedAt { get; set; }
     
     public ICollection<Phrase> Phrases { get; set; } = [];

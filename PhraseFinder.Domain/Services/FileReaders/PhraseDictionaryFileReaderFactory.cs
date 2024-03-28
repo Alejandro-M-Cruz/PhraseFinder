@@ -10,7 +10,10 @@ public static class PhraseDictionaryFileReaderFactory
         return format switch
         {
             PhraseDictionaryFormat.DleTxt => new DleTxtPhraseDictionaryFileReader(filePath),
-            _ => throw new InvalidEnumArgumentException()
+            _ => throw new InvalidEnumArgumentException(
+	            nameof(format), 
+	            (int)format, 
+	            typeof(PhraseDictionaryFormat))
         };
     }
 

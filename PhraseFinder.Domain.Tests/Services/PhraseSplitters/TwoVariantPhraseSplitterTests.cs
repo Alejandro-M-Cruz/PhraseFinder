@@ -41,6 +41,9 @@ public class TwoVariantPhraseSplitterTests
 	[InlineData(
 		"de cuenta, o de cuenta y riesgo, de alguien",
 		new[] { "de cuenta de alguien", "de cuenta y riesgo de alguien" })]
+	[InlineData(
+		"estar, o ir, aviado",
+		new[] { "estar aviado", "ir aviado" })]
 	public void SplitPhrase_WhenPhraseHasTwoVariants_ReturnsTwoPhrases(
 		string phrase,
 		string[] expectedPhrases)

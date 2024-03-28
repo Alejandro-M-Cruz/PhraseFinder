@@ -44,6 +44,7 @@
                 HorizontalAlignment="Center"
                 Orientation="Horizontal">
                 <Button
+                    x:Name="CancelButton"
                     Height="35"
                     Margin="20,20"
                     Command="hc:ControlCommands.Close"
@@ -51,6 +52,7 @@
                     FontSize="14"
                     Style="{StaticResource ButtonPrimary}" />
                 <Button
+                    x:Name="ConfirmButton"
                     Height="35"
                     Margin="20,20"
                     Command="{Binding ConfirmButtonCommand}"

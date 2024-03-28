@@ -4,5 +4,5 @@ namespace PhraseFinder.Domain.Services.PatternGenerators;
 
 public interface IPatternGenerator
 {
-    public IEnumerable<PhrasePattern> GeneratePatterns(Phrase phrases);
+    public IEnumerable<Phrase> GeneratePatterns(Phrase phrases);
 }

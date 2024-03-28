@@ -12,4 +12,14 @@ public partial class DeleteConfirmationDialog : UserControl
     {
         InitializeComponent();
     }
+
+    protected override void OnInitialized(EventArgs e)
+    {
+	    ConfirmButton.Click += (sender, args) =>
+	    {
+		    ConfirmButton.IsEnabled = false;
+		    CancelButton.IsEnabled = false;
+	    };
+	    base.OnInitialized(e);
+    }
 }

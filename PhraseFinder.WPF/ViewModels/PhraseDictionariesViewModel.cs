@@ -50,7 +50,7 @@ internal partial class PhraseDictionariesViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(IsPhraseDictionarySelected))]
     public void DisplayDeleteConfirmationDialog()
     {
-        _deleteConfirmationDialog = Dialog.Show(new DeleteConfirmationDialog()
+        _deleteConfirmationDialog = Dialog.Show(new DeleteConfirmationDialog
         {
             Title = "¿Está seguro de que desea eliminar este diccionario? " +
                     "Se borrarán las expresiones y locuciones que contiene.",

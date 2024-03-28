@@ -4,7 +4,6 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using HandyControl.Tools.Extension;
 using PhraseFinder.Data.Services;
-using PhraseFinder.Domain.Extensions;
 using PhraseFinder.Domain.Models;
 using PhraseFinder.WPF.Messages;
 using PhraseFinder.WPF.Navigation;
@@ -19,82 +18,40 @@ internal partial class PhrasesViewModel : ObservableObject
 
     public ObservableCollection<Phrase> DisplayedPhrases { get; } = [];
     
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(DisplayPhraseDetailsCommand))]
-    private Phrase? _selectedPhrase;
-
-    private bool IsPhraseSelected => SelectedPhrase != null;
+    [ObservableProperty] 
+    private PhraseQueryOptions _options = new();
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(SearchPhrasesCommand))]
-    private string? _searchText;
+    private int _currentPage;
 
-    [ObservableProperty] 
-    private int _currentPage = 1;
+	[ObservableProperty]
+	private int _currentTotalPages;
 
-    [ObservableProperty] 
-    private int _elementsPerPage = ElementsPerPageOptions[DefaultElementsPerPageIndex];
-
-    public static List<int> ElementsPerPageOptions => [10, 20, 50, 100];
-    public static int DefaultElementsPerPageIndex => 1;
-
-    [ObservableProperty] 
-    private int _totalPages;
 
     public PhrasesViewModel(IPhraseService phraseService, INavigationService navigationService)
     {
         _navigationService = navigationService;
         PhraseDictionary = 
             WeakReferenceMessenger.Default.Send<PhraseDictionaryRequestMessage>();
-        Console.WriteLine(PhraseDictionary.Name);
         _phraseService = phraseService;
-        LoadPhrasesForCurrentPage();
+        LoadPhrases();
     }
 
     [RelayCommand]
-    public void LoadPhrasesForCurrentPage()
+    public void LoadPhrases()
     {
-        if (!string.IsNullOrEmpty(SearchText))
-        {
-            SearchPhrases();
-            return;
-        }
+	    Options.Page = CurrentPage;
+        Options.TotalPages = CurrentTotalPages;
         DisplayedPhrases.Clear();
-        var phrasesInCurrentPage = _phraseService
-            .GetPhrases(PhraseDictionary)
-            .Paginate(CurrentPage,ElementsPerPage);
-        TotalPages = _phraseService.GetPhrases(PhraseDictionary).GetTotalPages(ElementsPerPage);
-        DisplayedPhrases.AddRange(phrasesInCurrentPage);
-    }
-
-    [RelayCommand]
-    public void SearchPhrases()
-    {
-        if (string.IsNullOrWhiteSpace(SearchText))
-        {
-            LoadPhrasesForCurrentPage();
-            return;
-        }
-        DisplayedPhrases.Clear();
-        var searchedPhrasesInCurrentPage = _phraseService.GetPhrases(PhraseDictionary)
-            .Where(p => p.ToString().Contains(SearchText!, StringComparison.OrdinalIgnoreCase))
-            .Paginate(CurrentPage, ElementsPerPage);
-        TotalPages = _phraseService.GetPhrases(PhraseDictionary)
-            .Where(p => p.ToString().Contains(SearchText!, StringComparison.OrdinalIgnoreCase))
-            .GetTotalPages(ElementsPerPage);
-        // CurrentPage = 1;
-        DisplayedPhrases.AddRange(searchedPhrasesInCurrentPage);
+        var phrases = _phraseService.GetPhrases(PhraseDictionary, Options);
+        DisplayedPhrases.AddRange(phrases);
+        CurrentPage = Options.Page;
+        CurrentTotalPages = Options.TotalPages;
     }
 
     [RelayCommand]
     public void NavigateToPhraseDictionaries()
     {
         _navigationService.NavigateTo<PhraseDictionariesViewModel>();
-    }
-
-    [RelayCommand(CanExecute = nameof(IsPhraseSelected))]
-    public void DisplayPhraseDetails()
-    {
-
     }
 }
