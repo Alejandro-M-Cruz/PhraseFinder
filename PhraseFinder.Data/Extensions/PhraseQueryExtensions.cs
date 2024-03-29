@@ -24,6 +24,8 @@ public static class PhraseQueryExtensions
 		{
 			PhraseOrderByOption.Id => phrases.OrderBy(p => p.PhraseId),
 			PhraseOrderByOption.Value => phrases.OrderBy(p => p.Value),
+			PhraseOrderByOption.IdDesc => phrases.OrderByDescending(p => p.PhraseId),
+			PhraseOrderByOption.ValueDesc => phrases.OrderByDescending(p => p.Value),
 			_ => throw new InvalidEnumArgumentException(
 				nameof(orderByOption), 
 				(int)orderByOption, 

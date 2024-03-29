@@ -20,7 +20,7 @@ internal partial class AddPhraseDictionaryViewModel(
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddPhraseDictionaryCommand))]
-    private PhraseDictionaryFormat? _selectedPhraseDictionaryFormat;
+    private PhraseDictionaryFormat? _selectedPhraseDictionaryFormat = PhraseDictionaryFormat.DleTxt;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(

@@ -27,7 +27,6 @@ internal partial class PhrasesViewModel : ObservableObject
 	[ObservableProperty]
 	private int _currentTotalPages;
 
-
     public PhrasesViewModel(IPhraseService phraseService, INavigationService navigationService)
     {
         _navigationService = navigationService;

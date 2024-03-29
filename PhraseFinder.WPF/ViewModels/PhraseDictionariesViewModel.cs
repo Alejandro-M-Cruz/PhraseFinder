@@ -35,6 +35,17 @@ internal partial class PhraseDictionariesViewModel : ObservableObject
         _phraseDictionaryService = phraseDictionaryService;
         _navigationService = navigationService;
         LoadPhraseDictionariesCommand.Execute(null);
+        WeakReferenceMessenger
+	        .Default
+	        .Register<PhraseDictionariesViewModel, PhraseDictionaryRequestMessage>(
+		        this,
+		        (recipient, message) =>
+		        {
+			        if (!message.HasReceivedResponse)
+			        {
+						message.Reply(recipient.SelectedPhraseDictionary!);
+			        }
+		        });
     }
 
     [RelayCommand]
@@ -69,14 +80,6 @@ internal partial class PhraseDictionariesViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(IsPhraseDictionarySelected))]
     public void NavigateToPhrases()
     {
-        WeakReferenceMessenger
-            .Default
-            .Register<PhraseDictionariesViewModel, PhraseDictionaryRequestMessage>(
-                this, 
-                (recipient, message) =>
-                {
-                    message.Reply(recipient.SelectedPhraseDictionary!);
-                });
         _navigationService.NavigateTo<PhrasesViewModel>();
     }
 

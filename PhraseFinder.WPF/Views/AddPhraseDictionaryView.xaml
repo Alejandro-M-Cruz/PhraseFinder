@@ -58,8 +58,7 @@
                     hc:TitleElement.Title="Formato"
                     hc:TitleElement.TitlePlacement="Top"
                     ItemsSource="{extensions:EnumValues EnumType=models:PhraseDictionaryFormat}"
-                    SelectedIndex="0"
-                    SelectedItem="{Binding SelectedPhraseDictionaryFormat, Mode=OneWayToSource}">
+                    SelectedItem="{Binding SelectedPhraseDictionaryFormat, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Converter={StaticResource EnumDisplayNameConverter}}" />

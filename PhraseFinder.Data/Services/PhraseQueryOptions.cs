@@ -1,12 +1,19 @@
-﻿using PhraseFinder.Data.Extensions;
+﻿using System.ComponentModel.DataAnnotations;
+using PhraseFinder.Data.Extensions;
 using PhraseFinder.Domain.Models;
 
 namespace PhraseFinder.Data.Services;
 
 public enum PhraseOrderByOption
 {
+	[Display(Name = "ID ascendente")]
 	Id,
-	Value
+	[Display(Name = "ID descendente")]
+	IdDesc,
+	[Display(Name = "Expresión o locución asc.")]
+	Value,
+	[Display(Name = "Expresión o locución desc.")]
+	ValueDesc
 }
 
 public class PhraseQueryOptions
