@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -16,7 +17,8 @@ internal partial class PhraseDictionariesViewModel : ObservableObject
 {
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(
-        nameof(DisplayDeleteConfirmationDialogCommand), 
+	    nameof(UpdatePhraseDictionaryCommand),
+		nameof(DisplayDeleteConfirmationDialogCommand), 
         nameof(NavigateToPhrasesCommand))]
     private PhraseDictionary? _selectedPhraseDictionary;
 
@@ -35,18 +37,20 @@ internal partial class PhraseDictionariesViewModel : ObservableObject
         _phraseDictionaryService = phraseDictionaryService;
         _navigationService = navigationService;
         LoadPhraseDictionariesCommand.Execute(null);
-        WeakReferenceMessenger
-	        .Default
+        WeakReferenceMessenger.Default
 	        .Register<PhraseDictionariesViewModel, PhraseDictionaryRequestMessage>(
-		        this,
-		        (recipient, message) =>
-		        {
-			        if (!message.HasReceivedResponse)
-			        {
-						message.Reply(recipient.SelectedPhraseDictionary!);
-			        }
-		        });
+		        this, OnPhraseDictionaryRequestMessageReceived);
     }
+
+    private void OnPhraseDictionaryRequestMessageReceived(
+	    PhraseDictionariesViewModel recipient, 
+	    PhraseDictionaryRequestMessage message)
+    {
+	    if (!message.HasReceivedResponse)
+	    {
+		    message.Reply(recipient.SelectedPhraseDictionary!);
+	    }
+	}
 
     [RelayCommand]
     public async Task LoadPhraseDictionaries()
@@ -56,16 +60,27 @@ internal partial class PhraseDictionariesViewModel : ObservableObject
         PhraseDictionaries.AddRange(phraseDictionaries);
     }
 
-    private Dialog? _deleteConfirmationDialog;
+    [RelayCommand(CanExecute = nameof(IsPhraseDictionarySelected))]
+    public async Task UpdatePhraseDictionary(DataGridRowEditEndingEventArgs e)
+    {
+	    if (e.EditAction == DataGridEditAction.Cancel)
+	    {
+		    return;
+	    }
+		var phraseDictionary = (PhraseDictionary)e.Row.Item;
+		await _phraseDictionaryService.UpdatePhraseDictionaryAsync(phraseDictionary);
+	}
+
+	private Dialog? _deleteConfirmationDialog;
 
     [RelayCommand(CanExecute = nameof(IsPhraseDictionarySelected))]
     public void DisplayDeleteConfirmationDialog()
     {
         _deleteConfirmationDialog = Dialog.Show(new DeleteConfirmationDialog
         {
-            Title = "¿Está seguro de que desea eliminar este diccionario? " +
-                    "Se borrarán las expresiones y locuciones que contiene.",
-            ConfirmButtonCommand = DeletePhraseDictionaryCommand
+            Title = "¿Está seguro de que desea eliminar este diccionario?",
+            Message = "Se eliminarán todas las expresiones y locuciones que contiene.",
+			ConfirmButtonCommand = DeletePhraseDictionaryCommand
         });
     }
 

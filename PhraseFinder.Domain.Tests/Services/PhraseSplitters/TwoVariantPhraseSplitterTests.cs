@@ -36,14 +36,17 @@ public class TwoVariantPhraseSplitterTests
 		"por en medio, o por medio",
 		new[] { "por en medio", "por medio" })]
 	[InlineData(
-		"meterse de por medio, o en medio",
-		new[] { "meterse de por medio", "meterse en medio" })]
-	[InlineData(
 		"de cuenta, o de cuenta y riesgo, de alguien",
 		new[] { "de cuenta de alguien", "de cuenta y riesgo de alguien" })]
 	[InlineData(
 		"estar, o ir, aviado",
 		new[] { "estar aviado", "ir aviado" })]
+	[InlineData(
+		"meterse de por medio, o en medio",
+		new[] { "meterse de por medio", "meterse en medio" })]
+	[InlineData(
+		"echar aceite al fuego, o en el fuego",
+		new[] { "echar aceite al fuego", "echar aceite en el fuego" })]
 	public void SplitPhrase_WhenPhraseHasTwoVariants_ReturnsTwoPhrases(
 		string phrase,
 		string[] expectedPhrases)

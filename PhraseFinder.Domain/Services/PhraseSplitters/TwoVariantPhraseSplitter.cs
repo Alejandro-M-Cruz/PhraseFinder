@@ -29,19 +29,14 @@ public class TwoVariantPhraseSplitter : IPhraseSplitter
 		var lastPart = match.Groups[3].Value;
 		var firstPartWords = firstPart.Split(' ');
 		var secondPartWords = secondPart.Split(' ');
-		var secondVariant = "";
+		var secondVariant = secondPart;
 
 		Console.WriteLine(lastPart);
 
-		if (firstPartWords.Length == 1)
+		if (firstPartWords.Length == 1 || 
+		    firstPartWords.FirstOrDefault() == secondPartWords.FirstOrDefault())
 		{
 			return [firstPart + lastPart, secondPart + lastPart];
-		}
-
-		if (firstPartWords.FirstOrDefault() == secondPartWords.FirstOrDefault())
-		{
-			secondVariant = string.Join(' ', secondPartWords);
-			return [firstPart + lastPart, secondVariant + lastPart];
 		}
 
 		switch (secondPartWords.Length)
@@ -50,9 +45,27 @@ public class TwoVariantPhraseSplitter : IPhraseSplitter
 				secondVariant = string.Join(' ', firstPartWords[..^1]) + ' ' + secondPart;
 				break;
 			case 2:
+				for (var i = 0; i < firstPartWords.Length; i++)
+				{
+					if (firstPartWords[i].Length < 4)
+					{
+						secondVariant = string.Join(' ', firstPartWords[..i]) + ' ' + secondPart;
+						return [firstPart + lastPart, (secondVariant + lastPart).Trim()];
+					}
+				}
 				var wordsToTakeFromFirstPart = secondPartWords[0].Contains("un") ? 1 : 2;
 				var secondVariantPrefix = string.Join(' ', firstPartWords[..^wordsToTakeFromFirstPart]);
 				secondVariant = secondVariantPrefix + ' ' + secondPart;
+				break;
+			default:
+				for (var i = 0; i < firstPartWords.Length; i++)
+				{
+					if (firstPartWords[i].Length < 4)
+					{
+						secondVariant = string.Join(' ', firstPartWords[..i]) + ' ' + secondPart;
+						break;
+					}
+				}
 				break;
 		}
 

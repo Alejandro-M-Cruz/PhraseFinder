@@ -73,23 +73,46 @@
             AutoGenerateColumns="False"
             FontSize="16"
             HeadersVisibility="All"
-            IsReadOnly="True"
+            IsReadOnly="False"
             ItemsSource="{Binding PhraseDictionaries}"
             RowHeaderWidth="60"
             SelectedItem="{Binding SelectedPhraseDictionary, Mode=OneWayToSource}"
             SelectionMode="Single">
+            <hc:Interaction.Triggers>
+                <hc:EventTrigger EventName="RowEditEnding">
+                    <hc:EventToCommand Command="{Binding UpdatePhraseDictionaryCommand}" PassEventArgsToCommand="True" />
+                </hc:EventTrigger>
+            </hc:Interaction.Triggers>
             <DataGrid.RowHeaderTemplate>
                 <DataTemplate>
                     <CheckBox IsChecked="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=DataGridRow}}" />
                 </DataTemplate>
             </DataGrid.RowHeaderTemplate>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding PhraseDictionaryId}" Header="ID" />
-                <DataGridTextColumn Binding="{Binding Name}" Header="Nombre" />
-                <DataGridTextColumn Binding="{Binding AddedAt}" Header="Fecha de creación" />
-                <DataGridTextColumn Binding="{Binding Path=Format, Converter={StaticResource EnumDisplayNameConverter}}" Header="Formato" />
-                <DataGridTextColumn Binding="{Binding FilePath}" Header="Ruta del fichero" />
-                <DataGridTextColumn Binding="{Binding Description}" Header="Descripción" />
+                <DataGridTextColumn
+                    Binding="{Binding PhraseDictionaryId, Mode=OneWay}"
+                    Header="ID"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Name, TargetNullValue=(introduzca un nombre), UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"
+                    Header="Nombre"
+                    IsReadOnly="False" />
+                <DataGridTextColumn
+                    Binding="{Binding AddedAt, Mode=OneWay}"
+                    Header="Fecha de creación"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Path=Format, Mode=OneWay, Converter={StaticResource EnumDisplayNameConverter}}"
+                    Header="Formato"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding FilePath, Mode=OneWay}"
+                    Header="Ruta del fichero"
+                    IsReadOnly="True" />
+                <DataGridTextColumn
+                    Binding="{Binding Description, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True}"
+                    Header="Descripción"
+                    IsReadOnly="False" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

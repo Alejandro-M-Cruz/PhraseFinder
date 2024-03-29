@@ -11,13 +11,14 @@
     DataContext="{Binding RelativeSource={RelativeSource Self}}"
     mc:Ignorable="d">
     <Border
-        MaxWidth="400"
-        MaxHeight="247"
+        MaxWidth="800"
+        MaxHeight="800"
         Background="{StaticResource RegionBrush}"
         CornerRadius="10">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
@@ -33,14 +34,22 @@
                 Style="{StaticResource ButtonIcon}" />
             <TextBlock
                 Grid.Row="1"
-                Margin="40,20,40,10"
+                Margin="40,20,40,5"
                 Style="{StaticResource TextBlockSubTitleBold}"
                 Text="{Binding Title}"
                 TextAlignment="Center"
                 TextTrimming="CharacterEllipsis"
                 TextWrapping="Wrap" />
-            <hc:SimpleStackPanel
+            <TextBlock
                 Grid.Row="2"
+                Margin="40,10,40,10"
+                Style="{StaticResource TextBlockSubTitle}"
+                Text="{Binding Message}"
+                TextAlignment="Center"
+                TextTrimming="CharacterEllipsis"
+                TextWrapping="Wrap" />
+            <hc:SimpleStackPanel
+                Grid.Row="3"
                 HorizontalAlignment="Center"
                 Orientation="Horizontal">
                 <Button

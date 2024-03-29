@@ -15,8 +15,7 @@ public class DleTxtPatternGenerator(
         {
             Value = cleanPhrase,
             Variant = split,
-            Pattern = split,
-            Reviewed = !cleanPhrase.Contains("Tb.") && !cleanPhrase.Contains(", "),
+            Pattern = split
         });
     }
 

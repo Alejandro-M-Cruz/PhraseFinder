@@ -9,7 +9,7 @@ public class PhraseDictionaryService(PhraseFinderDbContext dbContext) : IPhraseD
 {
     public async Task<IEnumerable<PhraseDictionary>> GetPhraseDictionariesAsync()
     {
-        return await dbContext.PhraseDictionaries.AsNoTracking().ToArrayAsync();
+        return await dbContext.PhraseDictionaries.ToArrayAsync();
     }
 
     public async Task AddPhraseDictionaryAsync(PhraseDictionary phraseDictionary)
