@@ -6,14 +6,14 @@ namespace PhraseFinder.Domain.Models;
 [Table("Definiciones")]
 public class PhraseDefinition
 {
-    [Column("ID")]
+    [Column("ID_Definicion")]
     public int PhraseDefinitionId { get; set; }
 
-    [Column("Definición")]
+    [Column("Definicion")]
     [MaxLength(1000)]
     public required string Definition { get; set; }
 
-    [Column("ID de expresión o locución")]
+    [Column("ID_Locucion")]
     public int PhraseId { get; set; }
 
     public ICollection<PhraseExample> Examples { get; set; } = [];

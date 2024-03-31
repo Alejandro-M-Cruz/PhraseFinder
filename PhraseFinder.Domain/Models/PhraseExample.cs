@@ -6,13 +6,13 @@ namespace PhraseFinder.Domain.Models;
 [Table("Ejemplos")]
 public class PhraseExample
 {
-    [Column("ID")]
+    [Column("ID_Ejemplo")]
     public int PhraseExampleId { get; set; }
 
     [Column("Ejemplo")]
     [MaxLength(1000)]
     public required string Example { get; set; }
 
-    [Column("ID de definición")]
+    [Column("ID_Definicion")]
     public int PhraseDefinitionId { get; set; }
 }

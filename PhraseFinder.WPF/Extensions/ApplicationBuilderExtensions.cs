@@ -28,16 +28,18 @@ internal static class ApplicationBuilderExtensions
     public static void AddDbServices(this IHostApplicationBuilder builder)
     {
 
-        builder.Services.AddTransient<IPhraseDictionaryService, PhraseDictionaryService>();
-        builder.Services.AddTransient<IPhraseService, PhraseService>();
+        builder.Services
+	        .AddTransient<IPhraseDictionaryService, PhraseDictionaryService>()
+	        .AddTransient<IPhraseService, PhraseService>();
     }
 
     private static void AddViewModels(this IHostApplicationBuilder builder)
     {
-        builder.Services.AddSingleton<MainViewModel>();
-        builder.Services.AddTransient<PhraseDictionariesViewModel>();
-        builder.Services.AddTransient<AddPhraseDictionaryViewModel>();
-        builder.Services.AddTransient<PhrasesViewModel>();
+        builder.Services
+	        .AddSingleton<MainViewModel>()
+            .AddTransient<PhraseDictionariesViewModel>()
+            .AddTransient<AddPhraseDictionaryViewModel>()
+            .AddTransient<PhrasesViewModel>();
     }
 
     private static void AddViews(this IHostApplicationBuilder builder)

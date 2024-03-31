@@ -12,8 +12,8 @@ using PhraseFinder.Data;
 namespace PhraseFinder.Data.Migrations
 {
     [DbContext(typeof(PhraseFinderDbContext))]
-    [Migration("20240331150537_AddCategoriesColumn")]
-    partial class AddCategoriesColumn
+    [Migration("20240331212926_InitialSchema")]
+    partial class InitialSchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,30 +29,30 @@ namespace PhraseFinder.Data.Migrations
                     b.Property<int>("PhraseId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("ID")
+                        .HasColumnName("ID_Locucion")
                         .HasAnnotation("Jet:ValueGenerationStrategy", JetValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("BaseWord")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)")
-                        .HasColumnName("Palabra base");
+                        .HasColumnName("Palabra_base");
 
                     b.Property<string>("Categories")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)")
-                        .HasColumnName("Categorías");
+                        .HasColumnName("Categorias");
 
                     b.Property<string>("Pattern")
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)")
-                        .HasColumnName("Patrón");
+                        .HasColumnName("Patron");
 
                     b.Property<int>("PhraseDictionaryId")
                         .HasColumnType("integer")
-                        .HasColumnName("ID de diccionario");
+                        .HasColumnName("ID_Diccionario");
 
                     b.Property<bool>("Reviewed")
                         .HasColumnType("smallint")
@@ -62,7 +62,7 @@ namespace PhraseFinder.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar(255)")
-                        .HasColumnName("Expresión o locución");
+                        .HasColumnName("Locucion");
 
                     b.Property<string>("Variant")
                         .IsRequired()
@@ -74,7 +74,7 @@ namespace PhraseFinder.Data.Migrations
 
                     b.HasIndex("PhraseDictionaryId");
 
-                    b.ToTable("Expresiones y locuciones");
+                    b.ToTable("Locuciones_y_expresiones");
                 });
 
             modelBuilder.Entity("PhraseFinder.Domain.Models.PhraseDefinition", b =>
@@ -82,18 +82,18 @@ namespace PhraseFinder.Data.Migrations
                     b.Property<int>("PhraseDefinitionId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("ID")
+                        .HasColumnName("ID_Definicion")
                         .HasAnnotation("Jet:ValueGenerationStrategy", JetValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Definition")
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("longchar")
-                        .HasColumnName("Definición");
+                        .HasColumnName("Definicion");
 
                     b.Property<int>("PhraseId")
                         .HasColumnType("integer")
-                        .HasColumnName("ID de expresión o locución");
+                        .HasColumnName("ID_Locucion");
 
                     b.HasKey("PhraseDefinitionId");
 
@@ -107,25 +107,25 @@ namespace PhraseFinder.Data.Migrations
                     b.Property<int>("PhraseDictionaryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("ID")
+                        .HasColumnName("ID_Diccionario")
                         .HasAnnotation("Jet:ValueGenerationStrategy", JetValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("AddedAt")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")
-                        .HasColumnName("Fecha de creación")
+                        .HasColumnName("Fecha_creacion")
                         .HasDefaultValueSql("Now()");
 
                     b.Property<string>("Description")
                         .HasMaxLength(1000)
                         .HasColumnType("longchar")
-                        .HasColumnName("Descripción");
+                        .HasColumnName("Descripcion");
 
                     b.Property<string>("FilePath")
                         .IsRequired()
                         .HasMaxLength(32767)
                         .HasColumnType("longchar")
-                        .HasColumnName("Ruta del fichero");
+                        .HasColumnName("Ruta_fichero");
 
                     b.Property<string>("Format")
                         .IsRequired()
@@ -148,7 +148,7 @@ namespace PhraseFinder.Data.Migrations
                     b.Property<int>("PhraseExampleId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
-                        .HasColumnName("ID")
+                        .HasColumnName("ID_Ejemplo")
                         .HasAnnotation("Jet:ValueGenerationStrategy", JetValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Example")
@@ -159,7 +159,7 @@ namespace PhraseFinder.Data.Migrations
 
                     b.Property<int>("PhraseDefinitionId")
                         .HasColumnType("integer")
-                        .HasColumnName("ID de definición");
+                        .HasColumnName("ID_Definicion");
 
                     b.HasKey("PhraseExampleId");
 
