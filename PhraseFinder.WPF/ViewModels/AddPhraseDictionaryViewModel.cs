@@ -41,6 +41,9 @@ internal partial class AddPhraseDictionaryViewModel(
         !string.IsNullOrWhiteSpace(PhraseDictionaryFilePath) &&
         SelectedPhraseDictionaryFormat != null;
 
+    private CancellationTokenSource? _cancellationTokenSource;
+    private Task? _addPhraseDictionaryTask;
+
     [RelayCommand(CanExecute = nameof(CanAddPhraseDictionary))]
     public async Task AddPhraseDictionary()
     {
@@ -50,11 +53,26 @@ internal partial class AddPhraseDictionaryViewModel(
             Format = (PhraseDictionaryFormat)SelectedPhraseDictionaryFormat!,
             Description = PhraseDictionaryDescription,
             FilePath = PhraseDictionaryFilePath!
-        };
+		};
         IsDictionaryBeingAdded = true;
-        await phraseDictionaryService.AddPhraseDictionaryFromFileAsync(phraseDictionary);
-        IsDictionaryBeingAdded = false;
-        navigationService.NavigateTo<PhraseDictionariesViewModel>();
+        _cancellationTokenSource = new CancellationTokenSource();
+        var token = _cancellationTokenSource.Token;
+        try
+        {
+	        _addPhraseDictionaryTask = Task.Run(
+		        () => phraseDictionaryService.AddPhraseDictionaryFromFileAsync(phraseDictionary, token),
+		        token);
+            await _addPhraseDictionaryTask;
+        }
+        catch (OperationCanceledException)
+        {
+
+        }
+        finally
+        {
+	        IsDictionaryBeingAdded = false;
+	        navigationService.NavigateTo<PhraseDictionariesViewModel>();
+        }
     }
 
     [RelayCommand(CanExecute = nameof(IsPhraseDictionaryFileNotPicked))]
@@ -77,8 +95,23 @@ internal partial class AddPhraseDictionaryViewModel(
     }
 
     [RelayCommand]
-    public void NavigateToPhraseDictionaries()
+    public async Task Cancel()
     {
-        navigationService.NavigateTo<PhraseDictionariesViewModel>();
+	    if (_cancellationTokenSource != null)
+	    {
+			await _cancellationTokenSource.CancelAsync();
+		}
+		if (_addPhraseDictionaryTask != null)
+		{
+			try
+			{
+				await _addPhraseDictionaryTask;
+			}
+			catch (OperationCanceledException)
+			{
+				
+			}
+		}
+		navigationService.NavigateTo<PhraseDictionariesViewModel>();
     }
 }

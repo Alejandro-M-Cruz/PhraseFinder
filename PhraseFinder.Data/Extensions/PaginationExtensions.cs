@@ -9,6 +9,6 @@ public static class PaginationExtensions
 
     public static int GetTotalPages<T>(this IQueryable<T> items, int pageSize)
     {
-        return (int)Math.Ceiling((double)items.Count() / pageSize);
+        return Math.Max(1, (int)Math.Ceiling((double)items.Count() / pageSize));
     }
 }

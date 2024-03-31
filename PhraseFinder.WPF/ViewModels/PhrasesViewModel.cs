@@ -43,7 +43,7 @@ internal partial class PhrasesViewModel : ObservableObject
         Options.TotalPages = CurrentTotalPages;
         DisplayedPhrases.Clear();
         var phrases = _phraseService.GetPhrases(PhraseDictionary, Options);
-        DisplayedPhrases.AddRange(phrases);
+	    DisplayedPhrases.AddRange(phrases);
         CurrentPage = Options.Page;
         CurrentTotalPages = Options.TotalPages;
     }

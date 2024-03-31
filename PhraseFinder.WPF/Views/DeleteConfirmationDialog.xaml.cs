@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace PhraseFinder.WPF.Views;
@@ -14,13 +15,10 @@ public partial class DeleteConfirmationDialog : UserControl
         InitializeComponent();
     }
 
-    protected override void OnInitialized(EventArgs e)
+    private void ConfirmButton_Click(object sender, RoutedEventArgs e)
     {
-	    ConfirmButton.Click += (sender, args) =>
-	    {
-		    ConfirmButton.IsEnabled = false;
-		    CancelButton.IsEnabled = false;
-	    };
-	    base.OnInitialized(e);
+	    ConfirmButton.IsEnabled = false;
+        CancelButton.IsEnabled = false;
+        CloseButton.IsEnabled = false;
     }
 }

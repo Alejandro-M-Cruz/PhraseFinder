@@ -22,7 +22,7 @@ public class PhraseDictionary
     public required PhraseDictionaryFormat Format { get; set; }
 
     [Column("Ruta del fichero")]
-    [MaxLength(255)]
+    [MaxLength(32_767)]
     public required string FilePath { get; set; }
 
     [Column("Fecha de creación")]

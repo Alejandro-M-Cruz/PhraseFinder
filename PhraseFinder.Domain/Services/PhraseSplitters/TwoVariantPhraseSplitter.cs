@@ -31,10 +31,8 @@ public class TwoVariantPhraseSplitter : IPhraseSplitter
 		var secondPartWords = secondPart.Split(' ');
 		var secondVariant = secondPart;
 
-		Console.WriteLine(lastPart);
-
-		if (firstPartWords.Length == 1 || 
-		    firstPartWords.FirstOrDefault() == secondPartWords.FirstOrDefault())
+		if (firstPartWords.Length == 1 ||
+		    secondPartWords.First().StartsWith(firstPartWords.First()))
 		{
 			return [firstPart + lastPart, secondPart + lastPart];
 		}

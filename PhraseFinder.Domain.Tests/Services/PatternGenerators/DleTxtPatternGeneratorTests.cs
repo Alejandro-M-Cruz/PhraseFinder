@@ -22,8 +22,7 @@ public class DleTxtPatternGeneratorTests
 		Assert.Single(result);
 		Assert.Equal(phrase with {
 			Variant = "a buena cuenta",
-			Pattern = "a buena cuenta",
-			Reviewed = true
+			Pattern = "a buena cuenta"
 		}, result.Single());
 	}
 

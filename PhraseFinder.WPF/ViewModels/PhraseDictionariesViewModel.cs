@@ -87,9 +87,10 @@ internal partial class PhraseDictionariesViewModel : ObservableObject
     [RelayCommand(CanExecute = nameof(IsPhraseDictionarySelected))]
     public async Task DeletePhraseDictionary()
     {
-        _deleteConfirmationDialog?.Close();
-        await _phraseDictionaryService.DeletePhraseDictionaryAsync(SelectedPhraseDictionary!);
+        await Task.Run(() => 
+	        _phraseDictionaryService.DeletePhraseDictionaryAsync(SelectedPhraseDictionary!));
         PhraseDictionaries.Remove(SelectedPhraseDictionary!);
+        _deleteConfirmationDialog?.Close();
     }
 
     [RelayCommand(CanExecute = nameof(IsPhraseDictionarySelected))]

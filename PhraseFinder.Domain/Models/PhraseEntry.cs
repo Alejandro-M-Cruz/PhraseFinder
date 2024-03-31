@@ -13,6 +13,8 @@ public class PhraseEntry
         {
             Value = Name,
             BaseWord = BaseWord,
+            Variant = Name,
+            Pattern = Name,
             Definitions = DefinitionToExamples.Select(d =>
             {
                 return new PhraseDefinition

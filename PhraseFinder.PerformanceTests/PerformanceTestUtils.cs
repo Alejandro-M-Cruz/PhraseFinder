@@ -46,18 +46,7 @@ public static partial class PerformanceTestUtils
         await _dbContext.SaveChangesAsync();
         await foreach (var phraseEntry in _reader.ReadPhraseEntriesAsync())
         {
-            var phrase = new Phrase
-            {
-                Value = phraseEntry.Name,
-                BaseWord = phraseEntry.BaseWord,
-                PhraseDictionaryId = phraseDictionary.PhraseDictionaryId,
-                Definitions = phraseEntry.DefinitionToExamples
-                    .Select(kvp => new PhraseDefinition
-                    {
-                        Definition = kvp.Key,
-                        Examples = kvp.Value.Select(e => new PhraseExample { Example = e }).ToList()
-                    }).ToList()
-            };
+	        var phrase = phraseEntry.ToPhrase();
             _dbContext.Phrases.Add(phrase);
         }
         await _dbContext.SaveChangesAsync();

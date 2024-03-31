@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using PhraseFinder.Domain.Models;
 
@@ -25,14 +26,15 @@ public class DleTxtPhraseDictionaryFileReader(string filePath) : IPhraseDictiona
     public static readonly Regex PhraseDefinitionRegEx = new(
         @"^\d+\.\s(loc\.|locs\.|expr\.|exprs\.)", RegexOptions.Compiled);
 
-    public async IAsyncEnumerable<PhraseEntry> ReadPhraseEntriesAsync()
+    public async IAsyncEnumerable<PhraseEntry> ReadPhraseEntriesAsync(
+	    [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         using var reader = new StreamReader(filePath);
         string? currentLine = null;
         string? currentWord = null;
         PhraseEntry? currentPhraseEntry = null;
         string? currentPhraseDefinition = null;
-        while ((currentLine = await reader.ReadLineAsync()) != null)
+        while ((currentLine = await reader.ReadLineAsync(cancellationToken)) != null)
         {
             if (string.IsNullOrWhiteSpace(currentLine) && currentPhraseEntry != null)
             {

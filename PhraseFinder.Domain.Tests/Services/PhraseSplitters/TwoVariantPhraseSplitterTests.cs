@@ -47,6 +47,9 @@ public class TwoVariantPhraseSplitterTests
 	[InlineData(
 		"echar aceite al fuego, o en el fuego",
 		new[] { "echar aceite al fuego", "echar aceite en el fuego" })]
+	[InlineData(
+		"ajustar cuentas, o las cuentas, a alguien",
+		new[] { "ajustar cuentas a alguien", "ajustar las cuentas a alguien" })]
 	public void SplitPhrase_WhenPhraseHasTwoVariants_ReturnsTwoPhrases(
 		string phrase,
 		string[] expectedPhrases)

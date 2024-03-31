@@ -18,13 +18,15 @@ public class PhraseDictionaryService(PhraseFinderDbContext dbContext) : IPhraseD
         await dbContext.SaveChangesAsync();
     }
 
-    public async Task AddPhraseDictionaryFromFileAsync(PhraseDictionary phraseDictionary)
+    public async Task AddPhraseDictionaryFromFileAsync(
+	    PhraseDictionary phraseDictionary, 
+	    CancellationToken cancellationToken = default)
     {
         var dleTxtReader = PhraseDictionaryFileReaderFactory.CreateReader(
 	        phraseDictionary.Format, 
             filePath: phraseDictionary.FilePath);
         var patternGenerator = PatternGeneratorFactory.CreateGenerator(phraseDictionary.Format);
-        await foreach (var phraseEntry in dleTxtReader.ReadPhraseEntriesAsync())
+        await foreach (var phraseEntry in dleTxtReader.ReadPhraseEntriesAsync(cancellationToken))
         {
             var phrase = phraseEntry.ToPhrase();
             foreach (var p in patternGenerator.GeneratePatterns(phrase))
@@ -33,7 +35,7 @@ public class PhraseDictionaryService(PhraseFinderDbContext dbContext) : IPhraseD
 			}
         }
         dbContext.PhraseDictionaries.Add(phraseDictionary);
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task UpdatePhraseDictionaryAsync(PhraseDictionary phraseDictionary)
