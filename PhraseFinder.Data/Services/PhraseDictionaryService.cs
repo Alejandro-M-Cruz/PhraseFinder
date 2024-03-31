@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using PhraseFinder.Domain.Models;
 using PhraseFinder.Domain.Services.FileReaders;

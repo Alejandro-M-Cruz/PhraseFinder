@@ -3,6 +3,7 @@ using System;
 using EntityFrameworkCore.Jet.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PhraseFinder.Data;
 
@@ -11,9 +12,11 @@ using PhraseFinder.Data;
 namespace PhraseFinder.Data.Migrations
 {
     [DbContext(typeof(PhraseFinderDbContext))]
-    partial class PhraseFinderDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240331150537_AddCategoriesColumn")]
+    partial class AddCategoriesColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

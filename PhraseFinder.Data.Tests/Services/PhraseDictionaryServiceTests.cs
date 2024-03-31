@@ -127,6 +127,7 @@ public class PhraseDictionaryServiceTests : IDisposable
                     BaseWord = "test",
                     Variant = "test",
                     Pattern = "test",
+                    Categories = "",
                     Definitions = []
                 }
             }

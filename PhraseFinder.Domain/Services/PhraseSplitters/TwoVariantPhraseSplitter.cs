@@ -42,7 +42,7 @@ public class TwoVariantPhraseSplitter : IPhraseSplitter
 			case 1:
 				secondVariant = string.Join(' ', firstPartWords[..^1]) + ' ' + secondPart;
 				break;
-			case 2:
+			default:
 				for (var i = 0; i < firstPartWords.Length; i++)
 				{
 					if (firstPartWords[i].Length < 4)
@@ -51,20 +51,12 @@ public class TwoVariantPhraseSplitter : IPhraseSplitter
 						return [firstPart + lastPart, (secondVariant + lastPart).Trim()];
 					}
 				}
-				var wordsToTakeFromFirstPart = secondPartWords[0].Contains("un") ? 1 : 2;
-				var secondVariantPrefix = string.Join(' ', firstPartWords[..^wordsToTakeFromFirstPart]);
+				var longWordCount = secondPartWords.Count(w => w.Length > 3);
+				var wordsToDiscardFromFirstPart = Math.Min(longWordCount, firstPartWords.Length);
+				var secondVariantPrefix = string.Join(' ', firstPartWords[..^wordsToDiscardFromFirstPart]);
 				secondVariant = secondVariantPrefix + ' ' + secondPart;
 				break;
-			default:
-				for (var i = 0; i < firstPartWords.Length; i++)
-				{
-					if (firstPartWords[i].Length < 4)
-					{
-						secondVariant = string.Join(' ', firstPartWords[..i]) + ' ' + secondPart;
-						break;
-					}
-				}
-				break;
+			
 		}
 
 		return [firstPart + lastPart, (secondVariant + lastPart).Trim()];

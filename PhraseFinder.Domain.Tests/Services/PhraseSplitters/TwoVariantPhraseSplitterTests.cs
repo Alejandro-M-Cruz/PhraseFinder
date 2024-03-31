@@ -50,6 +50,15 @@ public class TwoVariantPhraseSplitterTests
 	[InlineData(
 		"ajustar cuentas, o las cuentas, a alguien",
 		new[] { "ajustar cuentas a alguien", "ajustar las cuentas a alguien" })]
+	[InlineData(
+		"instituir heredero, o por heredero, a alguien",
+		new[] { "instituir heredero a alguien", "instituir por heredero a alguien" })]
+	[InlineData(
+		"de montón, o en montón",
+		new[] { "de montón", "en montón" })]
+	[InlineData(
+		"ser alguien puro nervio, o un puro nervio",
+		new[] { "ser alguien puro nervio", "ser alguien un puro nervio" })]
 	public void SplitPhrase_WhenPhraseHasTwoVariants_ReturnsTwoPhrases(
 		string phrase,
 		string[] expectedPhrases)

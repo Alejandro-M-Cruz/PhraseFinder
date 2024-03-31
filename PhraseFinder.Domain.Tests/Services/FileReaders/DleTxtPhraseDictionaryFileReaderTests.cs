@@ -51,6 +51,7 @@ public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
             {
                 Name = "como tamboril en boda",
                 BaseWord = "tamboril",
+                Categories = { "expr. coloq." },
                 DefinitionToExamples =
                 {
                     {
@@ -64,7 +65,8 @@ public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
             {
                 Name = "tamboril por gaita",
                 BaseWord = "tamboril",
-                DefinitionToExamples =
+                Categories = { "expr. coloq." },
+				DefinitionToExamples =
                 {
                     {
                         "1. expr. coloq. U. para indicar que lo mismo le da a alguien una cosa que otra.",
@@ -112,6 +114,7 @@ public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
             {
                 Name = "beber alguien como una topinera",
                 BaseWord = "topinera",
+                Categories = { "loc. verb." },
                 DefinitionToExamples =
                 {
                     { "1. loc. verb. Beber mucho.", new string[] {} }
@@ -121,7 +124,8 @@ public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
             {
                 Name = "echar alguien la zarpa",
                 BaseWord = "zarpa[1]",
-                DefinitionToExamples =
+                Categories = { "loc. verb. coloq." },
+				DefinitionToExamples =
                 {
                     {
                         "1. loc. verb. coloq. Agarrar o asir con las manos o las uñas.",
@@ -137,7 +141,8 @@ public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
             {
                 Name = "hacerse alguien una zarpa",
                 BaseWord = "zarpa[1]",
-                DefinitionToExamples =
+                Categories = { "loc. verb. coloq. desus." },
+				DefinitionToExamples =
                 {
                     {
                         "1. loc. verb. coloq. desus. Mojarse o enlodarse mucho.",
@@ -192,6 +197,7 @@ public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
             {
                 Name = "echar alguien la zarpa",
                 BaseWord = "zarpa[1]",
+                Categories = { "loc. verb. coloq." },
                 DefinitionToExamples =
                 {
                     {
@@ -208,6 +214,7 @@ public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
             {
                 Name = "hacerse alguien una zarpa",
                 BaseWord = "zarpa[1]",
+                Categories = { "loc. verb. coloq. desus." },
                 DefinitionToExamples =
                 {
                     {
@@ -220,6 +227,7 @@ public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
             {
                 Name = "temblando",
                 BaseWord = "temblar",
+                Categories = { "loc. adv. coloq." },
                 DefinitionToExamples =
                 {
                     {

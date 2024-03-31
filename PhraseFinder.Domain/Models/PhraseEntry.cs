@@ -4,6 +4,7 @@ public class PhraseEntry
 {
     public required string Name { get; set; }
     public required string BaseWord { get; set; }
+    public ISet<string> Categories { get; set; } = new HashSet<string>();
     public IDictionary<string, ICollection<string>> DefinitionToExamples { get; } = 
         new Dictionary<string, ICollection<string>>();
 
@@ -15,6 +16,7 @@ public class PhraseEntry
             BaseWord = BaseWord,
             Variant = Name,
             Pattern = Name,
+            Categories = string.Join(", ", Categories),
             Definitions = DefinitionToExamples.Select(d =>
             {
                 return new PhraseDefinition
@@ -39,12 +41,14 @@ public class PhraseEntry
         }
 
         return Name == other.Name && BaseWord == other.BaseWord && 
+               Categories.SequenceEqual(other.Categories) &&
                DefinitionToExamplesEquals(other.DefinitionToExamples);
     }
 
     private bool DefinitionToExamplesEquals(IDictionary<string, ICollection<string>> other)
     {
-        return DefinitionToExamples.All(d => other[d.Key].SequenceEqual(d.Value));
+        return DefinitionToExamples
+	        .All(d => other[d.Key].SequenceEqual(d.Value));
     }
     
     public override int GetHashCode()

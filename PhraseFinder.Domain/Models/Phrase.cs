@@ -25,6 +25,10 @@ public record Phrase
     [MaxLength(255)]
     public string Pattern { get; set; }
 
+    [Column("Categorías")]
+    [MaxLength(255)]
+    public string Categories { get; set; }
+
     [Column("Revisado")] 
     public bool Reviewed { get; set; } = false;
 

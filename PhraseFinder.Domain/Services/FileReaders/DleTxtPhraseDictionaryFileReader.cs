@@ -1,5 +1,6 @@
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 using PhraseFinder.Domain.Models;
 
 namespace PhraseFinder.Domain.Services.FileReaders;
@@ -23,8 +24,8 @@ public class DleTxtPhraseDictionaryFileReader(string filePath) : IPhraseDictiona
 {
     private const string PhrasePrefix = "[loc6]";
     private const string PhraseExamplePrefix = "[Ejem]";
-    public static readonly Regex PhraseDefinitionRegEx = new(
-        @"^\d+\.\s(loc\.|locs\.|expr\.|exprs\.)", RegexOptions.Compiled);
+    public static readonly Regex PhraseDefinitionRegex = new(
+		@"^\d+\. ((?:loc\.|locs\.|expr\.|exprs\.) (?:[a-z]+\. )*)", RegexOptions.Compiled);
 
     public async IAsyncEnumerable<PhraseEntry> ReadPhraseEntriesAsync(
 	    [EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -36,9 +37,14 @@ public class DleTxtPhraseDictionaryFileReader(string filePath) : IPhraseDictiona
         string? currentPhraseDefinition = null;
         while ((currentLine = await reader.ReadLineAsync(cancellationToken)) != null)
         {
+            var phraseDefinitionMatch = PhraseDefinitionRegex.Match(currentLine);
+
             if (string.IsNullOrWhiteSpace(currentLine) && currentPhraseEntry != null)
             {
-                yield return currentPhraseEntry;
+	            if (currentPhraseEntry.Categories.Count > 0)
+	            {
+					yield return currentPhraseEntry;
+				}
                 currentPhraseEntry = null;
                 currentPhraseDefinition = null;
             }
@@ -49,7 +55,7 @@ public class DleTxtPhraseDictionaryFileReader(string filePath) : IPhraseDictiona
             }
             else if (currentLine.StartsWith(PhrasePrefix))
             {
-                if (currentPhraseEntry != null)
+                if (currentPhraseEntry?.Categories.Count > 0)
                 {
                     yield return currentPhraseEntry;
                 }
@@ -60,10 +66,11 @@ public class DleTxtPhraseDictionaryFileReader(string filePath) : IPhraseDictiona
                 };
                 currentPhraseDefinition = null;
             }
-            else if (PhraseDefinitionRegEx.IsMatch(currentLine) && currentPhraseEntry != null)
+            else if (phraseDefinitionMatch.Success && currentPhraseEntry != null)
             {
                 currentPhraseDefinition = currentLine;
                 currentPhraseEntry.DefinitionToExamples.Add(currentPhraseDefinition, []);
+                currentPhraseEntry.Categories.Add(phraseDefinitionMatch.Groups[1].Value.TrimEnd());
             }
             else if (currentLine.StartsWith(PhraseExamplePrefix) && currentPhraseDefinition != null)
             {
@@ -72,55 +79,7 @@ public class DleTxtPhraseDictionaryFileReader(string filePath) : IPhraseDictiona
                     .Add(currentLine[PhraseExamplePrefix.Length..]);
             }
         }
-        if (currentPhraseEntry != null)
-        {
-            yield return currentPhraseEntry;
-        }
-    }
-
-    public IEnumerable<PhraseEntry> ReadPhraseEntries()
-    {
-        using var reader = new StreamReader(filePath);
-        string? currentLine = null;
-        string? currentWord = null;
-        PhraseEntry? currentPhraseEntry = null;
-        string? currentPhraseDefinition = null;
-        while ((currentLine = reader.ReadLine()) != null)
-        {
-            if (string.IsNullOrWhiteSpace(currentLine) && currentPhraseEntry != null)
-            {
-                yield return currentPhraseEntry;
-                currentPhraseEntry = null;
-            }
-            else if (currentLine.Contains('#'))
-            {
-                currentWord = currentLine.Split('#')[1];
-            }
-            else if (currentLine.StartsWith(PhrasePrefix))
-            {
-                if (currentPhraseEntry != null)
-                {
-                    yield return currentPhraseEntry;
-                }
-                currentPhraseEntry = new PhraseEntry
-                {
-                    Name = currentLine[PhrasePrefix.Length..],
-                    BaseWord = currentWord ?? ""
-                };
-            }
-            else if (PhraseDefinitionRegEx.IsMatch(currentLine))
-            {
-                currentPhraseDefinition = currentLine;
-                currentPhraseEntry?.DefinitionToExamples.Add(currentPhraseDefinition, []);
-            }
-            else if (currentLine.StartsWith(PhraseExamplePrefix) && currentPhraseDefinition != null)
-            {
-                currentPhraseEntry?
-                    .DefinitionToExamples[currentPhraseDefinition]
-                    .Add(currentLine[PhraseExamplePrefix.Length..]);
-            }
-        }
-        if (currentPhraseEntry != null)
+        if (currentPhraseEntry?.Categories.Count > 0)
         {
             yield return currentPhraseEntry;
         }
