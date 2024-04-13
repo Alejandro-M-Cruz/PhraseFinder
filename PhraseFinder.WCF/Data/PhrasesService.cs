@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.OleDb;
 using System.IO;
+using Dapper;
 
 namespace PhraseFinder.WCF.Data
 {
@@ -28,21 +29,9 @@ namespace PhraseFinder.WCF.Data
 		{
 			using (var dbConnection = new OleDbConnection($"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={_dbPath}"))
 			{
-				dbConnection.Open();
-				var command = new OleDbCommand("SELECT * FROM [Expresiones y locuciones]", dbConnection);
-				using (var reader = command.ExecuteReader())
-				{
-					while (reader.Read())
-					{
+				return dbConnection.Query<Phrase>(
+					"SELECT [ID_Locucion] as [PhraseId], [Locucion] as [Value] FROM Locuciones_y_expresiones;");
 
-						yield return new Phrase
-						{
-							PhraseId = (int)reader[0],
-							Value = reader[1] as string ?? string.Empty
-						};
-					}
-				}
-				dbConnection.Close();
 			}
 		}
 	}
