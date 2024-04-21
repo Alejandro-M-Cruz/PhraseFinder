@@ -14,7 +14,12 @@ internal class PhraseFinderServiceDev : IPhraseFinderService
 				Phrase = "alguno, na que otro, tra",
 				StartIndex = 0,
 				EndIndex = 10,
-				Length = 10
+				Length = 10,
+				DefinitionToExamples = new Dictionary<string, string[]>
+				{
+					{"Definición de ejemplo", ["Ejemplo 1", "Ejemplo 2"]},
+					{"Definición de ejemplo 2", ["Ejemplo 3", "Ejemplo 4"]}
+				}
 			},
 			new FoundPhrase
 			{
@@ -22,13 +27,21 @@ internal class PhraseFinderServiceDev : IPhraseFinderService
 				StartIndex = 33,
 				EndIndex = 39,
 				Length = 6,
+				DefinitionToExamples = new Dictionary<string, string[]>
+				{
+					{"Definición de ejemplo", ["Ejemplo 1", "Ejemplo 2"]}
+				}
 			},
 			new FoundPhrase
 			{
 				Phrase = "texto de ejemplo",
 				StartIndex = 44,
 				EndIndex = 55,
-				Length = 11
+				Length = 11,
+				DefinitionToExamples = new Dictionary<string, string[]>
+				{
+					{"Definición de ejemplo", ["Ejemplo 1", "Ejemplo 2"]}
+				}
 			}
 		];
 	}

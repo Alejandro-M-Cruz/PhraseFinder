@@ -69,6 +69,9 @@ namespace PhraseFinder.Data.Migrations
 
                     b.HasKey("PhraseId");
 
+                    b.HasIndex("Pattern")
+                        .IsUnique();
+
                     b.HasIndex("PhraseDictionaryId");
 
                     b.ToTable("Locuciones_y_expresiones");

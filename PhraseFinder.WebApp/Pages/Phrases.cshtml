@@ -29,7 +29,7 @@
 		{
 			n++;
 
-			<div id="phrase-@n" class="card">
+			<div id="phrase-@n" class="card mb-3">
 				<div class="card-header">
 					<span class="card-subtitle fw-bolder">@n</span>
 				</div>
@@ -37,9 +37,9 @@
 					<h3 class="card-title">
 						@phrase.Phrase
 					</h3>
-					@foreach (var definitionToExamples in phrase.DefinitionToExamples)
+					@foreach (var definitionToExamples in phrase.DefinitionToExamples ?? [])
 					{
-						<p>@definitionToExamples.Key</p>
+						<p class="mt-4">@definitionToExamples.Key</p>
 						<ul class="list-group">
 							@foreach (var example in definitionToExamples.Value)
 							{
