@@ -16,7 +16,7 @@ public class IndexModel : PageModel
     {
     }
 
-    public IActionResult OnPost()
+    public async Task<IActionResult> OnPostAsync()
     {
 	    if (!ModelState.IsValid)
 	    {
@@ -25,10 +25,30 @@ public class IndexModel : PageModel
 
 	    if (string.IsNullOrWhiteSpace(Text))
 	    {
-            ModelState.AddModelError(nameof(Text), "Por favor, introduzca un texto");
+            ModelState.AddModelError(nameof(Text), "Por favor, introduzca un texto.");
             return Page();
 	    }
 
-        return RedirectToPage("/Phrases", new { text = Text });
+	    if (Text.Length > 10_000)
+	    {
+			ModelState.AddModelError(nameof(Text), "El texto es demasiado largo (máximo 10.000 caracteres).");
+			return Page();
+		}
+
+		var tempFilePath = Path.GetTempFileName();
+		try
+		{
+			await System.IO.File.WriteAllTextAsync(tempFilePath, Text);
+		}
+		catch
+		{
+			System.IO.File.Delete(tempFilePath);
+			ModelState.AddModelError(
+				nameof(Text),
+				"Se ha producido un error. Por favor, inténtelo de nuevo más tarde.");
+			return Page();
+		}
+
+		return RedirectToPage("/Phrases", new { filePath = tempFilePath });
     }
 }

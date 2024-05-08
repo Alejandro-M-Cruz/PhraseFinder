@@ -34,6 +34,17 @@ internal class PhraseFinderServiceDev : IPhraseFinderService
 			},
 			new FoundPhrase
 			{
+				Phrase = "alguno, na que otro, tra",
+				StartIndex = 33,
+				EndIndex = 39,
+				Length = 6,
+				DefinitionToExamples = new Dictionary<string, string[]>
+				{
+					{"Definición de ejemplo", ["Ejemplo 1", "Ejemplo 2"]}
+				}
+			},
+			new FoundPhrase
+			{
 				Phrase = "texto de ejemplo",
 				StartIndex = 44,
 				EndIndex = 55,
