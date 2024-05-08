@@ -32,12 +32,11 @@ public class PhraseDictionaryService(PhraseFinderDbContext dbContext) : IPhraseD
             var phrase = phraseEntry.ToPhrase();
             foreach (var p in patternGenerator.GeneratePatterns(phrase))
             {
-	            if (addedPatterns.Contains(p.Pattern))
+	            if (!addedPatterns.Add(p.Pattern))
 	            {
 					continue;
 				}
-				phraseDictionary.Phrases.Add(p);
-				addedPatterns.Add(p.Pattern);
+	            phraseDictionary.Phrases.Add(p);
             }
         }
         dbContext.PhraseDictionaries.Add(phraseDictionary);

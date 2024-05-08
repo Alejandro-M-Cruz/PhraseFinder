@@ -9,17 +9,16 @@ namespace PhraseFinder.Domain.PerformanceTests;
 
 public static partial class PerformanceTestUtils
 {
-    private static readonly PhraseFinderDbContext _dbContext;
+    public static readonly PhraseFinderDbContext DbContext;
     private static readonly IPhraseDictionaryFileReader _reader;
 
     static PerformanceTestUtils()
     {
         var optionsBuilder = new DbContextOptionsBuilder<PhraseFinderDbContext>();
         optionsBuilder.UseJetOleDb("Data Source=PerformanceTests.accdb");
-        _dbContext = new PhraseFinderDbContext(optionsBuilder.Options);
-        //_dbContext.Database.EnsureDeleted();
-        //_dbContext.Database.EnsureCreated();
-        _reader = PhraseDictionaryFileReaderFactory.CreateReader(
+        DbContext = new PhraseFinderDbContext(optionsBuilder.Options);
+        ResetDatabase();
+		_reader = PhraseDictionaryFileReaderFactory.CreateReader(
             PhraseDictionaryFormat.DleTxt,
             "D:\\Proyectos\\dotNet\\TFT\\DLE.txt");
     }
@@ -33,8 +32,15 @@ public static partial class PerformanceTestUtils
         Console.WriteLine($"Read dictionary file in: {stopwatch.ElapsedMilliseconds} ms");
     }
 
-    public static async void AddPhrases()
+    public static void ResetDatabase()
     {
+        DbContext.Database.EnsureDeleted();
+		DbContext.Database.Migrate();
+	}
+
+    public static async Task AddPhrases()
+    {
+        ResetDatabase();
         var stopwatch = Stopwatch.StartNew();
         var phraseDictionary = new PhraseDictionary
         {
@@ -42,23 +48,48 @@ public static partial class PerformanceTestUtils
             Format = PhraseDictionaryFormat.DleTxt, 
             FilePath = "D:\\Proyectos\\dotNet\\TFT\\DLE.txt" 
         };
-        _dbContext.PhraseDictionaries.Add(phraseDictionary);
-        await _dbContext.SaveChangesAsync();
+        DbContext.PhraseDictionaries.Add(phraseDictionary);
+        await DbContext.SaveChangesAsync();
         await foreach (var phraseEntry in _reader.ReadPhraseEntriesAsync())
         {
 	        var phrase = phraseEntry.ToPhrase();
-            _dbContext.Phrases.Add(phrase);
+            DbContext.Phrases.Add(phrase);
         }
-        await _dbContext.SaveChangesAsync();
+        await DbContext.SaveChangesAsync();
         stopwatch.Stop();
-        Console.WriteLine($"{_dbContext.Phrases.Count()} phrases were found");
+        Console.WriteLine($"{DbContext.Phrases.Count()} phrases were found");
         Console.WriteLine($"Phrase dictionary added to database in {stopwatch.ElapsedMilliseconds} ms");
     }
 
-    public static void WriteOneWordPhrasesToCsv()
+    public static async Task AddPhrasesWithBulkInsert()
+	{
+		ResetDatabase();
+		var stopwatch = Stopwatch.StartNew();
+		var phraseDictionary = new PhraseDictionary
+		{
+			Name = "Dle",
+			Format = PhraseDictionaryFormat.DleTxt,
+			FilePath = "D:\\Proyectos\\dotNet\\TFT\\DLE.txt"
+		};
+		DbContext.PhraseDictionaries.Add(phraseDictionary);
+		await DbContext.SaveChangesAsync();
+		var phrases = new List<Phrase>();
+		await foreach (var phraseEntry in _reader.ReadPhraseEntriesAsync())
+		{
+			var phrase = phraseEntry.ToPhrase();
+			phrases.Add(phrase);
+		}
+		DbContext.Phrases.AddRange(phrases);
+		await DbContext.SaveChangesAsync();
+		stopwatch.Stop();
+		Console.WriteLine($"{DbContext.Phrases.Count()} phrases were found");
+		Console.WriteLine($"Phrase dictionary added to database in {stopwatch.ElapsedMilliseconds} ms");
+	}
+
+	public static void WriteOneWordPhrasesToCsv()
     {
         var oneWordPhrases =
-            from p in _dbContext.Phrases.Include(p => p.Definitions).ToList()
+            from p in DbContext.Phrases.Include(p => p.Definitions).ToList()
             where !p.Value.Trim().Contains(' ')
             select p;
 
@@ -97,7 +128,7 @@ public static partial class PerformanceTestUtils
     {
         var stopwatch = Stopwatch.StartNew();
         var phrasesThatMatchRegex =             
-            from p in _dbContext.Phrases.AsEnumerable()
+            from p in DbContext.Phrases.AsEnumerable()
             where regex.IsMatch(p.Value)
             select p;
         using var writer = new StreamWriter(filePath);

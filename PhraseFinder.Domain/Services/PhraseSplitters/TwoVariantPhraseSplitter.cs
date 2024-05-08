@@ -27,8 +27,8 @@ public class TwoVariantPhraseSplitter : IPhraseSplitter
 		}
 
 		var lastPart = match.Groups[3].Value;
-		var firstPartWords = firstPart.Split(' ');
-		var secondPartWords = secondPart.Split(' ');
+		var firstPartWords = firstPart.Split();
+		var secondPartWords = secondPart.Split();
 		var secondVariant = secondPart;
 
 		if (firstPartWords.Length == 1 ||
