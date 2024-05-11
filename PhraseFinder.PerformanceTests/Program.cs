@@ -43,3 +43,7 @@ stopwatch.Stop();
 Console.WriteLine($"Dictionary added in: {stopwatch.ElapsedMilliseconds} ms");
 
 
+
+PerformanceTestUtils.WritePhrasesThatMatchRegexToTxtFile(
+    new Regex(@"(.*, o.*){2,}"),
+    @"D:\Proyectos\dotNet\TFT\multiple_variants.txt");

@@ -46,6 +46,12 @@ public class EtcPhraseSplitterTests
 	[InlineData(
 		"mira, o mira tú, o mire, etc., por cuánto",
 		new[] { "mira por cuánto", "mira tú por cuánto", "mire por cuánto" })]
+	[InlineData(
+		"ahí, o allí, o aquí, fue, o será, etc., Troya",
+		new[] {"ahí, o allí, o aquí, fue Troya", "ahí, o allí, o aquí, será Troya" })]
+	[InlineData(
+		"más eres tú, más es él, etc.",
+		new[] { "más eres tú", "más es él" })]
 	public void SplitPhrase_WhenPhraseContainsEtc_ReturnsAllVariants(
 		string phrase, 
 		string[] expectedPhrases)

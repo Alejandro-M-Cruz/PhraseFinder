@@ -17,7 +17,7 @@ public static partial class PerformanceTestUtils
         var optionsBuilder = new DbContextOptionsBuilder<PhraseFinderDbContext>();
         optionsBuilder.UseJetOleDb("Data Source=PerformanceTests.accdb");
         DbContext = new PhraseFinderDbContext(optionsBuilder.Options);
-        ResetDatabase();
+        // ResetDatabase();
 		_reader = PhraseDictionaryFileReaderFactory.CreateReader(
             PhraseDictionaryFormat.DleTxt,
             "D:\\Proyectos\\dotNet\\TFT\\DLE.txt");

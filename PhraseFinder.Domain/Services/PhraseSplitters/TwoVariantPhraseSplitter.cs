@@ -31,8 +31,7 @@ public class TwoVariantPhraseSplitter : IPhraseSplitter
 		var secondPartWords = secondPart.Split();
 		var secondVariant = secondPart;
 
-		if (firstPartWords.Length == 1 ||
-		    secondPartWords.First().StartsWith(firstPartWords.First()))
+		if (firstPartWords.Length == 1 || secondPartWords.First().StartsWith(firstPartWords.First()))
 		{
 			return [firstPart + lastPart, secondPart + lastPart];
 		}
@@ -56,7 +55,6 @@ public class TwoVariantPhraseSplitter : IPhraseSplitter
 				var secondVariantPrefix = string.Join(' ', firstPartWords[..^wordsToDiscardFromFirstPart]);
 				secondVariant = secondVariantPrefix + ' ' + secondPart;
 				break;
-			
 		}
 
 		return [firstPart + lastPart, (secondVariant + lastPart).Trim()];

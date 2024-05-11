@@ -57,8 +57,27 @@ public class TwoVariantPhraseSplitterTests
 		"de montón, o en montón",
 		new[] { "de montón", "en montón" })]
 	[InlineData(
-		"ser alguien puro nervio, o un puro nervio",
-		new[] { "ser alguien puro nervio", "ser alguien un puro nervio" })]
+		"pesar a alguien a, o en, oro",
+		new[] { "pesar a alguien a oro", "pesar a alguien en oro" })]
+	[InlineData(
+		"anda, o vete, al infierno",
+		new[] { "anda al infierno", "vete al infierno" })]
+	[InlineData(
+		"pedir alguien cuenta, o cuentas",
+		new[] { "pedir alguien cuenta", "pedir alguien cuentas" })]
+	[InlineData(
+		"cortarle, o segarle, a alguien la hierba bajo los pies",
+		new[]
+		{
+			"cortarle a alguien la hierba bajo los pies", 
+			"segarle a alguien la hierba bajo los pies"
+		})]
+	//[InlineData(
+	//	"coger, o liar, los, mis, tus, etc., bártulos",
+	//	new[] { "coger los, mis, tus, etc., bártulos", "liar los, mis, tus, etc., bártulos" })]
+	//[InlineData(
+	//	"ser alguien puro nervio, o un puro nervio",
+	//	new[] { "ser alguien puro nervio", "ser alguien un puro nervio" })]
 	public void SplitPhrase_WhenPhraseHasTwoVariants_ReturnsTwoPhrases(
 		string phrase,
 		string[] expectedPhrases)

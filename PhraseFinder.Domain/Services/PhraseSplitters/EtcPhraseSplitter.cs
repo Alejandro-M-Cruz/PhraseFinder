@@ -28,13 +28,12 @@ public class EtcPhraseSplitter : IPhraseSplitter
 		}
 
 		var options = optionsButLast.Split(", ").Append(lastOption).ToArray();
+		FilterOptions(ref options);
 		var firstPartWithFirstOption = options[0].Split();
-		var wordsToTake = Math.Min(firstPartWithFirstOption.Length, lastOption.Split().Length);
+		var wordsToTake = Math.Min(firstPartWithFirstOption.Length, options.Last().Split().Length);
 		var firstPart = string.Join(' ', firstPartWithFirstOption[..^wordsToTake]);
 		var firstOptionWords = firstPartWithFirstOption.TakeLast(wordsToTake).ToArray();
 		options[0] = string.Join(' ', firstOptionWords);
-
-		RemoveOptionPrefix(ref options);
 
 		return options
 			.Select(option => 
@@ -42,16 +41,23 @@ public class EtcPhraseSplitter : IPhraseSplitter
 			.ToArray();
     }
 
-    private static void RemoveOptionPrefix(ref string[] options)
-    {
-	    if (options[1..].Any(option => !option.StartsWith("o ")))
-	    {
-		    return;
-	    }
-
-	    for (var i = 1; i < options.Length; i++)
-	    {
+	private static void FilterOptions(ref string[] options)
+	{
+		var prefixed = options.Count(option => option.StartsWith("o "));
+		if (prefixed == 0)
+		{
+			return;
+		} 
+		if (prefixed < options.Length - 1)
+		{
+			var lastNonPrefixed = Array.FindLastIndex(options, option => !option.StartsWith("o "));
+			var firstPartWithFirstOption = string.Join(", ", options.Take(lastNonPrefixed + 1));
+			options = options[lastNonPrefixed..];
+			options[0] = firstPartWithFirstOption;
+		}
+		for (var i = 1; i < options.Length; i++)
+		{
 			options[i] = options[i][2..];
 		}
-    }
+	}
 }
