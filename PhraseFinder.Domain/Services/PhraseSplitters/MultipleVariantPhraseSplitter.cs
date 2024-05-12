@@ -5,7 +5,7 @@ namespace PhraseFinder.Domain.Services.PhraseSplitters;
 public class MultipleVariantPhraseSplitter : IPhraseSplitter
 {
 	private static readonly Regex MultipleVariantRegex = new(
-		"^(.+?)(,(?: o .+?,){1,} o .+?)(, .+?|)$",
+		"^(.+?)(,(?: o [^,]+?,){1,} o .+?)(, .+?|)$",
 		RegexOptions.Compiled);
 
 	private static readonly TwoVariantPhraseSplitter Splitter = new();

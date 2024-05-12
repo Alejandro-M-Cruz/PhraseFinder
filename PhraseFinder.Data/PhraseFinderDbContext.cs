@@ -12,10 +12,6 @@ public class PhraseFinderDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Phrase>()
-            .HasIndex(p => p.Pattern)
-            .IsUnique();
-
         modelBuilder.Entity<PhraseDictionary>()
             .Property(pd => pd.AddedAt)
             .HasDefaultValueSql("Now()");

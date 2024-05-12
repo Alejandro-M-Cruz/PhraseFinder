@@ -7,7 +7,8 @@ public class MultipleVariantPhraseSplitterTests
 	private readonly MultipleVariantPhraseSplitter _splitter = new();
 
 	[Theory]
-	[InlineData("¿estamos aquí, o en Francia ?")]
+	[InlineData("¿estamos aquí, o en Francia?")]
+	[InlineData("hacer, o hacerse, cuenta, o la cuenta")]
 	public void SplitPhrase_WhenPhraseHasLessThanThreeVariants_ReturnsPhrase(string phrase)
 	{
 		var result = _splitter.SplitPhrase(phrase);

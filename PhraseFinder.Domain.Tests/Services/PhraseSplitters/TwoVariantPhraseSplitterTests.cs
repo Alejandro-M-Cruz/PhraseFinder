@@ -7,7 +7,7 @@ public class TwoVariantPhraseSplitterTests
 	private readonly TwoVariantPhraseSplitter _splitter = new();
 
 	[Theory]
-	[InlineData("¿estamos aquí, o en Francia ?")]
+	[InlineData("¿estamos aquí, o en Francia?")]
 	[InlineData("¿qué hemos de hacer, o qué le hemos de hacer, o qué se le ha de hacer?")]
 	public void SplitPhrase_WhenPhraseDoesNotHaveTwoVariants_ReturnsPhrase(string phrase)
 	{
