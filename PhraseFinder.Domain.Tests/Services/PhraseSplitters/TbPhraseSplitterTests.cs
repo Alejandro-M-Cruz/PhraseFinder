@@ -13,7 +13,8 @@ public class TbPhraseSplitterTests
 
         var result = _splitter.SplitPhrase(phrase);
 
-        Assert.Equal(new[] { phrase }, result);
+        Assert.Single(result);
+		Assert.Equal(phrase, result[0]);
     }
 
     [Theory]

@@ -7,19 +7,14 @@ public class EtcPhraseSplitterTests
 	private readonly EtcPhraseSplitter _splitter = new();
 
 	[Theory]
-	[InlineData(
-		"¿qué hemos de hacer, o qué le hemos de hacer, o qué se le ha de hacer?",
-		new[] { "¿qué hemos de hacer, o qué le hemos de hacer, o qué se le ha de hacer?" })]
-	[InlineData(
-		"ejemplo, etcétera, etcétera",
-		new[] { "ejemplo, etcétera, etcétera" })]
-	public void SplitPhrase_WhenPhraseDoesNotContainEtc_ReturnsPhrase(
-		string phrase,
-		string[] expectedPhrases)
+	[InlineData("¿qué hemos de hacer, o qué le hemos de hacer, o qué se le ha de hacer?")]
+	[InlineData("ejemplo, etcétera, etcétera")]
+	public void SplitPhrase_WhenPhraseDoesNotContainEtc_ReturnsPhrase(string phrase)
 	{
-		var actualPhrases = _splitter.SplitPhrase(phrase);
+		var result = _splitter.SplitPhrase(phrase);
 
-		Assert.Equal(expectedPhrases, actualPhrases);
+		Assert.Single(result);
+		Assert.Equal(phrase, result[0]);
 	}
 
 	[Theory]

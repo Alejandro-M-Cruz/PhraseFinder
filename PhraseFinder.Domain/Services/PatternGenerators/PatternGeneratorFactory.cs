@@ -16,7 +16,9 @@ public static class PatternGeneratorFactory
                 [
                     new TbPhraseSplitter(), 
                     new GenderPhraseSplitter(),
-                    new TwoVariantPhraseSplitter()
+                    new EtcPhraseSplitter(),
+                    new TwoVariantPhraseSplitter(),
+                    new MultipleVariantPhraseSplitter()
                 ];
                 return new DleTxtPatternGenerator(new DleTxtPhraseCleaner(), splitters);
             default: 

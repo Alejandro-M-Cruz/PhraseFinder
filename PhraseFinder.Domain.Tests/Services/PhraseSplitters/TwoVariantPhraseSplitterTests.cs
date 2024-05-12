@@ -7,20 +7,14 @@ public class TwoVariantPhraseSplitterTests
 	private readonly TwoVariantPhraseSplitter _splitter = new();
 
 	[Theory]
-	[InlineData(
-		"¿estamos aquí, o en Francia ?",
-		new[] { "¿estamos aquí, o en Francia ?" })]
-	[InlineData(
-		"¿qué hemos de hacer, o qué le hemos de hacer, o qué se le ha de hacer?",
-		new[] { "¿qué hemos de hacer, o qué le hemos de hacer, o qué se le ha de hacer?" })]
-
-	public void SplitPhrase_WhenPhraseDoesNotHaveTwoVariants_ReturnsPhrase(
-		string phrase, 
-		string[] expectedPhrases)
+	[InlineData("¿estamos aquí, o en Francia ?")]
+	[InlineData("¿qué hemos de hacer, o qué le hemos de hacer, o qué se le ha de hacer?")]
+	public void SplitPhrase_WhenPhraseDoesNotHaveTwoVariants_ReturnsPhrase(string phrase)
 	{
-		var actualPhrases = _splitter.SplitPhrase(phrase);
+		var result = _splitter.SplitPhrase(phrase);
 
-		Assert.Equal(expectedPhrases, actualPhrases);
+		Assert.Single(result);
+		Assert.Equal(phrase, result[0]);
 	}
 
 	[Theory]
