@@ -26,9 +26,10 @@ public static class HtmlExtensions
 				highlightedText.Append("<span> | </span>");
 			}
 
-			highlightedText.Append($"<a href=\"#phrase-{n}\" class=\"text-danger fw-bold\">");
+			highlightedText.Append(
+				$"<a id=\"phrase-link-{n}\" href=\"#phrase-{n}\" class=\"text-danger fw-bold\" onclick=\"selectPhrase({n})\">");
 			highlightedText.Append(text, phrase.StartIndex, phrase.Length);
-			highlightedText.Append($"</a><sup class=\"text-danger fw-bold\">{n}</sup>");
+			highlightedText.Append($"<sup class=\"fw-bold text-decoration-none\">{n}</sup></a>");
 
 			currentIndex = phrase.EndIndex;
 		}

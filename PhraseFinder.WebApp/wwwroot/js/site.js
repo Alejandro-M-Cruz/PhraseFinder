@@ -1,4 +1,8 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿function padBodyTop() {
+    const header = document.querySelector('header')
+    const body = document.querySelector('body')
+    body.style.paddingTop = `${header.offsetHeight}px`
+}
 
-// Write your JavaScript code.
+window.addEventListener('load', padBodyTop)
+window.addEventListener('resize', padBodyTop)

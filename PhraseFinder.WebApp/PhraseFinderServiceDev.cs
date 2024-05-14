@@ -23,7 +23,7 @@ internal class PhraseFinderServiceDev : IPhraseFinderService
 					DefinitionToExamples =
 						new Dictionary<string, string[]>
 						{
-							{ "Definición de ejemplo", ["Ejemplo 1", "Ejemplo 2"] },
+							{ "Definición de ejemplo", [] },
 							{ "Definición de ejemplo 2", ["Ejemplo 3", "Ejemplo 4"] }
 						}
 				},
