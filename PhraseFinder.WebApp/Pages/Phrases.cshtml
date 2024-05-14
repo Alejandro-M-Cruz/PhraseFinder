@@ -3,60 +3,62 @@
 @model PhraseFinder.WebApp.Pages.PhrasesModel
 @{
 	ViewData["Title"] = "Expr. y loc. encontradas";
-	int n;
 }
 
+<style>
+	.user-text-p {
+		white-space: pre-line;
+	}
+</style>
+
 <div class="container">
-	<h2>Expresiones y locuciones encontradas:</h2>
-
-	<p style="white-space: pre-line;">
-
-		@if (!string.IsNullOrWhiteSpace(Model.Error))
-		{
-			<span>@Model.Text</span>
-			<p class="text-danger">Se ha producido un error al intentar procesar el texto introducido.</p>
-		}
-		else if (Model.FoundPhrases.Length == 0)
-		{
-			<span>@Model.Text</span>
-			<p>No se encontraron expresiones ni locuciones en el texto introducido.</p>
-		}
-		else
-		{
-			@Html.HighlightPhrases(Model.Text, Model.FoundPhrases)
-		}
-
-	</p>
+	<h2 class="">Expresiones y locuciones encontradas:</h2>
 	
-	<section style="margin-top: 36px;">
-		@{
-			n = 0;
+	@if (Model.FoundPhrases?.Length == 0)
+	{
+		<p class="mt-4 user-text-p">@Model.Text</p>
+		<p class="fw-bold text-primary mt-3 text-muted text-end">
+			No se encontraron expresiones ni locuciones en el texto introducido...
+		</p>
+	} 
+	else if (Model.FoundPhrases != null)
+	{
+		<p class="mt-4 user-text-p">@Html.HighlightPhrases(Model.Text, Model.FoundPhrases)</p>
 
-			foreach (var phrase in Model.FoundPhrases)
-			{
-				n++;
+		<section class="row row-cols-1 row-cols-xl-2">	
+			@{
+				var n = 0;
 
-				<div id="phrase-@n" class="card mb-4">
-					<div class="card-header">
-						<span class="card-subtitle fw-bolder">@n</span>
-					</div>
-					<div class="card-body">
-						<h3 class="card-title">
-							@phrase.Phrase
-						</h3>
-						@foreach (var (definition, examples) in phrase.DefinitionToExamples)
-						{
-							<p class="mt-4">@definition</p>
-							<ul class="list-group">
-								@foreach (var example in examples)
+				foreach (var phrase in Model.FoundPhrases)
+				{
+					n++;
+
+					<div class="col mb-4">
+						<article id="phrase-@n" class="card">
+							<div class="card-header">
+								<span class="card-subtitle fw-bolder">@n</span>
+							</div>
+							<div class="card-body">
+								<h3 class="card-title">
+									@phrase.Phrase
+								</h3>
+								@foreach (var (definition, examples) in phrase.DefinitionToExamples)
 								{
-									<li class="list-group-item">@example</li>
+									<p class="mt-4">@definition</p>
+									<ul class="list-group">
+										@foreach (var example in examples)
+										{
+											<li class="list-group-item">@example</li>
+										}
+									</ul>
 								}
-							</ul>
-						}
+							</div>
+						</article>
 					</div>
-				</div>
+				}
 			}
-		}
-	</section>
+		</section>
+	}
+
+	<div asp-validation-summary="All" class="text-danger mt-5"></div>
 </div>

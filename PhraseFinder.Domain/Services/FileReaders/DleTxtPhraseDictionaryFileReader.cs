@@ -26,6 +26,8 @@ public class DleTxtPhraseDictionaryFileReader(string filePath) : IPhraseDictiona
     private const string PhraseExamplePrefix = "[Ejem]";
     public static readonly Regex PhraseDefinitionRegex = new(
 		@"^\d+\. ((?:loc\.|locs\.|expr\.|exprs\.) (?:[a-z]+\. )*)", RegexOptions.Compiled);
+    private static readonly Regex EntryNumberRegex = new(
+		@"\[\d+\]", RegexOptions.Compiled);
 
     public async IAsyncEnumerable<PhraseEntry> ReadPhraseEntriesAsync(
 	    [EnumeratorCancellation] CancellationToken cancellationToken = default)
@@ -50,7 +52,11 @@ public class DleTxtPhraseDictionaryFileReader(string filePath) : IPhraseDictiona
             }
             else if (currentLine.Contains('#'))
             {
-                currentWord = currentLine.Split('#')[1];
+	            var entry = currentLine.Split('#').Last();
+                var entryNumberMatch = EntryNumberRegex.Match(entry);
+                currentWord = entryNumberMatch.Success ? 
+	                entry.Remove(entryNumberMatch.Index, entryNumberMatch.Length) : 
+	                entry;
                 currentPhraseDefinition = null;
             }
             else if (currentLine.StartsWith(PhrasePrefix))

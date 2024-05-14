@@ -12,7 +12,17 @@
 <header>
 	<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
 		<div class="container">
-			<a class="navbar-brand" asp-area="" asp-page="/Index">Detector de expresiones y locuciones</a>
+			<a class="navbar-brand" asp-area="" asp-page="/Index">
+				<span class="d-none d-sm-inline">
+					Detector de expresiones y locuciones
+				</span>
+				<span class="d-sm-none">
+					Detector de 
+					<abbr class="text-decoration-none" title="expresiones">expr.</abbr> 
+					y 
+					<abbr class="text-decoration-none" title="locuciones">loc.</abbr>
+				</span>
+			</a>
 			<button 
 				class="navbar-toggler" 
 				type="button" 
@@ -26,10 +36,10 @@
 			<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 				<ul class="navbar-nav flex-grow-1">
 					<li class="nav-item">
-						<a class="nav-link text-dark" asp-area="" asp-page="/Index">Introducir un texto</a>
+						<a class="nav-link text-dark ms-4" asp-area="" asp-page="/Index">Introducir un texto</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link text-dark" asp-area="" asp-page="/FileInput">Seleccionar un fichero</a>
+						<a class="nav-link text-dark ms-4" asp-area="" asp-page="/FileInput">Seleccionar un fichero</a>
 					</li>
 				</ul>
 			</div>
@@ -42,39 +52,6 @@
 		@RenderBody()
 	</main>
 </div>
-
-@*<header>
-    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-        <div class="container">
-            <a class="navbar-brand" asp-area="" asp-page="/Index">PhraseFinder.WebApp</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                <ul class="navbar-nav flex-grow-1">
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-</header>
-<div class="container">
-    <main role="main" class="pb-3">
-        @RenderBody()
-    </main>
-</div>
-
-<footer class="border-top footer text-muted">
-    <div class="container">
-        &copy; 2024 - PhraseFinder.WebApp - <a asp-area="" asp-page="/Privacy">Privacy</a>
-    </div>
-</footer>*@
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

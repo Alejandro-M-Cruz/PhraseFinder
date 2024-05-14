@@ -33,6 +33,10 @@ public static class HtmlExtensions
 			currentIndex = phrase.EndIndex;
 		}
 
+		if (currentIndex < text.Length)
+		{
+			highlightedText.Append($"<span>{text[currentIndex..]}</span>");
+		}
 		return helper.Raw(highlightedText);
 	}
 }

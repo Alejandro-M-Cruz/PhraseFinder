@@ -6,11 +6,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 
+// Add services to the container.
+builder.Services.AddRazorPages();
+
 // builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceClient>();
 builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceDev>();
 
-// Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddMvc().AddSessionStateTempDataProvider();
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -28,6 +31,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapRazorPages();
 

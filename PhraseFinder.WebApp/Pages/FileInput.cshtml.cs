@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -6,8 +7,8 @@ namespace PhraseFinder.WebApp.Pages;
 public class FileInputModel(ILogger<IndexModel> logger) : PageModel
 {
 	[BindProperty]
+	[Required(ErrorMessage = "Por favor, seleccione un fichero.")]
 	public IFormFile? TextFile { get; set; }
-
 
 	public void OnGet()
 	{
@@ -15,44 +16,43 @@ public class FileInputModel(ILogger<IndexModel> logger) : PageModel
 
 	public async Task<IActionResult> OnPostAsync()
 	{
-		if (!ModelState.IsValid)
+		if (!ModelState.IsValid || TextFile == null)
 		{
 			return Page();
 		}
 
-		if (TextFile == null)
-		{
-			ModelState.AddModelError(
-				nameof(TextFile), 
-				"Por favor, seleccione un fichero.");
-			return Page();
-		}
-
-		logger.LogInformation($"File length: {TextFile.Length}");
+		logger.LogDebug($"File length: {TextFile.Length}");
 
 		if (TextFile.Length > 10 * 1024)
 		{
 			ModelState.AddModelError(
 			nameof(TextFile), 
-				$"El fichero es demasiado grande (máximo 10KB).");
+				"El fichero es demasiado grande (máximo 10KB).");
 			return Page();
 		}
 
-		var tempFilePath = Path.GetTempFileName();
 		try
 		{
-			await using var stream = new FileStream(tempFilePath, FileMode.Create);
-			await TextFile.CopyToAsync(stream);
+			using var reader = new StreamReader(TextFile.OpenReadStream());
+			var text = await reader.ReadToEndAsync();
+			if (string.IsNullOrWhiteSpace(text) || text.Length < 3)
+			{
+				ModelState.AddModelError(
+					nameof(TextFile), 
+					"El fichero está vacío o es demasiado corto (mínimo 3 caracteres).");
+				return Page();
+			}
+			TempData["Text"] = text;
 		}
 		catch
 		{
-			System.IO.File.Delete(tempFilePath);
 			ModelState.AddModelError(
 				nameof(TextFile), 
 				"Se ha producido un error. Por favor, inténtelo de nuevo más tarde.");
 			return Page();
 		}
 
-		return RedirectToPage("/Phrases", new { filePath = tempFilePath });
+		return RedirectToPage("/Phrases");
 	}
+
 }
