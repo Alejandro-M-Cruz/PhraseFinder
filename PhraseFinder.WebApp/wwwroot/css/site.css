@@ -14,3 +14,19 @@ body {
     padding-top: 90px;
     margin-bottom: 60px;
 }
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+    body {
+        padding-top: 100px;
+    }
+}
+
+@media print {
+    header {
+        display: none;
+    }
+
+    body {
+        padding-top: 20px;
+    }
+}

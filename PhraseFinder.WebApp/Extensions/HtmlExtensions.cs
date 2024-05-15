@@ -30,7 +30,7 @@ public static class HtmlExtensions
 
 				highlightedText.Append(
 					$"<a id=\"phrase-link-{n}\" href=\"#phrase-{n}\" class=\"text-danger text-decoration-none\" " +
-					$"onclick=\"selectPhrase({n})\"><strong class=\"text-decoration-underline fw-bold\">");
+					$"onclick=\"focusPhrase({n})\"><strong class=\"text-decoration-underline fw-bold\">");
 				highlightedText.Append(text, phrase.StartIndex, phrase.Length);
 				highlightedText.Append($"</strong><sup>{n}</sup></a>");
 
