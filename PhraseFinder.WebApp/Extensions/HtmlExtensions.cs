@@ -13,31 +13,41 @@ public static class HtmlExtensions
 		var currentIndex = 0;
 		var highlightedText = new StringBuilder();
 
-		foreach (var phrase in foundPhrases)
+		try
 		{
-			n++;
+			foreach (var phrase in foundPhrases)
+			{
+				n++;
 
-			if (phrase.StartIndex > currentIndex)
-			{
-				highlightedText.Append($"<span>{text[currentIndex..phrase.StartIndex]}</span>");
-			} 
-			else if (currentIndex != 0)
-			{
-				highlightedText.Append("<span> | </span>");
+				if (phrase.StartIndex > currentIndex)
+				{
+					highlightedText.Append(text[currentIndex..phrase.StartIndex]);
+				}
+				else if (currentIndex != 0)
+				{
+					highlightedText.Append("<span> | </span>");
+				}
+
+				highlightedText.Append(
+					$"<a id=\"phrase-link-{n}\" href=\"#phrase-{n}\" class=\"text-danger text-decoration-none\" " +
+					$"onclick=\"selectPhrase({n})\"><strong class=\"text-decoration-underline fw-bold\">");
+				highlightedText.Append(text, phrase.StartIndex, phrase.Length);
+				highlightedText.Append($"</strong><sup>{n}</sup></a>");
+
+				currentIndex = phrase.EndIndex;
 			}
 
-			highlightedText.Append(
-				$"<a id=\"phrase-link-{n}\" href=\"#phrase-{n}\" class=\"text-danger fw-bold\" onclick=\"selectPhrase({n})\">");
-			highlightedText.Append(text, phrase.StartIndex, phrase.Length);
-			highlightedText.Append($"<sup class=\"fw-bold text-decoration-none\">{n}</sup></a>");
-
-			currentIndex = phrase.EndIndex;
+			if (currentIndex < text.Length)
+			{
+				highlightedText.Append(text[currentIndex..]);
+			}
 		}
-
-		if (currentIndex < text.Length)
+		catch
 		{
-			highlightedText.Append($"<span>{text[currentIndex..]}</span>");
+			highlightedText.Clear();
+			highlightedText.Append(text);
 		}
+
 		return helper.Raw(highlightedText);
 	}
 }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace PhraseFinder.WebApp.Pages;
 
-public class FileInputModel(ILogger<IndexModel> logger) : PageModel
+public class FileInputModel : PageModel
 {
 	[BindProperty]
 	[Required(ErrorMessage = "Por favor, seleccione un fichero.")]
@@ -20,8 +20,6 @@ public class FileInputModel(ILogger<IndexModel> logger) : PageModel
 		{
 			return Page();
 		}
-
-		logger.LogDebug($"File length: {TextFile.Length}");
 
 		if (TextFile.Length > 10 * 1024)
 		{

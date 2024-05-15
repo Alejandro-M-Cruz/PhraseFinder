@@ -20,20 +20,18 @@
 </style>
 
 <div class="container">
-	<h2 class="">Expresiones y locuciones encontradas:</h2>
+	<h2>Expresiones y locuciones encontradas</h2>
 	
 	@if (Model.FoundPhrases?.Length == 0)
 	{
-		<p class="mt-4 user-text-paragraph">@Model.Text</p>
+		<p class="mt-5 user-text-paragraph">@Model.Text</p>
 		<p class="fw-bold text-primary mt-3 text-muted text-end">
 			No se encontraron expresiones ni locuciones en el texto introducido...
 		</p>
 	} 
 	else if (Model.FoundPhrases != null)
 	{
-		<p class="mt-4 user-text-paragraph">
-			@Html.HighlightPhrases(Model.Text, Model.FoundPhrases)
-		</p>
+		<p class="my-5 user-text-paragraph">@Html.HighlightPhrases(Model.Text, Model.FoundPhrases)</p>
 
 		<section class="row row-cols-1 row-cols-xl-2">	
 			@{
@@ -44,7 +42,7 @@
 					n++;
 
 					<div class="col mb-4">
-						<article id="phrase-@n" class="card">
+						<article id="phrase-@n" class="card h-100">
 							<div class="card-header">
 								<span class="card-subtitle fw-bolder">@n</span>
 							</div>
@@ -55,12 +53,15 @@
 								@foreach (var (definition, examples) in phrase.DefinitionToExamples)
 								{
 									<p class="mt-4"><strong style="font-weight: 600;">@definition</strong></p>
-									<ul class="list-group">
-										@foreach (var example in examples)
-										{
-											<li class="list-group-item"><em>@example</em></li>
-										}
-									</ul>
+									if (examples.Length > 0)
+									{
+										<ul class="list-group">
+											@foreach (var example in examples)
+											{
+												<li class="list-group-item"><em>@example</em></li>
+											}
+										</ul>
+									}
 								}
 							</div>
 						</article>

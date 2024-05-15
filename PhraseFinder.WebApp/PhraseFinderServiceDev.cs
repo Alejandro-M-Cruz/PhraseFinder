@@ -33,8 +33,7 @@ internal class PhraseFinderServiceDev : IPhraseFinderService
 					StartIndex = 33,
 					EndIndex = 39,
 					Length = 6,
-					DefinitionToExamples =
-						new Dictionary<string, string[]> { { "Definición de ejemplo", ["Ejemplo 1", "Ejemplo 2"] } }
+					DefinitionToExamples = []
 				},
 				new FoundPhrase
 				{

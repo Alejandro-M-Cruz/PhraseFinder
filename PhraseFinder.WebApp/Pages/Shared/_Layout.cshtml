@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{
+	var currentPage = ViewContext.RouteData.Values["Page"]?.ToString();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -36,10 +40,14 @@
 			<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 				<ul class="navbar-nav flex-grow-1">
 					<li class="nav-item">
-						<a class="nav-link text-dark ms-4" asp-area="" asp-page="/Index">Introducir un texto</a>
+						<a class="nav-link ms-4 @(currentPage == "/Index" ? "active" : "")" asp-page="/Index">
+							Introducir un texto
+						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link text-dark ms-4" asp-area="" asp-page="/FileInput">Seleccionar un fichero</a>
+						<a class="nav-link ms-4 @(currentPage == "/FileInput" ? "active" : "")" asp-page="/FileInput">
+							Seleccionar un fichero
+						</a>
 					</li>
 				</ul>
 			</div>
