@@ -6,7 +6,7 @@ internal class PhraseFinderServiceDev : IPhraseFinderService
 {
 	public async Task<FoundPhrase[]> FindPhrasesAsync(string text)
 	{
-		await Task.Delay(2000);
+		await Task.Delay(100);
 
 		return text switch
 		{

@@ -2,31 +2,36 @@
 @using PhraseFinder.WebApp.Extensions
 @model PhraseFinder.WebApp.Pages.PhrasesModel
 @{
-	ViewData["Title"] = "Expr. y loc. encontradas";
+	ViewData["Title"] = "Exprs. y locs. encontradas";
 }
 
 <style>
-	.user-text-paragraph {
-		white-space: pre-line;
-	}
+    .user-text-paragraph {
+        white-space: pre-line;
+    }
 
-	.selected-phrase-card {
-		box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
-	}
+    .selected-phrase-card {
+        box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+    }
 
-	.selected-phrase-link {
-		color: var(--bs-primary) !important;
-	}
+    .selected-phrase-link {
+        color: var(--bs-primary) !important;
+    }
 </style>
 
-<div class="container">
-	<div class="d-flex flex-column flex-lg-row gap-4 align-items-center">
-		<h1 class="fs-2 p-0 m-0 flex-grow-1">Expresiones y locuciones encontradas</h1>
-		<button class="d-print-none btn btn-secondary d-flex flex-row align-items-center gap-2" onclick="print()">
-			<img style="filter: invert(100%);" src="~/assets/file-earmark-arrow-down.svg" width="24" height="24" />
-			Guardar como PDF
-		</button>
-	</div>
+<article class="container">
+    <header class="row gap-2 align-items-center">
+		<a asp-page="/Index" class="col-auto btn btn-link back-button">
+            <img src="~/assets/arrow-left-circle.svg" width="24" height="24" alt="Icono de vuelta atrás" />
+        </a>
+        <h2 class="col p-0 m-0">Expresiones y locuciones encontradas</h2>
+        <div class="mt-4 mt-md-0 col-12 col-md-auto">
+            <button class="d-print-none mx-auto btn btn-secondary d-flex flex-row align-items-center gap-2" onclick="print()">
+                <img style="filter: invert(100%);" src="~/assets/file-earmark-arrow-down.svg" width="24" height="24" alt="Icono de descarga de fichero"/>
+                Guardar como PDF
+            </button>
+        </div>
+    </header>
 	
 	@if (Model.FoundPhrases?.Length == 0)
 	{
@@ -78,22 +83,27 @@
 	}
 
 	<div asp-validation-summary="All" class="text-danger mt-5"></div>
-</div>
+</article>
 
 @section Scripts {
-	<script type="text/javascript">
-		let selectedPhrase
-		let selectedPhraseLink
+    <script type="text/javascript">
+        const backButton = document.querySelector('.back-button')
+        if (backButton && window.history.length > 1) {
+            backButton.href = 'javascript:window.history.back()'
+        }
 
-		function focusPhrase(phraseNumber) {
-			selectedPhrase?.classList.remove('selected-phrase-card')
-			selectedPhraseLink?.classList.remove('selected-phrase-link')
+        let selectedPhrase
+        let selectedPhraseLink
 
-			selectedPhrase = document.getElementById(`phrase-${phraseNumber}`)
-			selectedPhrase?.classList.add('selected-phrase-card')
+        function focusPhrase(phraseNumber) {
+            selectedPhrase?.classList.remove('selected-phrase-card')
+            selectedPhraseLink?.classList.remove('selected-phrase-link')
 
-			selectedPhraseLink = document.getElementById(`phrase-link-${phraseNumber}`)
-			selectedPhraseLink?.classList.add('selected-phrase-link')
-		}
-	</script>
+            selectedPhrase = document.getElementById(`phrase-${phraseNumber}`)
+            selectedPhrase?.classList.add('selected-phrase-card')
+
+            selectedPhraseLink = document.getElementById(`phrase-link-${phraseNumber}`)
+            selectedPhraseLink?.classList.add('selected-phrase-link')
+        }
+    </script>
 }

@@ -6,13 +6,13 @@
 }
 
 <form method="post" class="d-flex flex-column">
-	<label class="text-center mb-3" for="text">
-		Introduzca un texto para detectar todas las expresiones y locuciones que contenga:
+	<label class="text-center mt-2 mb-4" for="text">
+		Introduzca un texto para detectar todas las expresiones y locuciones que contiene.
 	</label>
-    <textarea id="text" asp-for="Text" class="form-control" placeholder="En algún lugar de la mancha, ..." rows="20"></textarea>
+    <textarea id="text" asp-for="Text" class="form-control" placeholder="En algún lugar de la mancha, ..." rows="16"></textarea>
     <span asp-validation-for="Text" class="text-danger mt-3 mx-1 mx-sm-3"></span>
 	<div asp-validation-summary="ModelOnly" class="text-danger mt-3 mx-1 mx-sm-3"></div>
-    <div class="d-flex flex-row m-3 justify-content-around justify-content-md-center gap-md-5">
+    <div class="d-flex flex-row m-2 justify-content-around justify-content-md-center gap-md-5">
 	    <button type="reset" class="btn btn-outline-danger">
 		    Restablecer
 	    </button>

@@ -1,5 +1,7 @@
 ﻿@{
 	var currentPage = ViewContext.RouteData.Values["Page"]?.ToString();
+	var isIndexPage = currentPage == "/Index";
+	var isFileInputPage = currentPage == "/FileInput";
 }
 
 <!DOCTYPE html>
@@ -7,6 +9,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Detector de expresiones y locuciones de la lengua española. Encuentra las expresiones y locuciones en el texto que se introduzca." />
+	<meta name="keywords" content="expresiones,locuciones,texto,español,diccionario" />
+	<meta name="color-scheme" content="only light" />
     <title>@ViewData["Title"] - Detector de exprs. y locs.</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -15,16 +20,16 @@
 <header class="fixed-top">
 	<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
 		<div class="container">
-			<a class="navbar-brand" asp-area="" asp-page="/Index">
-				<span class="d-none d-sm-inline">
+			<a class="navbar-brand" asp-page="/Index">
+				<h1 class="fs-5 fw-normal p-0 m-0 d-none d-sm-inline">
 					Detector de expresiones y locuciones
-				</span>
-				<span class="d-sm-none">
+				</h1>
+				<h1 class="fs-5 fw-normal p-0 m-0 d-sm-none">
 					Detector de 
-					<abbr class="text-decoration-none" title="expresiones">expr.</abbr> 
+					<abbr class="text-decoration-none" title="expresiones">exprs.</abbr> 
 					y 
-					<abbr class="text-decoration-none" title="locuciones">loc.</abbr>
-				</span>
+					<abbr class="text-decoration-none" title="locuciones">locs.</abbr>
+				</h1>
 			</a>
 			<button 
 				class="navbar-toggler" 
@@ -39,12 +44,12 @@
 			<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 				<ul class="navbar-nav flex-grow-1">
 					<li class="nav-item">
-						<a class="nav-link ms-4 @(currentPage == "/Index" ? "active" : "")" asp-page="/Index">
+						<a class="nav-link ms-4@(isIndexPage ? " active" : "")" asp-page="/Index" aria-current="@(isIndexPage ? "page" : null)">
 							Introducir un texto
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link ms-4 @(currentPage == "/FileInput" ? "active" : "")" asp-page="/FileInput">
+						<a class="nav-link ms-4@(currentPage == "/FileInput" ? " active" : "")" asp-page="/FileInput" aria-current="@(isFileInputPage ? "page" : null)">
 							Seleccionar un fichero
 						</a>
 					</li>

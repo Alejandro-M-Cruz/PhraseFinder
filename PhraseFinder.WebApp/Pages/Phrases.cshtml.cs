@@ -10,24 +10,24 @@ public class PhrasesModel(IPhraseFinderService phraseFinder) : PageModel
 	public string Text { get; set; } = string.Empty;
 
 	[BindProperty] 
-    public FoundPhrase[]? FoundPhrases { get; set; }
+	public FoundPhrase[]? FoundPhrases { get; set; }
 
-    public async Task<IActionResult> OnGetAsync()
-    {
-	    Text = TempData.Peek("Text") as string ?? "";
+	public async Task<IActionResult> OnGetAsync()
+	{
+		Text = TempData.Peek("Text") as string ?? "";
 
-	    if (string.IsNullOrWhiteSpace(Text))
-	    {
-		    TempData.Clear();
-		    return RedirectToPage("/Index");
-	    }
-
-	    try
-	    {
-		    FoundPhrases = (await phraseFinder.FindPhrasesAsync(Text))
-			    .OrderBy(p => p.StartIndex)
-			    .ToArray();
-	    }
+		if (string.IsNullOrWhiteSpace(Text))
+		{
+			TempData.Clear();
+			return RedirectToPage("/Index");
+		}
+		
+		try
+		{
+			FoundPhrases = (await phraseFinder.FindPhrasesAsync(Text))
+				.OrderBy(p => p.StartIndex)
+				.ToArray();
+		}
 		catch
 		{
 			ModelState.AddModelError(

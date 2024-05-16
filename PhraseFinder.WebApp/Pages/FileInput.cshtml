@@ -6,13 +6,13 @@
 }
 
 <form method="post" enctype="multipart/form-data" class="d-flex flex-column">
-	<label class="text-center mb-3" for="text-file">
-		Seleccione un fichero de texto plano para detectar todas las expresiones y locuciones que contenga:
+	<label class="text-center mt-2 mb-4" for="text-file">
+		Seleccione un fichero de texto plano para detectar todas las expresiones y locuciones que contiene.
 	</label>
-	<input id="text-file" asp-for="TextFile" type="file"  class="form-control mx-auto" style="max-width: 300px">
+	<input id="text-file" asp-for="TextFile" type="file" class="form-control mx-auto" style="max-width: 500px;">
 	<span asp-validation-for="TextFile" class="text-danger text-center mt-3 mx-1"></span>
 	<div asp-validation-summary="ModelOnly" class="text-danger text-center mx-1"></div>
-	<div class="d-flex flex-row mx-3 m-3 justify-content-around justify-content-md-center gap-md-5">
+	<div class="d-flex flex-row m-2 justify-content-around justify-content-md-center gap-md-5">
 		<button type="reset" class="btn btn-outline-danger">
 			Restablecer
 		</button>
