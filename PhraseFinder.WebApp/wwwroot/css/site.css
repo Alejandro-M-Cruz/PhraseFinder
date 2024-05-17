@@ -12,11 +12,7 @@ html {
 
 body {
     padding-top: 90px;
-    margin-bottom: 60px;
-}
-
-.back-button:hover {
-    background-color: var(--bs-light);
+    padding-bottom: 40px;
 }
 
 @media only screen and (max-width: 575px) {
@@ -32,11 +28,15 @@ body {
 }
 
 @media print {
-    header {
+    #navbar-header {
         display: none;
     }
 
     body {
         padding-top: 20px;
     }
+}
+
+.back-button:hover {
+    background-color: var(--bs-light);
 }

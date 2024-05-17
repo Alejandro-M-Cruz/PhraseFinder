@@ -8,6 +8,8 @@
 <style>
     .user-text-paragraph {
         white-space: pre-line;
+		border-style: dashed !important;
+        padding: 0.6rem 1rem;
     }
 
     .selected-phrase-card {
@@ -20,8 +22,8 @@
 </style>
 
 <article class="container">
-    <header class="row gap-2 align-items-center">
-		<a asp-page="/Index" class="col-auto btn btn-link back-button">
+    <header class="row gap-3 align-items-center">
+		<a asp-page="/Index" class="d-print-none col-auto btn btn-link back-button">
             <img src="~/assets/arrow-left-circle.svg" width="24" height="24" alt="Icono de vuelta atrás" />
         </a>
         <h2 class="col p-0 m-0">Expresiones y locuciones encontradas</h2>
@@ -35,14 +37,15 @@
 	
 	@if (Model.FoundPhrases?.Length == 0)
 	{
-		<p class="mt-5 user-text-paragraph">@Model.Text</p>
+		<p class="my-5 user-text-paragraph border border-4 rounded-3">@Model.Text</p>
 		<p class="fw-bold text-primary mt-3 text-muted text-end">
 			No se encontraron expresiones ni locuciones en el texto introducido...
 		</p>
 	} 
 	else if (Model.FoundPhrases != null)
 	{
-		<p class="my-5 user-text-paragraph">@Html.HighlightPhrases(Model.Text, Model.FoundPhrases)</p>
+		<p class="my-5 user-text-paragraph border border-4 rounded-3">@Html.HighlightPhrases(Model.Text, Model.FoundPhrases)</p>
+                
 
 		<section class="row row-cols-1 row-cols-xl-2">	
 			@{
@@ -86,24 +89,32 @@
 </article>
 
 @section Scripts {
-    <script type="text/javascript">
-        const backButton = document.querySelector('.back-button')
-        if (backButton && window.history.length > 1) {
-            backButton.href = 'javascript:window.history.back()'
-        }
-
+    <script type="text/javascript" defer>
         let selectedPhrase
         let selectedPhraseLink
+        const phraseLinks = document.querySelectorAll('[id^="phrase-link-"]')
 
-        function focusPhrase(phraseNumber) {
-            selectedPhrase?.classList.remove('selected-phrase-card')
-            selectedPhraseLink?.classList.remove('selected-phrase-link')
+        phraseLinks.forEach(phraseLink => {
+            phraseLink.addEventListener('click',
+                e => {
+                    const phraseId = phraseLink.id.replace('link-', '')
 
-            selectedPhrase = document.getElementById(`phrase-${phraseNumber}`)
-            selectedPhrase?.classList.add('selected-phrase-card')
+                    selectedPhrase?.classList.remove('selected-phrase-card')
+                    selectedPhraseLink?.classList.remove('selected-phrase-link')
 
-            selectedPhraseLink = document.getElementById(`phrase-link-${phraseNumber}`)
-            selectedPhraseLink?.classList.add('selected-phrase-link')
-        }
+                    if (selectedPhrase?.id === phraseId) {
+                        e.preventDefault()
+                        selectedPhrase = null
+                        selectedPhraseLink = null
+                        return
+                    }
+
+                    selectedPhrase = document.getElementById(phraseId)
+                    selectedPhrase?.classList.add('selected-phrase-card')
+
+                    selectedPhraseLink = phraseLink
+                    selectedPhraseLink.classList.add('selected-phrase-link')
+                })
+        })
     </script>
 }
