@@ -6,10 +6,8 @@ namespace PhraseFinder.WebApp.Pages;
 
 public class PhrasesModel(IPhraseFinderService phraseFinder) : PageModel
 {
-	[BindProperty] 
-	public string Text { get; set; } = string.Empty;
+	public string Text { get; set; } = "";
 
-	[BindProperty] 
 	public FoundPhrase[]? FoundPhrases { get; set; }
 
 	public async Task<IActionResult> OnGetAsync()

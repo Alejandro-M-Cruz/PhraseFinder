@@ -23,19 +23,27 @@
 
 <article class="container">
     <header class="row gap-3 align-items-center">
-		<a asp-page="/Index" class="d-print-none col-auto btn btn-link back-button">
+        <a asp-page="/Index" class="d-print-none col-auto btn btn-link back-button">
             <img src="~/assets/arrow-left-circle.svg" width="24" height="24" alt="Icono de vuelta atrás" />
         </a>
         <h2 class="col p-0 m-0">Expresiones y locuciones encontradas</h2>
         <div class="mt-4 mt-md-0 col-12 col-md-auto">
-            <button class="d-print-none mx-auto btn btn-secondary d-flex flex-row align-items-center gap-2" onclick="print()">
-                <img style="filter: invert(100%);" src="~/assets/file-earmark-arrow-down.svg" width="24" height="24" alt="Icono de descarga de fichero"/>
-                Guardar como PDF
-            </button>
+            @if (Model.FoundPhrases != null)
+            {
+                <button class="d-print-none mx-auto btn btn-secondary d-flex flex-row align-items-center gap-2" onclick="print()">
+                    <img 
+                        style="filter: invert(100%);" 
+                        src="~/assets/file-earmark-arrow-down.svg" 
+                        width="24" 
+                        height="24" 
+                        alt="Icono de descarga de fichero">
+                    Guardar como PDF
+                </button>
+            }
         </div>
     </header>
-	
-	@if (Model.FoundPhrases?.Length == 0)
+    
+    @if (Model.FoundPhrases?.Length == 0)
 	{
 		<p class="my-5 user-text-paragraph border border-4 rounded-3">@Model.Text</p>
 		<p class="fw-bold text-primary mt-3 text-muted text-end">
