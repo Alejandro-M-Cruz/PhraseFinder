@@ -37,6 +37,14 @@ body {
     }
 }
 
+.fw-medium {
+    font-weight: 500;
+}
+
+.fw-semibold {
+    font-weight: 600;
+}
+
 .back-button:hover {
     background-color: var(--bs-light);
 }
