@@ -6,21 +6,30 @@ namespace PhraseFinder.WebApp.Pages;
 
 public class PhrasesModel(IPhraseFinderService phraseFinder) : PageModel
 {
-	public string Text { get; set; } = "";
+	public string Text { get; private set; } = "";
 
-	public FoundPhrase[]? FoundPhrases { get; set; }
+	public FoundPhrase[]? FoundPhrases { get; private set; }
 
-	public async Task<IActionResult> OnGetAsync()
-	{
-		Text = TempData.Peek("Text") as string ?? "";
+	public bool PhrasesAreLoaded { get; private set; }
 
-		if (string.IsNullOrWhiteSpace(Text))
-		{
-			TempData.Clear();
-			return RedirectToPage("/Index");
-		}
-		
-		try
+    public IActionResult OnGet()
+    {
+        if (!RetrieveText())
+        {
+            return RedirectToPage("/Index");
+        }
+
+        return Page();
+    }
+
+	public async Task<IActionResult> OnPostAsync()
+    {
+        if (!RetrieveText())
+        {
+            return RedirectToPage("/Index");
+        }
+
+        try
 		{
 			FoundPhrases = (await phraseFinder.FindPhrasesAsync(Text))
 				.OrderBy(p => p.StartIndex)
@@ -29,10 +38,24 @@ public class PhrasesModel(IPhraseFinderService phraseFinder) : PageModel
 		catch
 		{
 			ModelState.AddModelError(
-				string.Empty, 
+				string.Empty,
 				"Se ha producido un error. Por favor, inténtelo de nuevo más tarde.");
 		}
 
+		PhrasesAreLoaded = true;
 		return Page();
 	}
+
+    private bool RetrieveText()
+    {
+        Text = TempData.Peek("Text") as string ?? "";
+
+        if (string.IsNullOrWhiteSpace(Text))
+        {
+            TempData.Clear();
+            return false;
+        }
+
+        return true;
+    }
 }

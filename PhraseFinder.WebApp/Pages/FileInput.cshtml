@@ -6,9 +6,9 @@
 }
 
 <form method="post" enctype="multipart/form-data" class="d-flex flex-column">
-	<label class="text-center mt-2 mb-4" for="text-file">
-		Seleccione un fichero de texto plano para detectar todas las expresiones y locuciones que contiene.
-	</label>
+    <label class="text-center mt-2 mb-4" for="text-file">
+        Seleccione un fichero de texto plano para detectar todas las expresiones y locuciones que contiene.
+    </label>
     <input 
         id="text-file" 
         asp-for="TextFile" 
@@ -16,14 +16,14 @@
         class="form-control mx-auto" 
         style="max-width: 500px;"
         aria-describedby="text-file-validation">
-	<span id="text-file-validation" asp-validation-for="TextFile" class="text-danger text-center mt-3 mx-1"></span>
-	<div asp-validation-summary="ModelOnly" class="text-danger text-center mx-1"></div>
-	<div class="d-flex flex-row m-2 justify-content-around justify-content-md-center gap-md-5">
-		<button type="reset" class="btn btn-outline-danger">
-			Restablecer
-		</button>
-		<button type="submit" class="btn btn-primary">
-			Confirmar
-		</button>
-	</div>
+    <span id="text-file-validation" asp-validation-for="TextFile" class="text-danger text-center mt-3 mx-1"></span>
+    <div asp-validation-summary="ModelOnly" class="text-danger text-center mx-1"></div>
+    <div class="d-flex flex-row m-2 justify-content-around justify-content-md-center gap-md-5">
+        <button type="reset" class="btn btn-outline-danger">
+            Restablecer
+        </button>
+        <button type="submit" class="btn btn-primary">
+            Confirmar
+        </button>
+    </div>
 </form>

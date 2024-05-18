@@ -8,7 +8,7 @@
 <style>
     .user-text-paragraph {
         white-space: pre-line;
-		border-style: dashed !important;
+        border-style: dashed !important;
         padding: 0.6rem 1rem;
     }
 
@@ -26,84 +26,128 @@
         <a asp-page="/Index" class="d-print-none col-auto btn btn-link back-button">
             <img src="~/assets/arrow-left-circle.svg" width="24" height="24" alt="Icono de vuelta atrás" />
         </a>
-        <h2 class="col p-0 m-0">Expresiones y locuciones encontradas</h2>
+        <h2 class="col p-0 m-0">Expresiones y locuciones@(Model.PhrasesAreLoaded ? " encontradas" : "")</h2>
         <div class="mt-4 mt-md-0 col-12 col-md-auto">
             @if (Model.FoundPhrases != null)
             {
                 <button class="d-print-none mx-auto btn btn-secondary d-flex flex-row align-items-center gap-2" onclick="print()">
-                    <img 
-                        style="filter: invert(100%);" 
-                        src="~/assets/file-earmark-arrow-down.svg" 
-                        width="24" 
-                        height="24" 
-                        alt="Icono de descarga de fichero">
+                    <img style="filter: invert(100%);"
+                         src="~/assets/file-earmark-arrow-down.svg"
+                         width="24"
+                         height="24"
+                         alt="Icono de descarga de fichero">
                     Guardar como PDF
                 </button>
             }
         </div>
     </header>
+
+    @if (Model.FoundPhrases == null || Model.FoundPhrases.Length == 0)
+    {
+        <p class="my-5 user-text-paragraph border border-4 rounded-3">@Model.Text</p>
+    }
     
     @if (Model.FoundPhrases?.Length == 0)
-	{
-		<p class="my-5 user-text-paragraph border border-4 rounded-3">@Model.Text</p>
-		<p class="fw-bold text-primary mt-3 text-muted text-end">
-			No se encontraron expresiones ni locuciones en el texto introducido...
-		</p>
-	} 
-	else if (Model.FoundPhrases != null)
-	{
-		<p class="my-5 user-text-paragraph border border-4 rounded-3">@Html.HighlightPhrases(Model.Text, Model.FoundPhrases)</p>
-                
+    {
+        <p class="fw-bold mt-3 text-muted text-end">
+            No se encontraron expresiones ni locuciones en el texto introducido...
+        </p>            
+    }
+    
+    @if (!Model.PhrasesAreLoaded)
+    {
+        <noscript>
+            <style>
+                #loading {
+                    display: none !important;
+                }
+            </style>
+        </noscript>
 
-		<section class="row row-cols-1 row-cols-xl-2">	
-			@{
-				var n = 0;
+        <form
+            id="page-loaded-form"
+            method="post"
+            class="invisible"
+            style="width: 0; height: 0;"
+            aria-hidden="true">
+        </form>
 
-				foreach (var phrase in Model.FoundPhrases)
-				{
-					n++;
+        <div id="loading" class="my-5 d-flex align-items-center justify-content-center gap-3" role="status">
+            <span class="spinner-border text-primary"></span>
+            <p class="text-center mt-3">Buscando expresiones y locuciones...</p>
+        </div>
 
-					<div class="col mb-4">
-						<article id="phrase-@n" class="card h-100">
-							<div class="card-header">
-								<span class="card-subtitle fw-bolder">@n</span>
-							</div>
-							<div class="card-body">
-								<h3 class="card-title">
-									@phrase.Phrase
-								</h3>
-								@foreach (var (definition, examples) in phrase.DefinitionToExamples)
-								{
-									<p class="mt-4"><strong style="font-weight: 600;">@definition</strong></p>
-									if (examples.Length > 0)
-									{
-										<ul class="list-group">
-											@foreach (var example in examples)
-											{
-												<li class="list-group-item"><em>@example</em></li>
-											}
-										</ul>
-									}
-								}
-							</div>
-						</article>
-					</div>
-				}
-			}
-		</section>
-	}
+        <noscript>
+            <form method="post" class="d-flex justify-content-center gap-2 gap-sm-5">
+                <a asp-page="/Index" class="btn btn-danger">Cancelar</a>
+                <button class="btn btn-primary" type="submit">Analizar texto</button>
+            </form>
+        </noscript> 
+    }
+    
+    @if (Model.FoundPhrases?.Length > 0)
+    {
+        <p class="my-5 user-text-paragraph border border-4 rounded-3">@Html.HighlightPhrases(Model.Text, Model.FoundPhrases)</p>
 
-	<div asp-validation-summary="All" class="text-danger mt-5"></div>
+
+        <section class="row row-cols-1 row-cols-xl-2">
+            @{
+                var n = 0;
+            }
+
+            @foreach (var phrase in Model.FoundPhrases)
+            {
+                n++;
+
+                <div class="col mb-4">
+                    <article id="phrase-@n" class="card h-100">
+                        <div class="card-header">
+                            <span class="card-subtitle fw-bolder">@n</span>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">
+                                @phrase.Phrase
+                            </h3>
+                            @foreach (var (definition, examples) in phrase.DefinitionToExamples)
+                            {
+                                <p class="mt-4"><strong style="font-weight: 600;">@definition</strong></p>
+                                if (examples.Length > 0)
+                                {
+                                    <ul class="list-group">
+                                        @foreach (var example in examples)
+                                        {
+                                            <li class="list-group-item"><em>@example</em></li>
+                                        }
+                                    </ul>
+                                }
+                            }
+                        </div>
+                    </article>
+                </div>
+            }
+        </section>
+    }
+
+    <div asp-validation-summary="All" class="text-danger mt-5"></div>
 </article>
 
+
 @section Scripts {
+    <script type="text/javascript" defer>
+        const pageLoadedForm = document.getElementById('page-loaded-form')
+
+        if (pageLoadedForm) {
+            pageLoadedForm.submit()
+        }
+    </script>
+
     <script type="text/javascript" defer>
         let selectedPhrase
         let selectedPhraseLink
         const phraseLinks = document.querySelectorAll('[id^="phrase-link-"]')
 
         phraseLinks.forEach(phraseLink => {
-            phraseLink.addEventListener('click',
+            phraseLink.addEventListener('click', 
                 e => {
                     const phraseId = phraseLink.id.replace('link-', '')
 
