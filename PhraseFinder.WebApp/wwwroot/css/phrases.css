@@ -1,0 +1,13 @@
+﻿.user-text-paragraph {
+    white-space: pre-line;
+    border-style: dashed !important;
+    padding: 0.6rem 1rem;
+}
+
+.selected-phrase-card {
+    box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
+}
+
+.selected-phrase-link {
+    color: var(--bs-primary) !important;
+}

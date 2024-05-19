@@ -8,8 +8,8 @@ namespace PhraseFinder.WCF
 	{
 		[DataMember]
 		public string Phrase { get; set; } = "";
-		
-		[DataMember]
+        
+        [DataMember]
 		public int StartIndex { get; set; }
 		
 		[DataMember]

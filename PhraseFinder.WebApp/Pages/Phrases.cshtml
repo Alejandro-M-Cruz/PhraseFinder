@@ -5,21 +5,9 @@
 	ViewData["Title"] = "Exprs. y locs. encontradas";
 }
 
-<style>
-    .user-text-paragraph {
-        white-space: pre-line;
-        border-style: dashed !important;
-        padding: 0.6rem 1rem;
-    }
-
-    .selected-phrase-card {
-        box-shadow: 0 0 0 0.25rem rgba(49, 132, 253, 0.5);
-    }
-
-    .selected-phrase-link {
-        color: var(--bs-primary) !important;
-    }
-</style>
+@section Styles {
+    <link rel="stylesheet" href="~/css/phrases.css" asp-append-version="true" />
+}
 
 <article class="container">
     <header class="row gap-3 align-items-center">
@@ -35,7 +23,7 @@
                          src="~/assets/file-earmark-arrow-down.svg"
                          width="24"
                          height="24"
-                         alt="Icono de descarga de fichero">
+                         alt="Icono de descarga de fichero" />
                     Guardar como PDF
                 </button>
             }
@@ -76,7 +64,7 @@
             <span class="spinner-border text-primary"></span>
             <p class="mt-3 text-muted fw-semibold">
                 Buscando expresiones y locuciones...
-                <br>
+                <br/>
                 Este proceso puede tomar unos segundos.
             </p>
         </div>
@@ -137,45 +125,12 @@
 
 
 @section Scripts {
-    <script type="text/javascript" defer>
-        let selectedPhrase
-        let selectedPhraseLink
-
-        function findPhrases() {
-            const findPhrasesForm = document.getElementById('find-phrases')
-
-            if (findPhrasesForm) {
-                findPhrasesForm.submit()
-            }
-        }
-
-        function setUpPhraseLinks() {
-            document.querySelectorAll('[id^="phrase-link-"]').forEach(phraseLink => {
-                phraseLink.addEventListener('click', e => handlePhraseLinkClick(e, phraseLink))
-            })
-        }
-
-        function handlePhraseLinkClick(e, phraseLink) {
-            const phraseId = phraseLink.id.replace('link-', '')
-
-            selectedPhrase?.classList.remove('selected-phrase-card')
-            selectedPhraseLink?.classList.remove('selected-phrase-link')
-
-            if (selectedPhrase?.id === phraseId) {
-                e.preventDefault()
-                selectedPhrase = null
-                selectedPhraseLink = null
-                return
-            }
-
-            selectedPhrase = document.getElementById(phraseId)
-            selectedPhrase?.classList.add('selected-phrase-card')
-
-            selectedPhraseLink = phraseLink
-            selectedPhraseLink.classList.add('selected-phrase-link')
-        }
-
-        findPhrases()
-        setUpPhraseLinks()
-    </script>
+    @if (Model.PhrasesAreLoaded)
+    {
+        <script src="~/js/phrases/set-up-phrase-links.js" asp-append-version="true" defer></script>
+    }
+    else
+    {
+        <script src="~/js/phrases/find-phrases.js" asp-append-version="true" defer></script>
+    }
 }

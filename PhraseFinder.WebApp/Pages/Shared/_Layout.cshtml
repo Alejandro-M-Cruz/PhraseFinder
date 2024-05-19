@@ -15,6 +15,8 @@
     <title>@ViewData["Title"] - Detector de exprs. y locs.</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+	@await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
 <header id="navbar-header" class="fixed-top">
@@ -44,12 +46,18 @@
 			<div id="navbar-supported-content" class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 				<ul class="navbar-nav flex-grow-1">
 					<li class="nav-item">
-						<a class="nav-link ms-4@(isIndexPage ? " active" : "")" asp-page="/Index" aria-current="@(isIndexPage ? "page" : null)">
+                        <a 
+                            class="nav-link ms-4@(isIndexPage ? " active" : "")" 
+                            asp-page="/Index" 
+                            aria-current="@(isIndexPage ? "page" : null)">
 							Introducir un texto
 						</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link ms-4@(currentPage == "/FileInput" ? " active" : "")" asp-page="/FileInput" aria-current="@(isFileInputPage ? "page" : null)">
+                        <a 
+                            class="nav-link ms-4@(currentPage == "/FileInput" ? " active" : "")" 
+                            asp-page="/FileInput" 
+                            aria-current="@(isFileInputPage ? "page" : null)">
 							Seleccionar un fichero
 						</a>
 					</li>
