@@ -7,6 +7,9 @@ namespace PhraseFinder.WCF
 	public class FoundPhrase
 	{
 		[DataMember]
+		public int PhraseId { get; set; }
+
+		[DataMember]
 		public string Phrase { get; set; } = "";
         
         [DataMember]
@@ -19,7 +22,19 @@ namespace PhraseFinder.WCF
 		public int Length { get; set; }
 		
 		[DataMember]
-		public IDictionary<string, string[]> DefinitionToExamples { get; } =
-			new Dictionary<string, string[]>();
-	}
+        public PhraseDefinition[] Definitions;
+    }
+
+	[DataContract]
+    public class PhraseDefinition
+    {
+		[DataMember]
+		public string Definition { get; set; } = "";
+
+        [DataMember] 
+        public string[] Examples { get; set; }
+
+        [DataMember]
+        public int PhraseId { get; set; }
+    }
 }

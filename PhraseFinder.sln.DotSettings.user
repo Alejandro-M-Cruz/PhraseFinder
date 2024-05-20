@@ -8,4 +8,9 @@
     &lt;Project Location="D:\Proyectos\dotNet\TFT\PhraseFinder\PhraseFinder.Data.Tests" Presentation="&amp;lt;PhraseFinder.Data.Tests&amp;gt;" /&gt;&#xD;
   &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ef8fe295_002Dcf92_002D426c_002D8036_002D8bce971a9946/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="PhraseFinderServiceTests" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;xUnit::D022F0DD-390F-4290-85D3-65619AE557DD::net8.0::PhraseFinder.WCF.Tests.PhraseFinderServiceTests&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
 	</wpf:ResourceDictionary>

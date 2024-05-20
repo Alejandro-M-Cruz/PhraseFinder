@@ -67,9 +67,6 @@ public class TwoVariantPhraseSplitterTests
 			"segarle a alguien la hierba bajo los pies"
 		})]
 	//[InlineData(
-	//	"coger, o liar, los, mis, tus, etc., bártulos",
-	//	new[] { "coger los, mis, tus, etc., bártulos", "liar los, mis, tus, etc., bártulos" })]
-	//[InlineData(
 	//	"ser alguien puro nervio, o un puro nervio",
 	//	new[] { "ser alguien puro nervio", "ser alguien un puro nervio" })]
 	public void SplitPhrase_WhenPhraseHasTwoVariants_ReturnsTwoPhrases(

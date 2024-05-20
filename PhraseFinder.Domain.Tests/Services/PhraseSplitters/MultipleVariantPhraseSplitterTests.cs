@@ -56,7 +56,8 @@ public class MultipleVariantPhraseSplitterTests
 			"dale que le das",
 			"dale que le darás"
 		})]
-	[InlineData("allá se las haya, o se las hayan, o se lo haya, o se lo hayan, o te las hayas, o te lo hayas",
+	[InlineData(
+		"allá se las haya, o se las hayan, o se lo haya, o se lo hayan, o te las hayas, o te lo hayas",
 		new[]
 		{
 			"allá se las haya",

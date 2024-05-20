@@ -4,7 +4,7 @@ namespace PhraseFinder.Domain.Services.PhraseSplitters;
 
 public class TbPhraseSplitter : IPhraseSplitter
 {
-    private static readonly Regex SpecificationInAlsoSectionRegex = new(
+    private static readonly Regex TbSectionRegex = new(
         @" Tb\. .+(, \w+\.)",
         RegexOptions.Compiled);
 
@@ -15,7 +15,7 @@ public class TbPhraseSplitter : IPhraseSplitter
             return [phrase];
         }
 
-        var match = SpecificationInAlsoSectionRegex.Match(phrase);
+        var match = TbSectionRegex.Match(phrase);
         var specificationGroup = match.Groups[1];
 
         if (specificationGroup.Success)

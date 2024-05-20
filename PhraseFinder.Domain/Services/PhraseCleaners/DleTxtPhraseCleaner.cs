@@ -2,7 +2,7 @@
 
 namespace PhraseFinder.Domain.Services.PhraseCleaners;
 
-public partial class DleTxtPhraseCleaner : IPhraseCleaner
+public class DleTxtPhraseCleaner : IPhraseCleaner
 {
     private static readonly Regex ExtraSectionsRegex = new(
         @"(?: U\.| V\.| Por alus\.| La var\.| En acep\.| Del| Expr\.| Escr\.| De| Falsa| Quizá) .+\.",
@@ -11,6 +11,12 @@ public partial class DleTxtPhraseCleaner : IPhraseCleaner
     private static readonly Regex SpecificationRegex = new(
         @",\sespecialmente.*?,|,\sespecialmente.*?$",
         RegexOptions.Compiled);
+
+    public string CleanPhrase(string phrase)
+    {
+        phrase = RemoveSpecification(phrase);
+        return RemoveExtraSections(phrase);
+    }
 
     private string RemoveSpecification(string phrase)
     {
@@ -22,11 +28,5 @@ public partial class DleTxtPhraseCleaner : IPhraseCleaner
     {
         var match = ExtraSectionsRegex.Match(phrase);
         return match.Success ? phrase.Remove(match.Index) : phrase;
-    }
-
-    public string CleanPhrase(string phrase)
-    {
-        phrase = RemoveSpecification(phrase);
-        return RemoveExtraSections(phrase);
     }
 }

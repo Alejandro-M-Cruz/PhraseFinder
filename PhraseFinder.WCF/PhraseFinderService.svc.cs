@@ -1,53 +1,59 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using PhraseFinder.WCF.Data;
 
 namespace PhraseFinder.WCF
 {
     public class PhraseFinderService : IPhraseFinderService
     {
-	    public IEnumerable<FoundPhrase> FindPhrases(string text)
-	    {
+        private static readonly IEnumerable<Phrase> Phrases;
+
+        static PhraseFinderService()
+        {
             using (var phrasesService = new PhrasesService())
             {
-                var phrases = phrasesService.GetPhrases();
-                var n = 0;
-                Phrase lastPhrase = null;
-                foreach (var phrase in phrases)
-                {
-                    n++;
-                    lastPhrase = phrase;
-                }
-
-                return new[]
-                {
-                    new FoundPhrase
-                    {
-                        Phrase = "alguno, na que otro, tra",
-                        StartIndex = 0,
-                        EndIndex = 10,
-                        Length = 10
-                    },
-                    new FoundPhrase
-                    {
-                        Phrase = "alguno, na que otro, tra",
-                        StartIndex = 33,
-                        EndIndex = 39,
-                        Length = 6,
-                    },
-                    new FoundPhrase
-                    {
-                        Phrase = "texto de ejemplo",
-                        StartIndex = 44,
-                        EndIndex = 55,
-                        Length = 11,
-                        DefinitionToExamples =
-                        {
-                            { "totalPhrases", new[] { n.ToString() } },
-                            { "lastPhrase", new[] { lastPhrase?.PhraseId.ToString() ?? "none" } }
-                        }
-                    }
-                };
+                Phrases = phrasesService.GetPhrases();
             }
+        }
+
+        public IEnumerable<FoundPhrase> FindPhrases(string text)
+        {
+            var foundPhrases = FindPhrasesInText(text).ToArray();
+            IncludeDefinitions(ref foundPhrases);
+            return foundPhrases;
 	    }
+
+        private IEnumerable<FoundPhrase> FindPhrasesInText(string text)
+        {
+            foreach (var phrase in Phrases)
+            {
+                var index = text.IndexOf(phrase.Value, StringComparison.Ordinal);
+                if (index != -1)
+                {
+                    yield return new FoundPhrase
+                    {
+                        PhraseId = phrase.PhraseId,
+                        Phrase = phrase.Value,
+                        StartIndex = index,
+                        EndIndex = index + phrase.Value.Length,
+                        Length = phrase.Value.Length
+                    };
+                }
+            }
+        }
+
+        private static void IncludeDefinitions(ref FoundPhrase[] foundPhrases)
+        {
+            using (var phrasesService = new PhrasesService())
+            {
+                phrasesService.LoadPhraseDefinitions(foundPhrases.Select(fp => fp.PhraseId));
+
+                foreach (var foundPhrase in foundPhrases)
+                {
+                    foundPhrase.Definitions = phrasesService.GetPhraseDefinitions(foundPhrase.PhraseId);
+                }
+            }
+        }
     }
 }

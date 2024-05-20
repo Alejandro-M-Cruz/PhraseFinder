@@ -132,9 +132,14 @@ public static partial class PerformanceTestUtils
             where regex.IsMatch(p.Value)
             select p;
         using var writer = new StreamWriter(filePath);
+        var printedPhrases = new HashSet<string>();
         int n = 0;
         foreach (var p in phrasesThatMatchRegex)
         {
+            if (!printedPhrases.Add(p.Value))
+            {
+                continue;
+            }
             writer.WriteLine($"{p.Value} ({p.BaseWord})");
             n++;
         }
