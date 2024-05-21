@@ -92,21 +92,29 @@
                 n++;
 
                 <div class="col mb-4">
-                    <article id="phrase-@n" class="card h-100">
+                    <article id="phrase-@n" class="card shadow-md h-100">
                         <div class="card-header">
                             <span class="card-subtitle fw-bolder">@n</span>
                         </div>
                         <div class="card-body">
                             <h3 class="card-title">
-                                @phrase.Phrase
+                                @{
+                                    var encodedPhrase = Html.Encode(phrase.Phrase);
+                                    var encodedBaseWord = Html.Encode(phrase.BaseWord);
+                                }
+
+                                @Html.Raw(
+                                    encodedPhrase.Replace(
+                                        encodedBaseWord, 
+                                        $"<em class=\"fst-normal text-decoration-underline\">{encodedBaseWord}</em>"))
                             </h3>
-                            @foreach (var (definition, examples) in phrase.DefinitionToExamples)
+                            @foreach (var definition in phrase.Definitions)
                             {
-                                <p class="mt-4"><strong class="fw-semibold">@definition</strong></p>
-                                if (examples.Length > 0)
+                                <p class="mt-4"><strong class="fw-semibold">@definition.Definition</strong></p>
+                                if (definition.Examples.Length > 0)
                                 {
                                     <ul class="list-group">
-                                        @foreach (var example in examples)
+                                        @foreach (var example in definition.Examples)
                                         {
                                             <li class="list-group-item"><em>@example</em></li>
                                         }

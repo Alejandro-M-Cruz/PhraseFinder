@@ -18,7 +18,9 @@ namespace PhraseFinderServiceReference
     public partial class FoundPhrase : object
     {
         
-        private System.Collections.Generic.Dictionary<string, string[]> DefinitionToExamplesField;
+        private string BaseWordField;
+        
+        private PhraseFinderServiceReference.PhraseDefinition[] DefinitionsField;
         
         private int EndIndexField;
         
@@ -26,18 +28,33 @@ namespace PhraseFinderServiceReference
         
         private string PhraseField;
         
+        private int PhraseIdField;
+        
         private int StartIndexField;
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public System.Collections.Generic.Dictionary<string, string[]> DefinitionToExamples
+        public string BaseWord
         {
             get
             {
-                return this.DefinitionToExamplesField;
+                return this.BaseWordField;
             }
             set
             {
-                this.DefinitionToExamplesField = value;
+                this.BaseWordField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public PhraseFinderServiceReference.PhraseDefinition[] Definitions
+        {
+            get
+            {
+                return this.DefinitionsField;
+            }
+            set
+            {
+                this.DefinitionsField = value;
             }
         }
         
@@ -81,6 +98,19 @@ namespace PhraseFinderServiceReference
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
+        public int PhraseId
+        {
+            get
+            {
+                return this.PhraseIdField;
+            }
+            set
+            {
+                this.PhraseIdField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
         public int StartIndex
         {
             get
@@ -90,6 +120,58 @@ namespace PhraseFinderServiceReference
             set
             {
                 this.StartIndexField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PhraseDefinition", Namespace="http://schemas.datacontract.org/2004/07/PhraseFinder.WCF")]
+    public partial class PhraseDefinition : object
+    {
+        
+        private string DefinitionField;
+        
+        private string[] ExamplesField;
+        
+        private int PhraseIdField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Definition
+        {
+            get
+            {
+                return this.DefinitionField;
+            }
+            set
+            {
+                this.DefinitionField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string[] Examples
+        {
+            get
+            {
+                return this.ExamplesField;
+            }
+            set
+            {
+                this.ExamplesField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int PhraseId
+        {
+            get
+            {
+                return this.PhraseIdField;
+            }
+            set
+            {
+                this.PhraseIdField = value;
             }
         }
     }

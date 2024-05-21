@@ -1,4 +1,5 @@
 using PhraseFinder.WebApp;
+using PhraseFinder.WebApp.Options;
 using PhraseFinderServiceReference;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,10 @@ builder.Logging.AddConsole();
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+// Configuration
+builder.Services.Configure<TextValidationOptions>(builder.Configuration.GetSection("TextValidation"));
+builder.Services.Configure<TextFileValidationOptions>(builder.Configuration.GetSection("TextFileValidation"));
 
 //builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceClient>();
 builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceDev>();
