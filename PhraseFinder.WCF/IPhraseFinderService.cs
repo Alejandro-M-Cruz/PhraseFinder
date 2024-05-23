@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
-using System.ServiceModel;
+﻿using System.ServiceModel;
+using System.Threading.Tasks;
+using PhraseFinder.WCF.Contracts;
 
 namespace PhraseFinder.WCF
 {
@@ -7,6 +8,6 @@ namespace PhraseFinder.WCF
     public interface IPhraseFinderService
     {
         [OperationContract]
-        IEnumerable<FoundPhrase> FindPhrases(string text);
+        Task<PhraseAnalysis> FindPhrasesAsync(string text);
     }
 }

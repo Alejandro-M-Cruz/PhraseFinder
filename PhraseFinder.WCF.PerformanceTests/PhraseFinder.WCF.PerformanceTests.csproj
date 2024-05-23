@@ -15,4 +15,10 @@
     <PackageReference Include="System.ServiceModel.Security" Version="6.0.*" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="ProcesarTextos">
+      <HintPath>DLL\ProcesarTextos.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

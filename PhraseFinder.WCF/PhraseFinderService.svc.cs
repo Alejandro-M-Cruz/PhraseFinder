@@ -1,13 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using PhraseFinder.WCF.Contracts;
 using PhraseFinder.WCF.Data;
+using PhraseFinder.WCF.Extensions;
+using PhraseFinder.WCF.ServicioLematizacion;
 
 namespace PhraseFinder.WCF
 {
     public class PhraseFinderService : IPhraseFinderService
     {
         private static readonly IEnumerable<Phrase> Phrases;
+        private static readonly ServicioLematizacionClient ServicioLematizacion = 
+            new ServicioLematizacionClient("BasicHttpsBinding_IServicioLematizacion");
 
         static PhraseFinderService()
         {
@@ -17,30 +22,70 @@ namespace PhraseFinder.WCF
             }
         }
 
-        public IEnumerable<FoundPhrase> FindPhrases(string text)
+        public async Task<PhraseAnalysis> FindPhrasesAsync(string text)
         {
-            var foundPhrases = FindPhrasesInText(text).ToArray();
+            var sentences = await ServicioLematizacion.NuevoReconocerFrasesAsync(
+                text.GetSentences().ToList(), 
+                idioma: "es", 
+                multiPref: false);
+            var foundPhrases = FindPhrasesInSentences(sentences).ToArray();
             IncludeDefinitions(ref foundPhrases);
-            return foundPhrases;
+            return new PhraseAnalysis
+            {
+                ProcessedText = string.Join(" ", sentences.Select(s => s.Frase)),
+                FoundPhrases = foundPhrases
+            };
 	    }
 
-        private IEnumerable<FoundPhrase> FindPhrasesInText(string text)
+        private IEnumerable<FoundPhrase> FindPhrasesInSentences(IReadOnlyList<InfoUnaFrase> sentences)
         {
+            var foundPhrases = new List<FoundPhrase>();
+
             foreach (var phrase in Phrases)
             {
-                var index = text.IndexOf(phrase.Value, StringComparison.Ordinal);
-                if (index != -1)
+                var phraseWords = phrase.Value.Split(' ').Select(w => w.TrimEnd(',')).ToArray();
+                var firstWordInPhrase = phraseWords.First();
+                var sentenceIndex = 0;
+
+                foreach (var sentence in sentences)
                 {
-                    yield return new FoundPhrase
+                    foreach (var word in sentence.Palabras)
                     {
-                        PhraseId = phrase.PhraseId,
-                        Phrase = phrase.Value,
-                        StartIndex = index,
-                        EndIndex = index + phrase.Value.Length,
-                        Length = phrase.Value.Length
-                    };
+                        if (!word.CoincidesWith(firstWordInPhrase))
+                        {
+                            continue;
+                        }
+
+                        var pos = word.Posicion;
+
+                        if (!phraseWords.Skip(1).All(pw =>
+                            {
+                                var w = sentence.Palabras[pos];
+                                if (w.Posicion == 0)
+                                {
+                                    return true;
+                                }
+                                pos++;
+                                return w.CoincidesWith(pw);
+                            }))
+                        {
+                            continue;
+                        }
+
+                        foundPhrases.Add(new FoundPhrase
+                        {
+                            PhraseId = phrase.PhraseId,
+                            Phrase = phrase.Value,
+                            BaseWord = phrase.BaseWord,
+                            StartIndex = sentenceIndex + sentence.IndexOfWordInPosition(pos),
+                            Length = 1
+                        });
+                    }
+                    sentenceIndex += sentence.Frase.Length + 1;
                 }
             }
+
+            return foundPhrases;
         }
 
         private static void IncludeDefinitions(ref FoundPhrase[] foundPhrases)

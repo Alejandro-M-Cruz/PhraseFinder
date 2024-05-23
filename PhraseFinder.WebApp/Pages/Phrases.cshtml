@@ -15,7 +15,16 @@
             <img src="~/assets/arrow-left-circle.svg" width="24" height="24" alt="Icono de vuelta atrás" />
         </a>
         <h2 class="col p-0 m-0">Expresiones y locuciones@(Model.PhrasesAreLoaded ? " encontradas" : "")</h2>
-        <div class="mt-4 mt-md-0 col-12 col-md-auto">
+        
+        <noscript>
+            <style>
+                #download-as-pdf-button-container {
+                    display: none !important;
+                }
+            </style>
+        </noscript>
+
+        <div id="download-as-pdf-button-container" class="mt-4 mt-md-0 col-12 col-md-auto">
             @if (Model.FoundPhrases != null)
             {
                 <button class="d-print-none mx-auto btn btn-secondary d-flex flex-row align-items-center gap-2" onclick="print()">

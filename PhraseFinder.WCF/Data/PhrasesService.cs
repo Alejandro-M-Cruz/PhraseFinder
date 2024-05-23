@@ -5,6 +5,7 @@ using System.Data.OleDb;
 using System.IO;
 using System.Linq;
 using Dapper;
+using PhraseFinder.WCF.Contracts;
 
 namespace PhraseFinder.WCF.Data
 {
@@ -12,20 +13,22 @@ namespace PhraseFinder.WCF.Data
 	{
 		public int PhraseId { get; set; }
 		public string Value { get; set; }
-	}
-
-    internal class PhraseDefinitionExample
-    {
-        public int PhraseId { get; set; }
-        public string Definition { get; set; }
-        public string Example { get; set; }
+        public string Pattern { get; set; }
+        public string BaseWord { get; set; }
     }
 
 	internal class PhrasesService : IDisposable
 	{
-		private static readonly string ConnectionString;
+        private struct PhraseDefinitionExample
+        {
+            public int PhraseId { get; set; }
+            public string Definition { get; set; } 
+            public string Example { get; set; }
+        }
+
+        private static readonly string ConnectionString;
         private readonly IDbConnection _dbConnection;
-        private IDictionary<int, PhraseDefinition[]> PhraseDefinitions { get; set; }
+        private IDictionary<int, PhraseDefinition[]> PhraseIdToDefinitions { get; set; }
 
         static PhrasesService()
         {
@@ -45,7 +48,8 @@ namespace PhraseFinder.WCF.Data
         public IEnumerable<Phrase> GetPhrases()
 		{
 			return _dbConnection.Query<Phrase>(
-				"select [ID_Locucion] as [PhraseId], [Locucion] as [Value] from Locuciones_y_expresiones;");
+				"select [ID_Locucion] as [PhraseId], [Locucion] as [Value], [Patron] as [Pattern], [Palabra_base] as [BaseWord] " +
+                "from Locuciones_y_expresiones;");
 		}
 
         public void LoadPhraseDefinitions(IEnumerable<int> phraseIds)
@@ -56,7 +60,7 @@ namespace PhraseFinder.WCF.Data
                 "left join Ejemplos as E on D.[ID_Definicion] = E.[ID_Definicion] " +
                 "where D.ID_Locucion in @PhraseIds",
                 new { PhraseIds = phraseIds });
-            PhraseDefinitions = phraseDefinitionExamples
+            PhraseIdToDefinitions = phraseDefinitionExamples
                 .GroupBy(pde => pde.PhraseId)
                 .ToDictionary(
                     g => g.Key,
@@ -71,7 +75,7 @@ namespace PhraseFinder.WCF.Data
 
         public PhraseDefinition[] GetPhraseDefinitions(int phraseId)
         {
-            return PhraseDefinitions[phraseId];
+            return PhraseIdToDefinitions[phraseId];
         }
 
         public void Dispose()

@@ -50,12 +50,12 @@ public class PhrasesModel(IPhraseFinderService phraseFinder) : PageModel
     {
         Text = TempData.Peek("Text") as string ?? "";
 
-        if (string.IsNullOrWhiteSpace(Text))
+        if (!string.IsNullOrWhiteSpace(Text))
         {
-            TempData.Clear();
-            return false;
+            return true;
         }
 
-        return true;
+        TempData.Clear();
+        return false;
     }
 }
