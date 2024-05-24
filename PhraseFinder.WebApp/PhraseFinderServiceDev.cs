@@ -4,11 +4,11 @@ namespace PhraseFinder.WebApp;
 
 internal class PhraseFinderServiceDev : IPhraseFinderService
 {
-	public async Task<FoundPhrase[]> FindPhrasesAsync(string text)
+	public async Task<PhraseAnalysis> FindPhrasesAsync(string text)
 	{
 		await Task.Delay(3000);
 
-		return text switch
+		FoundPhrase[] foundPhrases = text switch
 		{
 			"123" => [],
 			"error" => throw new Exception("Error de prueba"),
@@ -110,5 +110,11 @@ internal class PhraseFinderServiceDev : IPhraseFinderService
                 }
 			]
 		};
-	}
+
+        return new PhraseAnalysis
+        {
+            ProcessedText = text,
+            FoundPhrases = foundPhrases
+        };
+    }
 }

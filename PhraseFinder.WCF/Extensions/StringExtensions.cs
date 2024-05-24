@@ -22,5 +22,10 @@ namespace PhraseFinder.WCF.Extensions
                 }).ToList()
             });
         }
+
+        public static bool EqualsIgnoreCase(this string str, string other)
+        {
+            return str.Equals(other, System.StringComparison.OrdinalIgnoreCase);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Threading.Tasks;
 using PhraseFinder.WCF.Contracts;
@@ -24,15 +25,16 @@ namespace PhraseFinder.WCF
 
         public async Task<PhraseAnalysis> FindPhrasesAsync(string text)
         {
-            var sentences = await ServicioLematizacion.NuevoReconocerFrasesAsync(
-                text.GetSentences().ToList(), 
+            var sentences = text.GetSentences().ToList();
+            var processedSentences = await ServicioLematizacion.NuevoReconocerFrasesAsync(
+                sentences, 
                 idioma: "es", 
                 multiPref: false);
-            var foundPhrases = FindPhrasesInSentences(sentences).ToArray();
+            var foundPhrases = FindPhrasesInSentences(processedSentences).ToArray();
             IncludeDefinitions(ref foundPhrases);
             return new PhraseAnalysis
             {
-                ProcessedText = string.Join(" ", sentences.Select(s => s.Frase)),
+                ProcessedText = string.Join(" ", processedSentences.Select(s => s.Frase)),
                 FoundPhrases = foundPhrases
             };
 	    }
@@ -43,14 +45,16 @@ namespace PhraseFinder.WCF
 
             foreach (var phrase in Phrases)
             {
-                var phraseWords = phrase.Value.Split(' ').Select(w => w.TrimEnd(',')).ToArray();
+                var phraseWords = phrase.Pattern.Split(' ').Select(w => w.TrimEnd(',')).ToArray();
                 var firstWordInPhrase = phraseWords.First();
                 var sentenceIndex = 0;
 
                 foreach (var sentence in sentences)
                 {
-                    foreach (var word in sentence.Palabras)
+                    for (var i = 0; i < sentence.Palabras.Count; i++)
                     {
+                        var word = sentence.Palabras[i];
+
                         if (!word.CoincidesWith(firstWordInPhrase))
                         {
                             continue;
@@ -60,13 +64,15 @@ namespace PhraseFinder.WCF
 
                         if (!phraseWords.Skip(1).All(pw =>
                             {
-                                var w = sentence.Palabras[pos];
-                                if (w.Posicion == 0)
+                                if (pos >= sentence.Palabras.Count)
                                 {
-                                    return true;
+                                    return false;
                                 }
+
+                                var w = sentence.Palabras[pos];
                                 pos++;
-                                return w.CoincidesWith(pw);
+
+                                return !string.IsNullOrEmpty(w.PosMark) || w.CoincidesWith(pw);
                             }))
                         {
                             continue;
@@ -77,8 +83,11 @@ namespace PhraseFinder.WCF
                             PhraseId = phrase.PhraseId,
                             Phrase = phrase.Value,
                             BaseWord = phrase.BaseWord,
-                            StartIndex = sentenceIndex + sentence.IndexOfWordInPosition(pos),
-                            Length = 1
+                            StartIndex = sentenceIndex + sentence.IndexOfWordInPosition(pos - 1),
+                            Length = -1 + sentence.Palabras
+                                .GetRange(i, pos - i)
+                                .Sum(w => 
+                                    string.IsNullOrEmpty(w.PosMark) ? w.Palabra.Length + 1 : w.Palabra.Length)
                         });
                     }
                     sentenceIndex += sentence.Frase.Length + 1;

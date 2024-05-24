@@ -27,7 +27,6 @@ public class TbPhraseSplitterTests
     [InlineData(
         "a espetaperro o espetaperros Tb. a espetaperros; a espeta perros, desus.",
     new[] { "a espetaperro o espetaperros", "a espetaperros", "a espeta perros" })]
-
     public void SplitPhrase_WhenPhraseContainsTb_ReturnsAllPossiblePhrases(
         string phrase,
         string[] expected)

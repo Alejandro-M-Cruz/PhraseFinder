@@ -6,7 +6,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{8EE7BC04-BCBC-4BB6-8296-C1867AD70105}</ProjectGuid>
+    <ProjectGuid>{A84C7DDB-5E6F-4E4B-8292-3C71A53D946E}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -42,13 +42,13 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Dapper, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.2.1.44\lib\net461\Dapper.dll</HintPath>
+      <HintPath>..\packages\Dapper.2.1.35\lib\net461\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="ProcesarTextos">
+    <Reference Include="ProcesarTextos, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>DLL\ProcesarTextos.dll</HintPath>
     </Reference>
-    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -108,8 +108,11 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+    <Content Include="DLL\ProcesarTextos.dll" />
+    <Content Include="DLL\ProcesarTextos.pdb" />
     <Content Include="PhraseFinderService.svc" />
     <Content Include="Web.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connected Services\ServicioLematizacion\Reference.cs">
@@ -118,12 +121,12 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Contracts\FoundPhrase.cs" />
+    <Compile Include="Contracts\PhraseAnalysis.cs" />
     <Compile Include="Contracts\PhraseDefinition.cs" />
     <Compile Include="Data\PhrasesService.cs" />
     <Compile Include="Extensions\SentenceExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\WordExtensions.cs" />
-    <Compile Include="Contracts\PhraseAnalysis.cs" />
     <Compile Include="PhraseFinderService.svc.cs">
       <DependentUpon>PhraseFinderService.svc</DependentUpon>
     </Compile>
@@ -132,7 +135,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="DLL\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Connected Services\ServicioLematizacion\ServicioLematizacion.wsdl" />
@@ -148,7 +150,6 @@
     <None Include="Connected Services\ServicioLematizacion\ServicioLematizacion3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -175,7 +176,7 @@
         <WebProjectProperties>
           <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>54833</DevelopmentServerPort>
+          <DevelopmentServerPort>59403</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>http://localhost:54833/</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>

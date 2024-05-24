@@ -34,7 +34,7 @@ using ServicioLematizacion;
 // text of example
 
 const string sampleText = 
-    "Se sentaron a la mesa y se dieron cuenta enseguida. Había comida a montones. " + 
+    "Por cierto, sentémonos a la mesa y se dieron cuenta enseguida. Había comida a montones. " + 
     "Al poco tiempo, comenzaron  a almorzar y a echar un párrafo. " + 
     "¿Cabría la posibilidad de ...?\n" +
     "El primero en irse fue Juan, que siempre actúa por cuenta propia.";
@@ -73,19 +73,19 @@ var servicioLematizacion = new ServicioLematizacionClient();
 
 frases = await servicioLematizacion.NuevoReconocerFrasesAsync(frases.ToArray(), "es", multiPref: false);
 
-//foreach (var frase in frases)
-//{
-//    Console.WriteLine($"Frase: {frase.Frase}");
-//    foreach (var palabra in frase.Palabras)
-//    {
-//        Console.WriteLine($"Palabra: {palabra.Palabra}");
-//        Console.WriteLine($"Forma canónica: {palabra.FormaCanonica}");
-//        Console.WriteLine($"Categoría: {palabra.IdCategoria}");
-//        Console.WriteLine($"Posición: {palabra.Posicion}");
-//        Console.WriteLine($"PosMark: {palabra.PosMark}");
-//        Console.WriteLine();
-//    }
-//}
+foreach (var frase in frases)
+{
+    Console.WriteLine($"Frase: {frase.Frase}");
+    foreach (var palabra in frase.Palabras)
+    {
+        Console.WriteLine($"Palabra: {palabra.Palabra}");
+        Console.WriteLine($"Forma canónica: {palabra.FormaCanonica}");
+        Console.WriteLine($"Categoría: {palabra.IdCategoria}");
+        Console.WriteLine($"Posición: {palabra.Posicion}");
+        Console.WriteLine($"PosMark: {palabra.PosMark}");
+        Console.WriteLine();
+    }
+}
 
 var phrases = new Phrase[]
 {

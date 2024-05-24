@@ -31,10 +31,13 @@ public class PhrasesModel(IPhraseFinderService phraseFinder) : PageModel
 
         try
 		{
-			FoundPhrases = (await phraseFinder.FindPhrasesAsync(Text))
+            var phraseAnalysis = await phraseFinder.FindPhrasesAsync(Text);
+			FoundPhrases = phraseAnalysis.FoundPhrases
 				.OrderBy(p => p.StartIndex)
 				.ToArray();
-		}
+            Text = phraseAnalysis.ProcessedText;
+            TempData["Text"] = Text;
+        }
 		catch
 		{
 			ModelState.AddModelError(

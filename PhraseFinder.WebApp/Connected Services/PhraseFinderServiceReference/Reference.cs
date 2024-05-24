@@ -14,7 +14,44 @@ namespace PhraseFinderServiceReference
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="FoundPhrase", Namespace="http://schemas.datacontract.org/2004/07/PhraseFinder.WCF")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PhraseAnalysis", Namespace="http://schemas.datacontract.org/2004/07/PhraseFinder.WCF.Contracts")]
+    public partial class PhraseAnalysis : object
+    {
+        
+        private PhraseFinderServiceReference.FoundPhrase[] FoundPhrasesField;
+        
+        private string ProcessedTextField;
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public PhraseFinderServiceReference.FoundPhrase[] FoundPhrases
+        {
+            get
+            {
+                return this.FoundPhrasesField;
+            }
+            set
+            {
+                this.FoundPhrasesField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ProcessedText
+        {
+            get
+            {
+                return this.ProcessedTextField;
+            }
+            set
+            {
+                this.ProcessedTextField = value;
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="FoundPhrase", Namespace="http://schemas.datacontract.org/2004/07/PhraseFinder.WCF.Contracts")]
     public partial class FoundPhrase : object
     {
         
@@ -126,7 +163,7 @@ namespace PhraseFinderServiceReference
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
-    [System.Runtime.Serialization.DataContractAttribute(Name="PhraseDefinition", Namespace="http://schemas.datacontract.org/2004/07/PhraseFinder.WCF")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="PhraseDefinition", Namespace="http://schemas.datacontract.org/2004/07/PhraseFinder.WCF.Contracts")]
     public partial class PhraseDefinition : object
     {
         
@@ -182,7 +219,7 @@ namespace PhraseFinderServiceReference
     {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IPhraseFinderService/FindPhrases", ReplyAction="http://tempuri.org/IPhraseFinderService/FindPhrasesResponse")]
-        System.Threading.Tasks.Task<PhraseFinderServiceReference.FoundPhrase[]> FindPhrasesAsync(string text);
+        System.Threading.Tasks.Task<PhraseFinderServiceReference.PhraseAnalysis> FindPhrasesAsync(string text);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.Tools.ServiceModel.Svcutil", "2.2.0-preview1.23462.5")]
@@ -235,7 +272,7 @@ namespace PhraseFinderServiceReference
         {
         }
         
-        public System.Threading.Tasks.Task<PhraseFinderServiceReference.FoundPhrase[]> FindPhrasesAsync(string text)
+        public System.Threading.Tasks.Task<PhraseFinderServiceReference.PhraseAnalysis> FindPhrasesAsync(string text)
         {
             return base.Channel.FindPhrasesAsync(text);
         }

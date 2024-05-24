@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using PhraseFinder.WCF.ServicioLematizacion;
 
 namespace PhraseFinder.WCF.Extensions
@@ -16,17 +17,18 @@ namespace PhraseFinder.WCF.Extensions
         {
             if (!word.IsVerb())
             {
-                return word.Palabra == otherWord;
+                return word.Palabra.EqualsIgnoreCase(otherWord);
             }
 
-            if (otherWord == word.FormaCanonica)
+            if (word.FormaCanonica.EqualsIgnoreCase(otherWord))
             {
                 return true;
             }
 
             return VerbSuffixes.Any(suffix =>
                 otherWord.EndsWith(suffix) && 
-                otherWord.Substring(0, otherWord.Length - suffix.Length) == word.FormaCanonica);
+                otherWord.Substring(0, otherWord.Length - suffix.Length)
+                    .EqualsIgnoreCase(word.FormaCanonica));
         }
     }
 }

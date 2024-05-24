@@ -75,7 +75,8 @@ namespace PhraseFinder.WCF.Data
 
         public PhraseDefinition[] GetPhraseDefinitions(int phraseId)
         {
-            return PhraseIdToDefinitions[phraseId];
+            var hasDefinitions = PhraseIdToDefinitions.TryGetValue(phraseId, out var definitions);
+            return hasDefinitions ? definitions : Array.Empty<PhraseDefinition>();
         }
 
         public void Dispose()

@@ -1,6 +1,5 @@
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using System.Threading;
 using PhraseFinder.Domain.Models;
 
 namespace PhraseFinder.Domain.Services.FileReaders;

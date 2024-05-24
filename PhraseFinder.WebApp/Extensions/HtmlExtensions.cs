@@ -35,7 +35,7 @@ public static class HtmlExtensions
                 highlightedText.Append(htmlHelper.Encode(phraseToHighlight));
 				highlightedText.Append($"</strong><sup>{n}</sup></a>");
 
-				currentIndex = phrase.EndIndex;
+				currentIndex = phrase.StartIndex + phrase.Length; 
 			}
 
 			if (currentIndex < text.Length)

@@ -19,12 +19,25 @@ namespace PhraseFinder.WCF.Contracts
         public int StartIndex { get; set; }
 
         [DataMember]
-        public int EndIndex { get; set; }
-
-        [DataMember]
         public int Length { get; set; }
 
         [DataMember]
         public PhraseDefinition[] Definitions { get; set; } = Array.Empty<PhraseDefinition>();
     }
+
+    //[DataContract]
+    //public class FoundPhraseMatch
+    //{
+    //    [DataMember]
+    //    public string Pattern { get; set; } = string.Empty;
+
+    //    [DataMember]
+    //    public string Value { get; set; } = string.Empty;
+
+    //    [DataMember]
+    //    public int Index { get; set; }
+
+    //    [DataMember]
+    //    public int Length { get; set; }
+    //}
 }
