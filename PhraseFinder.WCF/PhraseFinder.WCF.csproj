@@ -127,6 +127,9 @@
     <Compile Include="Extensions\SentenceExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\WordExtensions.cs" />
+    <Compile Include="Models\Phrase.cs" />
+    <Compile Include="Models\PhraseTag.cs" />
+    <Compile Include="Models\PhraseTagCategory.cs" />
     <Compile Include="PhraseFinderService.svc.cs">
       <DependentUpon>PhraseFinderService.svc</DependentUpon>
     </Compile>

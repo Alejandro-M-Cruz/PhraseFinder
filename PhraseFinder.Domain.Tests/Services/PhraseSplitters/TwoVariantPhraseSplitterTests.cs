@@ -66,6 +66,15 @@ public class TwoVariantPhraseSplitterTests
 			"cortarle a alguien la hierba bajo los pies", 
 			"segarle a alguien la hierba bajo los pies"
 		})]
+	[InlineData(
+        "echar, o soltar los perros a alguien",
+		new[] { "echar los perros a alguien", "soltar los perros a alguien" })]
+	[InlineData(
+        "de, o en cutiano",
+		new[] { "de cutiano", "en cutiano" })]
+	[InlineData(
+        "a la, o al papillote",
+		new[] { "a la papillote", "al papillote" })]
 	//[InlineData(
 	//	"ser alguien puro nervio, o un puro nervio",
 	//	new[] { "ser alguien puro nervio", "ser alguien un puro nervio" })]

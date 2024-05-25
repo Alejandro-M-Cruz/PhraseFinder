@@ -5,10 +5,10 @@ namespace PhraseFinder.WCF.Extensions
 {
     public static class SentenceExtensions
     {
-        public static int IndexOfWordInPosition(this InfoUnaFrase sentence, int wordPos)
+        public static int IndexOfWordInIndex(this InfoUnaFrase sentence, int wordIndex)
         {
             return sentence.Palabras
-                .Take(wordPos - 1)
+                .Take(wordIndex)
                 .Sum(w => string.IsNullOrEmpty(w.PosMark) ? w.Palabra.Length + 1 : w.Palabra.Length);
         }
     }

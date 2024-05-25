@@ -22,6 +22,9 @@ namespace PhraseFinder.WCF.Contracts
         public int Length { get; set; }
 
         [DataMember]
+        public string Match { get; set; } = string.Empty;
+
+        [DataMember]
         public PhraseDefinition[] Definitions { get; set; } = Array.Empty<PhraseDefinition>();
     }
 

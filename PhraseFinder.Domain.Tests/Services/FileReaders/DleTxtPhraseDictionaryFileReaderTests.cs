@@ -123,7 +123,7 @@ public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
             new PhraseEntry
             {
                 Name = "echar alguien la zarpa",
-                BaseWord = "zarpa[1]",
+                BaseWord = "zarpa",
                 Categories = { "loc. verb. coloq." },
 				DefinitionToExamples =
                 {
@@ -140,7 +140,7 @@ public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
             new PhraseEntry
             {
                 Name = "hacerse alguien una zarpa",
-                BaseWord = "zarpa[1]",
+                BaseWord = "zarpa",
                 Categories = { "loc. verb. coloq. desus." },
 				DefinitionToExamples =
                 {
@@ -196,7 +196,7 @@ public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
             new PhraseEntry
             {
                 Name = "echar alguien la zarpa",
-                BaseWord = "zarpa[1]",
+                BaseWord = "zarpa",
                 Categories = { "loc. verb. coloq." },
                 DefinitionToExamples =
                 {
@@ -213,7 +213,7 @@ public class DleTxtPhraseDictionaryFileReaderTests : IDisposable
             new PhraseEntry
             {
                 Name = "hacerse alguien una zarpa",
-                BaseWord = "zarpa[1]",
+                BaseWord = "zarpa",
                 Categories = { "loc. verb. coloq. desus." },
                 DefinitionToExamples =
                 {

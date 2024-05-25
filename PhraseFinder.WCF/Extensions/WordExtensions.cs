@@ -1,5 +1,5 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using PhraseFinder.WCF.Models;
 using PhraseFinder.WCF.ServicioLematizacion;
 
 namespace PhraseFinder.WCF.Extensions
@@ -13,8 +13,21 @@ namespace PhraseFinder.WCF.Extensions
             return 3000 < word.IdCategoria && word.IdCategoria < 3100;
         }
 
+        public static bool IsPunctuationMark(this InfoUnaPalabra word)
+        {
+            return word.IdCategoria == 20;
+        }
+
         public static bool CoincidesWith(this InfoUnaPalabra word, string otherWord)
         {
+            var phraseTag = otherWord.GetTag();
+
+            if (phraseTag?.Category == PhraseTagCategory.Verb)
+            {
+                return phraseTag.Value.EqualsIgnoreCase(word.Palabra) ||
+                       phraseTag.Value.EqualsIgnoreCase(word.FormaCanonica);
+            }
+
             if (!word.IsVerb())
             {
                 return word.Palabra.EqualsIgnoreCase(otherWord);

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Drawing.Printing;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using PhraseFinder.WCF.Contracts;
 using PhraseFinder.WCF.Data;
 using PhraseFinder.WCF.Extensions;
+using PhraseFinder.WCF.Models;
 using PhraseFinder.WCF.ServicioLematizacion;
 
 namespace PhraseFinder.WCF
@@ -41,13 +42,12 @@ namespace PhraseFinder.WCF
 
         private IEnumerable<FoundPhrase> FindPhrasesInSentences(IReadOnlyList<InfoUnaFrase> sentences)
         {
-            var foundPhrases = new List<FoundPhrase>();
-
             foreach (var phrase in Phrases)
             {
                 var phraseWords = phrase.Pattern.Split(' ').Select(w => w.TrimEnd(',')).ToArray();
                 var firstWordInPhrase = phraseWords.First();
                 var sentenceIndex = 0;
+                var anyWords = 0;
 
                 foreach (var sentence in sentences)
                 {
@@ -60,41 +60,77 @@ namespace PhraseFinder.WCF
                             continue;
                         }
 
-                        var pos = word.Posicion;
+                        var wordIndex = i + 1;
+                        var isMatch = true;
 
-                        if (!phraseWords.Skip(1).All(pw =>
+                        for (var phraseWordIndex = 1; phraseWordIndex < phraseWords.Length; phraseWordIndex++)
+                        {
+                            if (wordIndex >= sentence.Palabras.Count)
                             {
-                                if (pos >= sentence.Palabras.Count)
+                                isMatch = false;
+                                break;
+                            }
+
+                            var w = sentence.Palabras[wordIndex++];
+
+                            if (w.IsPunctuationMark())
+                            {
+                                phraseWordIndex--;
+                                continue;
+                            }
+
+                            var phraseWord = phraseWords[phraseWordIndex];
+
+                            if (phraseWord.GetTag(phrase)?.Category == PhraseTagCategory.PlaceholderWord)
+                            {
+                                anyWords += 3;
+                                continue;
+                            }
+
+                            if (!w.CoincidesWith(phraseWord))
+                            {
+                                if (anyWords > 0)
                                 {
-                                    return false;
+                                    anyWords--;
+                                    phraseWordIndex--;
+                                    continue;
                                 }
 
-                                var w = sentence.Palabras[pos];
-                                pos++;
+                                isMatch = false;
+                                break;
+                            }
+                        }
 
-                                return !string.IsNullOrEmpty(w.PosMark) || w.CoincidesWith(pw);
-                            }))
+                        if (!isMatch)
                         {
                             continue;
                         }
 
-                        foundPhrases.Add(new FoundPhrase
+                        var match = new StringBuilder(sentence.Palabras[i].Palabra);
+
+                        foreach (var w in sentence.Palabras.GetRange(i + 1, wordIndex - i - 1))
+                        {
+                            if (!w.IsPunctuationMark())
+                            {
+                                match.Append(" ");
+                            }
+
+                            match.Append(w.Palabra);
+                        }
+
+                        yield return new FoundPhrase
                         {
                             PhraseId = phrase.PhraseId,
                             Phrase = phrase.Value,
                             BaseWord = phrase.BaseWord,
-                            StartIndex = sentenceIndex + sentence.IndexOfWordInPosition(pos - 1),
-                            Length = -1 + sentence.Palabras
-                                .GetRange(i, pos - i)
-                                .Sum(w => 
-                                    string.IsNullOrEmpty(w.PosMark) ? w.Palabra.Length + 1 : w.Palabra.Length)
-                        });
+                            StartIndex = sentenceIndex + sentence.IndexOfWordInIndex(i),
+                            Match = match.ToString(),
+                            Length = match.Length
+                        };
                     }
                     sentenceIndex += sentence.Frase.Length + 1;
                 }
             }
-
-            return foundPhrases;
         }
 
         private static void IncludeDefinitions(ref FoundPhrase[] foundPhrases)

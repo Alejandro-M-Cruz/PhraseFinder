@@ -6,17 +6,10 @@ using System.IO;
 using System.Linq;
 using Dapper;
 using PhraseFinder.WCF.Contracts;
+using PhraseFinder.WCF.Models;
 
 namespace PhraseFinder.WCF.Data
 {
-	internal class Phrase
-	{
-		public int PhraseId { get; set; }
-		public string Value { get; set; }
-        public string Pattern { get; set; }
-        public string BaseWord { get; set; }
-    }
-
 	internal class PhrasesService : IDisposable
 	{
         private struct PhraseDefinitionExample

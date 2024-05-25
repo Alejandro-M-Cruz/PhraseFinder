@@ -29,27 +29,48 @@ public class TwoVariantPhraseSplitter : IPhraseSplitter
 		var lastPart = match.Groups[3].Value;
 		var firstPartWords = firstPart.Split();
 		var secondPartWords = secondPart.Split();
-		var secondVariant = secondPart;
 
-		if (firstPartWords.Length == 1 || secondPartWords.First().StartsWith(firstPartWords.First()))
+        if (secondPartWords.Length == 0 || string.IsNullOrWhiteSpace(secondPart))
+        {
+            return [firstPart + lastPart];
+        }
+
+        if (firstPartWords.Length == 1 || 
+            firstPart == "a la" && secondPartWords.First() == "al")
+        {
+            if (lastPart.Length > 0)
+            {
+				return [firstPart + lastPart, secondPart + lastPart];
+            }
+
+            return [
+                firstPart + ' ' + string.Join(' ', secondPartWords.Skip(1)),
+				secondPart
+            ];
+        }
+
+		if (secondPartWords.First().StartsWith(firstPartWords.First()))
 		{
 			return [firstPart + lastPart, secondPart + lastPart];
 		}
 
-		switch (secondPartWords.Length)
+        string secondVariant;
+
+        switch (secondPartWords.Length)
 		{
 			case 1:
 				secondVariant = string.Join(' ', firstPartWords[..^1]) + ' ' + secondPart;
 				break;
 			default:
 				for (var i = 0; i < firstPartWords.Length; i++)
-				{
-					if (firstPartWords[i].Length < 4)
-					{
-						secondVariant = string.Join(' ', firstPartWords[..i]) + ' ' + secondPart;
-						return [firstPart + lastPart, (secondVariant + lastPart).Trim()];
-					}
-				}
+                {
+                    if (firstPartWords[i].Length > 3)
+                    {
+                        continue;
+                    }
+                    secondVariant = string.Join(' ', firstPartWords[..i]) + ' ' + secondPart;
+                    return [firstPart + lastPart, (secondVariant + lastPart).Trim()];
+                }
 				var longWordCount = secondPartWords.Count(w => w.Length > 3);
 				var wordsToDiscardFromFirstPart = Math.Min(longWordCount, firstPartWords.Length);
 				var secondVariantPrefix = string.Join(' ', firstPartWords[..^wordsToDiscardFromFirstPart]);

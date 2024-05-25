@@ -24,7 +24,7 @@
             Padding="10,5"
             VerticalAlignment="Bottom"
             Style="{StaticResource TextBlockLargeBold}"
-            Text="Añadiendo diccionario"
+            Text="Añadir un diccionario"
             TextAlignment="Center"
             TextTrimming="CharacterEllipsis" />
         <Separator
@@ -109,14 +109,14 @@
                     <TextBlock
                         Margin="10,13,10,0"
                         Style="{StaticResource TextBlockDefaultSecLight}"
-                        Text="Se están almacenando las expresiones y locuciones."
+                        Text="Se están almacenando las expresiones y locuciones..."
                         TextAlignment="Center"
                         TextWrapping="Wrap" />
 
                     <TextBlock
                         Margin="10,0"
                         Style="{StaticResource TextBlockDefaultSecLight}"
-                        Text="Este proceso puede tomar unos minutos..."
+                        Text="Este proceso puede tomar unos minutos."
                         TextAlignment="Center"
                         TextWrapping="Wrap" />
 
