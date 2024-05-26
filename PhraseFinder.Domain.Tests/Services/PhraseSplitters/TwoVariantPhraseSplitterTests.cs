@@ -84,7 +84,7 @@ public class TwoVariantPhraseSplitterTests
 	//[InlineData(
 	//	"ser alguien puro nervio, o un puro nervio",
 	//	new[] { "ser alguien puro nervio", "ser alguien un puro nervio" })]
-	public void SplitPhrase_WhenPhraseHasTwoVariants_ReturnsTwoPhrases(
+	public void SplitPhrase_WhenPhraseHasTwoVariants_ReturnsTheTwoPhrases(
 		string phrase,
 		string[] expectedPhrases)
 	{

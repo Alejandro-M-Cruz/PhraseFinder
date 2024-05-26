@@ -46,7 +46,7 @@ namespace PhraseFinder.WCF.Data
                 "from Locuciones_y_expresiones;");
 		}
 
-        public void LoadPhraseDefinitions(IReadOnlyList<int> phraseIds)
+        public void LoadPhraseDefinitions(IReadOnlyCollection<int> phraseIds)
         {
             if (phraseIds.Count == 0)
             {

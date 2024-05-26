@@ -1,78 +1,67 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using PhraseFinder.WCF.Contracts;
 using PhraseFinder.WCF.Data;
 using PhraseFinder.WCF.Extensions;
 using PhraseFinder.WCF.Models;
 using PhraseFinder.WCF.ServicioLematizacion;
+using ProcesarTextos;
 
 namespace PhraseFinder.WCF
 {
     public class PhraseFinderService : IPhraseFinderService
     {
-        private static readonly IEnumerable<Phrase> Phrases;
         private static readonly ServicioLematizacionClient ServicioLematizacion = 
             new ServicioLematizacionClient("BasicHttpsBinding_IServicioLematizacion");
+        private static readonly Phrase[] Phrases;
+        private const string SentenceSeparator = " ";
+        private static readonly string ParagraphSeparator = Environment.NewLine + Environment.NewLine;
 
         static PhraseFinderService()
         {
             using (var phrasesService = new PhrasesService())
             {
-                Phrases = phrasesService.GetPhrases();
+                Phrases = phrasesService.GetPhrases().ToArray();
             }
         }
 
         public async Task<PhraseAnalysis> FindPhrasesAsync(string text)
         {
-            var sentences = text.GetSentences().ToList();
-            List<InfoUnaFrase> processedSentences;
-            FoundPhrase[] foundPhrases;
+            var paragraphs = text.GetParagraphs();
+            var sentences = paragraphs.SelectAllSentences().ToList();
+            var processedSentences = await ServicioLematizacion
+                .NuevoReconocerFrasesAsync(sentences, idioma: "es", multiPref: false);
+            var foundPhrases = FindPhrasesInSentences(processedSentences, paragraphs).ToArray();
 
-            try
-            {
-                processedSentences = await ServicioLematizacion
-                    .NuevoReconocerFrasesAsync(sentences, idioma: "es", multiPref: false);
-            }
-            catch (Exception e)
-            {
-                return new PhraseAnalysis
-                {
-                    ProcessedText = string.Join(" ", sentences.Select(s => s.Frase)) + 
-                                    $"(error en servicio de lematizacion: {e.Message})"
-                };
-            }
+            IncludeDefinitions(ref foundPhrases);
 
-            try
+            return new PhraseAnalysis
             {
-                foundPhrases = FindPhrasesInSentences(processedSentences).ToArray();
-                IncludeDefinitions(ref foundPhrases);
-                return new PhraseAnalysis
-                {
-                    ProcessedText = string.Join(" ", processedSentences.Select(s => s.Frase)),
-                    FoundPhrases = foundPhrases
-                };
-            }
-            catch (Exception e)
-            {
-                return new PhraseAnalysis
-                {
-                    ProcessedText = string.Join(" ", sentences.Select(s => s.Frase)) + 
-                                    $"(error en detección: {e.Message})"
-                };
-            }
-	    }
+                ProcessedText = paragraphs.ReconstructText(ParagraphSeparator, SentenceSeparator),
+                FoundPhrases = foundPhrases
+            };
+        }
 
-        private IEnumerable<FoundPhrase> FindPhrasesInSentences(IReadOnlyList<InfoUnaFrase> sentences)
+        private static IEnumerable<FoundPhrase> FindPhrasesInSentences(
+            IReadOnlyCollection<InfoUnaFrase> sentences, IReadOnlyCollection<Paragraph> paragraphs)
         {
+            if (Phrases.Length == 0 || sentences.Count == 0 || paragraphs.Count == 0)
+            {
+                yield break;
+            }
+
+            var paragraphSentenceCounts = paragraphs.Select(p => p.GetSentences().Length).ToArray();
+
             foreach (var phrase in Phrases)
             {
                 var phraseWords = phrase.Pattern.Split(' ').Select(w => w.TrimEnd(',')).ToArray();
                 var firstWordInPhrase = phraseWords.First();
                 var sentenceIndex = 0;
                 var anyWords = 0;
+                var currentSentenceInParagraph = 0;
+                var currentParagraph = 0;
 
                 foreach (var sentence in sentences)
                 {
@@ -108,22 +97,24 @@ namespace PhraseFinder.WCF
 
                             if (phraseWord.GetTag(phrase)?.Category == PhraseTagCategory.PlaceholderWord)
                             {
+                                wordIndex--;
                                 anyWords += 3;
                                 continue;
                             }
 
-                            if (!w.CoincidesWith(phraseWord))
+                            if (w.CoincidesWith(phraseWord))
                             {
-                                if (anyWords > 0)
-                                {
-                                    anyWords--;
-                                    phraseWordIndex--;
-                                    continue;
-                                }
+                                continue;
+                            }
 
+                            if (phraseWordIndex == phraseWords.Length - 1 || anyWords < 1)
+                            {
                                 isMatch = false;
                                 break;
                             }
+
+                            anyWords--;
+                            phraseWordIndex--;
                         }
 
                         if (!isMatch)
@@ -131,7 +122,7 @@ namespace PhraseFinder.WCF
                             continue;
                         }
 
-                        var phraseMatch = sentence.SubSentenceInWordRange(i, wordIndex - i);
+                        var phraseMatch = sentence.SubstringInWordRange(i, wordIndex - i);
 
                         yield return new FoundPhrase
                         {
@@ -143,7 +134,21 @@ namespace PhraseFinder.WCF
                             Length = phraseMatch.Length
                         };
                     }
-                    sentenceIndex += sentence.Frase.Length + 1;
+
+                    sentenceIndex += sentence.Frase.Length;
+                    
+                    if (currentParagraph < paragraphs.Count && 
+                        currentSentenceInParagraph >= paragraphSentenceCounts[currentParagraph] - 1)
+                    {
+                        sentenceIndex += ParagraphSeparator.Length;
+                        currentParagraph++;
+                        currentSentenceInParagraph = 0;
+                    }
+                    else
+                    {
+                        sentenceIndex += SentenceSeparator.Length;
+                        currentSentenceInParagraph++;
+                    }
                 }
             }
         }

@@ -45,5 +45,5 @@ Console.WriteLine($"Dictionary added in: {stopwatch.ElapsedMilliseconds} ms");
 
 
 PerformanceTestUtils.WritePhrasesThatMatchRegexToTxtFile(
-    new Regex(@"^[^,]+, o (?:([^,\?]+?|¿[^,]+\?)|([^,\?]+),([^,\?]+))$"),
-    @"D:\Proyectos\dotNet\TFT\two_variants.txt");
+    new Regex(@"^[^,]+, [^,]+, o [^,]+$"),
+    @"D:\Proyectos\dotNet\TFT\three_variants.txt");

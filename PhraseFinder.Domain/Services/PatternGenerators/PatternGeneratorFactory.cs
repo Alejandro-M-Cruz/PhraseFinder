@@ -18,6 +18,7 @@ public static class PatternGeneratorFactory
                     new GenderPhraseSplitter(),
                     new EtcPhraseSplitter(),
                     new TwoVariantPhraseSplitter(),
+                    new ThreeVariantPhraseSplitter(),
                     new MultipleVariantPhraseSplitter()
                 ];
                 return new DleTxtPatternGenerator(new DleTxtPhraseCleaner(), splitters);

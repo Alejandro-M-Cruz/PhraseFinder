@@ -45,7 +45,8 @@ public class TwoVariantPhraseSplitter : IPhraseSplitter
 
             var substitutionIndex = firstPart.LastIndexOf("a la", StringComparison.Ordinal);
 
-            return [
+            return 
+            [
                 firstPart + (substitutionIndex < 1 ? ' ' + string.Join(' ', secondPartWords.Skip(1)) : ""),
 				(substitutionIndex != -1 ? firstPart[..substitutionIndex] : "") + secondPart
             ];
@@ -55,7 +56,8 @@ public class TwoVariantPhraseSplitter : IPhraseSplitter
             firstPartWords.Last().Length < 3 && 
             secondPartWords.First().Length < 3)
         {
-            return [
+            return 
+            [
 				firstPart + ' ' + string.Join(' ', secondPartWords.Skip(1)),
 				string.Join(' ', firstPartWords[..^1]) + ' ' + secondPart
             ];

@@ -2,6 +2,7 @@
 using System.Linq;
 using PhraseFinder.WCF.Models;
 using PhraseFinder.WCF.ServicioLematizacion;
+using ProcesarTextos;
 
 namespace PhraseFinder.WCF.Extensions
 {
@@ -9,23 +10,12 @@ namespace PhraseFinder.WCF.Extensions
     {
         private static readonly string[] PlaceholderWords = { "algo", "alguien" };
 
-        public static IEnumerable<InfoUnaFrase> GetSentences(this string text)
+        public static Paragraph[] GetParagraphs(this string text)
         {
             var textProcessor = new ProcesarTextos.Text(string.Empty, text);
-            var sentences = textProcessor
-                .GetParagraphs()
-                .SelectMany(p => p.GetSentences());
-
-            return sentences.Select(s => new InfoUnaFrase
-            {
-                Frase = s.getText(),
-                Palabras = s.GetWords().Select(w => new InfoUnaPalabra()
-                {
-                    Palabra = w.ToString()
-                }).ToList()
-            });
+            return textProcessor.GetParagraphs();
         }
-
+        
         public static bool EqualsIgnoreCase(this string str, string other)
         {
             return str.Equals(other, System.StringComparison.OrdinalIgnoreCase);

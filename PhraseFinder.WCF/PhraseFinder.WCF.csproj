@@ -124,6 +124,7 @@
     <Compile Include="Contracts\PhraseAnalysis.cs" />
     <Compile Include="Contracts\PhraseDefinition.cs" />
     <Compile Include="Data\PhrasesService.cs" />
+    <Compile Include="Extensions\ParagraphExtensions.cs" />
     <Compile Include="Extensions\SentenceExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\WordExtensions.cs" />

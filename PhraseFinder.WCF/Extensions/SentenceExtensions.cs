@@ -22,7 +22,7 @@ namespace PhraseFinder.WCF.Extensions
             return matches[Math.Min(previousDuplicates, matches.Count - 1)].Index;
         }
 
-        public static string SubSentenceInWordRange(this InfoUnaFrase sentence, int firstWordIndex, int wordCount)
+        public static string SubstringInWordRange(this InfoUnaFrase sentence, int firstWordIndex, int wordCount)
         {
             var startIndex = sentence.StartIndexOfWord(firstWordIndex);
 
