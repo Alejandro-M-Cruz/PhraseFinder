@@ -38,9 +38,7 @@ namespace PhraseFinder.WCF.Extensions
                 return null;
             }
 
-            if (phrase != null && 
-                PlaceholderWords.Contains(str) && 
-                !PlaceholderWords.Contains(phrase.BaseWord))
+            if (phrase != null && str.IsPlaceholderWord(phrase))
             {
                 return new PhraseTag
                 {
@@ -64,6 +62,12 @@ namespace PhraseFinder.WCF.Extensions
             }
 
             return null;
+        }
+
+        public static bool IsPlaceholderWord(this string word, Phrase phrase)
+        {
+            return PlaceholderWords.Any(w => word == w && phrase.BaseWord != w) &&
+                   phrase.Value.Split(' ').Length > 2;
         }
     }
 }

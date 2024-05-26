@@ -6,7 +6,7 @@ namespace PhraseFinder.Domain.Services.PatternGenerators;
 
 public class DleTxtPatternGenerator(
     IPhraseCleaner phraseCleaner,
-    IPhraseSplitter[] phraseSplitters) : IPatternGenerator
+    IReadOnlyList<IPhraseSplitter> phraseSplitters) : IPatternGenerator
 {
     public IEnumerable<Phrase> GeneratePatterns(Phrase phrase)
     {
@@ -21,7 +21,7 @@ public class DleTxtPatternGenerator(
 
     private IEnumerable<string> ApplySplitters(string phrase)
     {
-        if (phraseSplitters.Length == 0)
+        if (phraseSplitters.Count == 0)
         {
             return [phrase];
         }

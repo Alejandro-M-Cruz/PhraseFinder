@@ -75,6 +75,12 @@ public class TwoVariantPhraseSplitterTests
 	[InlineData(
         "a la, o al papillote",
 		new[] { "a la papillote", "al papillote" })]
+	[InlineData(
+        "con la soga a la garganta, o al cuello",
+		new[] { "con la soga a la garganta", "con la soga al cuello" })]
+	[InlineData(
+        "irse alguien a, o de picos pardos",
+		new[] { "irse alguien a picos pardos", "irse alguien de picos pardos" })]
 	//[InlineData(
 	//	"ser alguien puro nervio, o un puro nervio",
 	//	new[] { "ser alguien puro nervio", "ser alguien un puro nervio" })]

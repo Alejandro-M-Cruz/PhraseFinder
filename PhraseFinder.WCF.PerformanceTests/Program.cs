@@ -33,127 +33,16 @@ using ServicioLematizacion;
 
 // text of example
 
-const string sampleText = 
+var sampleText1 = 
     "Por cierto, sentémonos a la mesa y se dieron cuenta enseguida. Había comida a montones. " + 
-    "Al poco tiempo, comenzaron  a almorzar y a echar un párrafo. " + 
+    "Al poco tiempo, comenzaron  a almorzar y a echar un párrafo. " +
     "¿Cabría la posibilidad de ...?\n" +
     "El primero en irse fue Juan, que siempre actúa por cuenta propia.";
 
-var textProcessor = new ProcesarTextos.Text(string.Empty, sampleText);
-var paragraphs = textProcessor.GetParagraphs().ToArray();
-var sentences = paragraphs.SelectMany(p => p.GetSentences()).ToArray();
+var sampleText2 = 
+    "Tanto es así que, sin pensarlo dos veces,¡cáspitas!¡Desde luego!";
 
+var sampleText3 =
+    "Eran las tres de la tarde y hacía un calor de mil demonios. Juan, que no daba pie con bola en su trabajo, decidió que era hora de tomarse un respiro. \"Voy a salir a despejarme un rato\", pensó, y sin pensarlo dos veces, se dirigió al parque que estaba a tiro de piedra de su oficina.\r\n\r\nAl llegar, se encontró con su amigo Pedro, que estaba de capa caída porque acababa de perder su empleo. \"¡Vaya palo!\", exclamó Juan. \"Pero ánimo, que no hay mal que por bien no venga. Seguro que encuentras algo mejor\".\r\n\r\nSe sentaron en un banco a charlar y ponerse al día. Pedro le contó que andaba con la soga al cuello porque las cuentas no le cuadraban y tenía que apretarse el cinturón. Juan, por su parte, no estaba para tirar cohetes; el trabajo le traía por la calle de la amargura y encima tenía una discusión pendiente con su jefe, que no le daba ni la hora.\r\n\r\n\"Bueno, ya sabes lo que dicen, a mal tiempo, buena cara\", dijo Pedro, intentando levantar el ánimo. \"Además, cuando una puerta se cierra, otra se abre\".\r\n\r\nDecidieron dar una vuelta y, para matar el tiempo, entraron en una cafetería. Al pedir, la camarera les dio largas porque había mucha gente, pero ellos se lo tomaron con filosofía. \"A caballo regalado no le mires el diente\", bromeó Juan cuando la camarera les trajo dos cafés como si fueran un tesoro.\r\n\r\nAl rato, Pedro recibió una llamada. \"¡Anda, mira quién fue a hablar! El jefe de la empresa en la que había hecho una entrevista hace una semana\". Después de colgar, Pedro tenía una sonrisa de oreja a oreja. \"Me han contratado\", dijo, sin poder creer su buena suerte.\r\n\r\n\"¡Qué buena onda!\", exclamó Juan. \"Ya ves, después de la tormenta siempre viene la calma\".\r\n\r\nLos dos amigos brindaron por los nuevos comienzos y, aunque sabían que la vida no es color de rosa, estaban decididos a enfrentar lo que viniera con optimismo. Porque al fin y al cabo, más vale tarde que nunca y, en las buenas y en las malas, siempre podrían contar el uno con el otro.";
 
-Console.WriteLine("Paragraphs from text processor:");
-
-foreach (var paragraph in paragraphs)
-{
-    Console.WriteLine($"Paragraph: {paragraph.getText()}");
-}
-
-Console.WriteLine("Sentences from text processor:");
-
-foreach (var sentence in sentences)
-{
-    Console.WriteLine($"Sentence: {sentence.getText()}");
-}
-
-Console.WriteLine();
-
-var frases = sentences.Select(s => new InfoUnaFrase()
-{
-    Frase = s.getText(),
-    Palabras = s.GetWords().Select(w => new InfoUnaPalabra()
-    {
-        Palabra = w.ToString()
-    }).ToArray()
-});
-
-var servicioLematizacion = new ServicioLematizacionClient();
-
-frases = await servicioLematizacion.NuevoReconocerFrasesAsync(frases.ToArray(), "es", multiPref: false);
-
-foreach (var frase in frases)
-{
-    Console.WriteLine($"Frase: {frase.Frase}");
-    foreach (var palabra in frase.Palabras)
-    {
-        Console.WriteLine($"Palabra: {palabra.Palabra}");
-        Console.WriteLine($"Forma canónica: {palabra.FormaCanonica}");
-        Console.WriteLine($"Categoría: {palabra.IdCategoria}");
-        Console.WriteLine($"Posición: {palabra.Posicion}");
-        Console.WriteLine($"PosMark: {palabra.PosMark}");
-        Console.WriteLine();
-    }
-}
-
-var phrases = new Phrase[]
-{
-    new()
-    {
-        PhraseId = 1,
-        Value = "por cierto",
-        Pattern = "por cierto",
-        BaseWord = "cierto"
-    },
-    new()
-    {
-        PhraseId = 2,
-        Value = "a montones",
-        Pattern = "a montones",
-        BaseWord = "montón"
-    },
-    new()
-    {
-        PhraseId = 3,
-        Value = "dar cuenta",
-        Pattern = "dar cuenta",
-        BaseWord = "cuenta"
-    },
-};
-
-var foundPhrases = new Dictionary<int, string>();
-
-var IsVerb = (InfoUnaPalabra palabra) => 
-    palabra.IdCategoria is > 3000 and < 3100;
-
-var WordsCoincide = (InfoUnaPalabra palabra, string word) => 
-    palabra.Palabra == word || (IsVerb(palabra) && palabra.FormaCanonica == word);
-
-foreach (var phrase in phrases)
-{
-    var words = phrase.Value.Split(' ').Select(w => w.TrimEnd(',')).ToArray();
-    var firstWord = words.First();
-    
-    foreach (var frase in frases)
-    {
-        foreach (var palabra in frase.Palabras)
-        {
-            if (WordsCoincide(palabra, firstWord))
-            {
-                var i = palabra.Posicion;
-                if (!words.Skip(1).All(w =>
-                    {
-                        var p = frase.Palabras[i];
-                        if (p.Posicion == 0)
-                        {
-                            return true;
-                        }
-                        i++;
-                        return WordsCoincide(p, w);
-                    }))
-                {
-                    continue;
-                }
-                foundPhrases[palabra.Posicion] = palabra.Palabra;
-            }
-        }
-    }
-}
-
-Console.WriteLine("Found phrases:");
-
-foreach (var foundPhrase in foundPhrases)
-{
-    Console.WriteLine($"{foundPhrase.Key}: {foundPhrase.Value}");
-}
+await Utils.PrintInfo(sampleText3);

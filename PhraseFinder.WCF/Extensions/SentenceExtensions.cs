@@ -1,15 +1,46 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 using PhraseFinder.WCF.ServicioLematizacion;
 
 namespace PhraseFinder.WCF.Extensions
 {
     public static class SentenceExtensions
     {
-        public static int IndexOfWordInIndex(this InfoUnaFrase sentence, int wordIndex)
+        public static int StartIndexOfWord(this InfoUnaFrase sentence, int wordIndex)
         {
-            return sentence.Palabras
-                .Take(wordIndex)
-                .Sum(w => string.IsNullOrEmpty(w.PosMark) ? w.Palabra.Length + 1 : w.Palabra.Length);
+            var word = sentence.Palabras[wordIndex].Palabra;
+            var wordRegex = new Regex($@"\b{word}\b");
+            var matches = wordRegex.Matches(sentence.Frase);
+
+            if (matches.Count == 0)
+            {
+                return -1;
+            }
+
+            var previousDuplicates = sentence.Palabras.Take(wordIndex).Count(w => w.Palabra == word);
+            return matches[Math.Min(previousDuplicates, matches.Count - 1)].Index;
+        }
+
+        public static string SubSentenceInWordRange(this InfoUnaFrase sentence, int firstWordIndex, int wordCount)
+        {
+            var startIndex = sentence.StartIndexOfWord(firstWordIndex);
+
+            if (startIndex == -1)
+            {
+                return string.Empty;
+            }
+
+            var lastWordStartIndex = sentence.StartIndexOfWord(firstWordIndex + wordCount - 1);
+
+            if (lastWordStartIndex == -1)
+            {
+                return string.Empty;
+            }
+
+            var lastWordEndIndex = lastWordStartIndex + sentence
+                .Palabras[firstWordIndex + wordCount - 1].Palabra.Length;
+            return sentence.Frase.Substring(startIndex, lastWordEndIndex - startIndex);
         }
     }
 }

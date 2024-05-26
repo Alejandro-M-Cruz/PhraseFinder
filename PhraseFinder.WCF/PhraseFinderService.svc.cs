@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,17 +28,41 @@ namespace PhraseFinder.WCF
         public async Task<PhraseAnalysis> FindPhrasesAsync(string text)
         {
             var sentences = text.GetSentences().ToList();
-            var processedSentences = await ServicioLematizacion.NuevoReconocerFrasesAsync(
-                sentences, 
-                idioma: "es", 
-                multiPref: false);
-            var foundPhrases = FindPhrasesInSentences(processedSentences).ToArray();
-            IncludeDefinitions(ref foundPhrases);
-            return new PhraseAnalysis
+            List<InfoUnaFrase> processedSentences;
+            FoundPhrase[] foundPhrases;
+
+            try
             {
-                ProcessedText = string.Join(" ", processedSentences.Select(s => s.Frase)),
-                FoundPhrases = foundPhrases
-            };
+                processedSentences = await ServicioLematizacion
+                    .NuevoReconocerFrasesAsync(sentences, idioma: "es", multiPref: false);
+            }
+            catch (Exception e)
+            {
+                return new PhraseAnalysis
+                {
+                    ProcessedText = string.Join(" ", sentences.Select(s => s.Frase)) + 
+                                    $"(error en servicio de lematizacion: {e.Message})"
+                };
+            }
+
+            try
+            {
+                foundPhrases = FindPhrasesInSentences(processedSentences).ToArray();
+                IncludeDefinitions(ref foundPhrases);
+                return new PhraseAnalysis
+                {
+                    ProcessedText = string.Join(" ", processedSentences.Select(s => s.Frase)),
+                    FoundPhrases = foundPhrases
+                };
+            }
+            catch (Exception e)
+            {
+                return new PhraseAnalysis
+                {
+                    ProcessedText = string.Join(" ", sentences.Select(s => s.Frase)) + 
+                                    $"(error en detección: {e.Message})"
+                };
+            }
 	    }
 
         private IEnumerable<FoundPhrase> FindPhrasesInSentences(IReadOnlyList<InfoUnaFrase> sentences)
@@ -106,26 +131,16 @@ namespace PhraseFinder.WCF
                             continue;
                         }
 
-                        var match = new StringBuilder(sentence.Palabras[i].Palabra);
-
-                        foreach (var w in sentence.Palabras.GetRange(i + 1, wordIndex - i - 1))
-                        {
-                            if (!w.IsPunctuationMark())
-                            {
-                                match.Append(" ");
-                            }
-
-                            match.Append(w.Palabra);
-                        }
+                        var phraseMatch = sentence.SubSentenceInWordRange(i, wordIndex - i);
 
                         yield return new FoundPhrase
                         {
                             PhraseId = phrase.PhraseId,
                             Phrase = phrase.Value,
                             BaseWord = phrase.BaseWord,
-                            StartIndex = sentenceIndex + sentence.IndexOfWordInIndex(i),
-                            Match = match.ToString(),
-                            Length = match.Length
+                            StartIndex = sentenceIndex + sentence.StartIndexOfWord(i),
+                            Match = phraseMatch,
+                            Length = phraseMatch.Length
                         };
                     }
                     sentenceIndex += sentence.Frase.Length + 1;
@@ -137,7 +152,7 @@ namespace PhraseFinder.WCF
         {
             using (var phrasesService = new PhrasesService())
             {
-                phrasesService.LoadPhraseDefinitions(foundPhrases.Select(fp => fp.PhraseId));
+                phrasesService.LoadPhraseDefinitions(foundPhrases.Select(fp => fp.PhraseId).ToArray());
 
                 foreach (var foundPhrase in foundPhrases)
                 {

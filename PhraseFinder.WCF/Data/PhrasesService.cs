@@ -21,7 +21,8 @@ namespace PhraseFinder.WCF.Data
 
         private static readonly string ConnectionString;
         private readonly IDbConnection _dbConnection;
-        private IDictionary<int, PhraseDefinition[]> PhraseIdToDefinitions { get; set; }
+        private IDictionary<int, PhraseDefinition[]> PhraseIdToDefinitions { get; set; } =
+            new Dictionary<int, PhraseDefinition[]>();
 
         static PhrasesService()
         {
@@ -45,8 +46,14 @@ namespace PhraseFinder.WCF.Data
                 "from Locuciones_y_expresiones;");
 		}
 
-        public void LoadPhraseDefinitions(IEnumerable<int> phraseIds)
+        public void LoadPhraseDefinitions(IReadOnlyList<int> phraseIds)
         {
+            if (phraseIds.Count == 0)
+            {
+                PhraseIdToDefinitions.Clear();
+                return;
+            }
+
             var phraseDefinitionExamples = _dbConnection.Query<PhraseDefinitionExample>(
                 "select D.[ID_Locucion] as [PhraseId], D.[Definicion] as [Definition], E.[Ejemplo] as [Example] " +
                 "from Definiciones as D " +

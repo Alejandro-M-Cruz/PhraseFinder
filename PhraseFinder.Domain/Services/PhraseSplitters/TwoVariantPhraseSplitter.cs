@@ -36,16 +36,28 @@ public class TwoVariantPhraseSplitter : IPhraseSplitter
         }
 
         if (firstPartWords.Length == 1 || 
-            firstPart == "a la" && secondPartWords.First() == "al")
+            (firstPart.Contains("a la") && secondPartWords.First() == "al"))
         {
             if (lastPart.Length > 0)
             {
 				return [firstPart + lastPart, secondPart + lastPart];
             }
 
+            var substitutionIndex = firstPart.LastIndexOf("a la", StringComparison.Ordinal);
+
             return [
-                firstPart + ' ' + string.Join(' ', secondPartWords.Skip(1)),
-				secondPart
+                firstPart + (substitutionIndex < 1 ? ' ' + string.Join(' ', secondPartWords.Skip(1)) : ""),
+				(substitutionIndex != -1 ? firstPart[..substitutionIndex] : "") + secondPart
+            ];
+        }
+
+		if (lastPart.Length == 0 && 
+            firstPartWords.Last().Length < 3 && 
+            secondPartWords.First().Length < 3)
+        {
+            return [
+				firstPart + ' ' + string.Join(' ', secondPartWords.Skip(1)),
+				string.Join(' ', firstPartWords[..^1]) + ' ' + secondPart
             ];
         }
 
