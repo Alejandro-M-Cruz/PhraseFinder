@@ -59,9 +59,9 @@ namespace PhraseFinderServiceReference
         
         private PhraseFinderServiceReference.PhraseDefinition[] DefinitionsField;
         
-        private int EndIndexField;
-        
         private int LengthField;
+        
+        private string MatchField;
         
         private string PhraseField;
         
@@ -96,19 +96,6 @@ namespace PhraseFinderServiceReference
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public int EndIndex
-        {
-            get
-            {
-                return this.EndIndexField;
-            }
-            set
-            {
-                this.EndIndexField = value;
-            }
-        }
-        
-        [System.Runtime.Serialization.DataMemberAttribute()]
         public int Length
         {
             get
@@ -118,6 +105,19 @@ namespace PhraseFinderServiceReference
             set
             {
                 this.LengthField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Match
+        {
+            get
+            {
+                return this.MatchField;
+            }
+            set
+            {
+                this.MatchField = value;
             }
         }
         

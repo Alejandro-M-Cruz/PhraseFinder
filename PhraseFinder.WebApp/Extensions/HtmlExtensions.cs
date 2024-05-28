@@ -31,8 +31,8 @@ public static class HtmlExtensions
 				highlightedText.Append(
 					$"<a id=\"phrase-link-{n}\" href=\"#phrase-{n}\" class=\"text-danger text-decoration-none\">" +
 					$"<strong class=\"text-decoration-underline fw-bold\">");
-                var phraseToHighlight = text.Substring(phrase.StartIndex, phrase.Length);
-                highlightedText.Append(htmlHelper.Encode(phraseToHighlight));
+                var phraseMatch = text.Substring(phrase.StartIndex, phrase.Length);
+                highlightedText.Append(htmlHelper.Encode(phraseMatch));
 				highlightedText.Append($"</strong><sup>{n}</sup></a>");
 
 				currentIndex = phrase.StartIndex + phrase.Length; 

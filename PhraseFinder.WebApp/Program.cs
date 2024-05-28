@@ -14,8 +14,9 @@ builder.Services.AddRazorPages();
 builder.Services.Configure<TextValidationOptions>(builder.Configuration.GetSection("TextValidation"));
 builder.Services.Configure<TextFileValidationOptions>(builder.Configuration.GetSection("TextFileValidation"));
 
-builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceClient>();
-//builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceDev>();
+// PhraseFinderService
+//builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceClient>();
+builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceDev>();
 
 builder.Services.AddMvc().AddSessionStateTempDataProvider();
 builder.Services.AddSession();

@@ -81,9 +81,18 @@ public class TwoVariantPhraseSplitterTests
 	[InlineData(
         "irse alguien a, o de picos pardos",
 		new[] { "irse alguien a picos pardos", "irse alguien de picos pardos" })]
-	//[InlineData(
-	//	"ser alguien puro nervio, o un puro nervio",
-	//	new[] { "ser alguien puro nervio", "ser alguien un puro nervio" })]
+	[InlineData(
+        "echar cuenta, o cuentas con alguien o algo",
+                new[] { "echar cuenta con alguien o algo", "echar cuentas con alguien o algo" })]
+	[InlineData(
+        "mudar cielo, o de cielo",
+		new[] { "mudar cielo", "mudar de cielo" })]
+	[InlineData(
+        "a vuelta de ojo, o de ojos",
+        new[] { "a vuelta de ojo", "a vuelta de ojos" })]
+	[InlineData(
+		"ser alguien puro nervio, o un puro nervio",
+		new[] { "ser alguien puro nervio", "ser alguien un puro nervio" })]
 	public void SplitPhrase_WhenPhraseHasTwoVariants_ReturnsTheTwoPhrases(
 		string phrase,
 		string[] expectedPhrases)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using PhraseFinder.WCF.Contracts;
@@ -31,9 +32,18 @@ namespace PhraseFinder.WCF
         {
             var paragraphs = text.GetParagraphs();
             var sentences = paragraphs.SelectAllSentences().ToList();
-            var processedSentences = await ServicioLematizacion
-                .NuevoReconocerFrasesAsync(sentences, idioma: "es", multiPref: false);
-            var foundPhrases = FindPhrasesInSentences(processedSentences, paragraphs).ToArray();
+
+            try
+            {
+                sentences = await ServicioLematizacion
+                    .NuevoReconocerFrasesAsync(sentences, idioma: "es", multiPref: false);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error from servicio lematizacion: " + e.Message);
+            }
+            
+            var foundPhrases = FindPhrasesInSentences(sentences, paragraphs).ToArray();
 
             IncludeDefinitions(ref foundPhrases);
 
@@ -79,6 +89,20 @@ namespace PhraseFinder.WCF
 
                         for (var phraseWordIndex = 1; phraseWordIndex < phraseWords.Length; phraseWordIndex++)
                         {
+                            var phraseWord = phraseWords[phraseWordIndex];
+
+                            if (phraseWord.GetTag(phrase)?.Category == PhraseTagCategory.PlaceholderWord)
+                            {
+                                if (phraseWordIndex == phraseWords.Length - 1)
+                                {
+                                    break;
+                                }
+
+                                wordIndex = Math.Max(0, wordIndex - 1);
+                                anyWords += 3;
+                                continue;
+                            }
+
                             if (wordIndex >= sentence.Palabras.Count)
                             {
                                 isMatch = false;
@@ -90,15 +114,6 @@ namespace PhraseFinder.WCF
                             if (w.IsPunctuationMark())
                             {
                                 phraseWordIndex--;
-                                continue;
-                            }
-
-                            var phraseWord = phraseWords[phraseWordIndex];
-
-                            if (phraseWord.GetTag(phrase)?.Category == PhraseTagCategory.PlaceholderWord)
-                            {
-                                wordIndex--;
-                                anyWords += 3;
                                 continue;
                             }
 

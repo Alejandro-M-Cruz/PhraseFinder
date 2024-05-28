@@ -47,20 +47,62 @@ public class TwoVariantPhraseSplitter : IPhraseSplitter
 
             return 
             [
-                firstPart + (substitutionIndex < 1 ? ' ' + string.Join(' ', secondPartWords.Skip(1)) : ""),
+                firstPart + (substitutionIndex < 1 ? ' ' + string.Join(' ', secondPartWords.Skip(1)) : "").TrimEnd(),
 				(substitutionIndex != -1 ? firstPart[..substitutionIndex] : "") + secondPart
             ];
         }
 
-		if (lastPart.Length == 0 && 
-            firstPartWords.Last().Length < 3 && 
-            secondPartWords.First().Length < 3)
+		if (lastPart.Length == 0)
         {
-            return 
-            [
-				firstPart + ' ' + string.Join(' ', secondPartWords.Skip(1)),
-				string.Join(' ', firstPartWords[..^1]) + ' ' + secondPart
-            ];
+            var lastMatch = Array.LastIndexOf(firstPartWords, secondPartWords[0]);
+
+            if (lastMatch == 0)
+            {
+                return
+                [
+                    firstPart,
+                    secondPart
+                ];
+            }
+
+            if (lastMatch != -1)
+            {
+                return
+                [
+                    firstPart,
+                    (string.Join(' ', firstPartWords[..lastMatch])) + ' ' + secondPart
+                ];
+            }
+
+            if (firstPartWords.Length > 2 && secondPartWords.Length > 2 &&
+                firstPartWords.TakeLast(secondPartWords.Length - 1).SequenceEqual(secondPartWords.Skip(1)))
+            {
+                return
+                [
+                    firstPart,
+                    string.Join(' ', firstPartWords.SkipLast(secondPartWords.Length - 1)) + ' ' + secondPart
+                ];
+            }
+
+            if ((firstPartWords[^1].Length < 3 && secondPartWords[0].Length < 3) ||
+                secondPartWords[0].StartsWith(firstPartWords[^1]))
+            {
+                return
+                [
+                    firstPart + (secondPartWords.Length > 1 ? ' ' + string.Join(' ', secondPartWords.Skip(1)) : ""),
+                    string.Join(' ', firstPartWords[..^1]) + ' ' + secondPart
+                ];
+            }
+
+            if (secondPartWords[0].Length < 3 && firstPartWords.Length > 1 &&
+                firstPartWords[^2].Length > 3 && firstPartWords[^1] == secondPartWords[^1])
+            {
+                return
+                [
+                    firstPart,
+                    string.Join(' ', firstPartWords[..^1]) + ' ' + secondPart
+                ];
+            }
         }
 
 		if (secondPartWords.First().StartsWith(firstPartWords.First()))

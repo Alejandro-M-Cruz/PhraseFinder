@@ -19,7 +19,6 @@ internal class PhraseFinderServiceDev : IPhraseFinderService
 					Phrase = "sentarse alguien a la mesa",
                     BaseWord = "mesa",
 					StartIndex = 0,
-					EndIndex = 21,
 					Length = 21,
 					Definitions =
 					[
@@ -35,7 +34,6 @@ internal class PhraseFinderServiceDev : IPhraseFinderService
                     Phrase = "darse cuenta de algo",
                     BaseWord = "cuenta",
                     StartIndex = 24,
-                    EndIndex = 40,
                     Length = 16,
                     Definitions =
                     [
@@ -56,7 +54,6 @@ internal class PhraseFinderServiceDev : IPhraseFinderService
                     Phrase = "a montones",
                     BaseWord = "montón",
                     StartIndex = 65,
-                    EndIndex = 75,
                     Length = 10,
                     Definitions =
                     [
@@ -72,7 +69,6 @@ internal class PhraseFinderServiceDev : IPhraseFinderService
                     Phrase = "echar un párrafo",
                     BaseWord = "párrafo",
                     StartIndex = 119,
-                    EndIndex = 135,
                     Length = 16,
                     Definitions =
                     [
@@ -88,7 +84,6 @@ internal class PhraseFinderServiceDev : IPhraseFinderService
                     Phrase = "por cuenta propia",
                     BaseWord = "cuenta",
                     StartIndex = 184,
-                    EndIndex = 201,
                     Length = 17,
                     Definitions =
                     [
