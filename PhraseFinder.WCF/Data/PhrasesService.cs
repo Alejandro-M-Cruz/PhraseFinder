@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.OleDb;
 using System.IO;
@@ -19,19 +20,11 @@ namespace PhraseFinder.WCF.Data
             public string Example { get; set; }
         }
 
-        private static readonly string ConnectionString;
+        private static readonly string ConnectionString = 
+            ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
         private readonly IDbConnection _dbConnection;
         private IDictionary<int, PhraseDefinition[]> PhraseIdToDefinitions { get; set; } =
             new Dictionary<int, PhraseDefinition[]>();
-
-        static PhrasesService()
-        {
-            const Environment.SpecialFolder localAppDataFolder = Environment.SpecialFolder.ApplicationData;
-            var dbDirectory = Path.Combine(Environment.GetFolderPath(localAppDataFolder), "PhraseFinder");
-            Directory.CreateDirectory(dbDirectory);
-            var dbPath = Path.Combine(dbDirectory, "expresiones-y-locuciones.accdb");
-            ConnectionString = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={dbPath}";
-        }
 
         public PhrasesService()
         {
