@@ -9,7 +9,7 @@ public class DleTxtPatternGeneratorTests
 		PatternGeneratorFactory.CreateGenerator(PhraseDictionaryFormat.DleTxt);
 
 	[Fact]
-	public void GeneratePatterns_ForPhraseWithOnePattern_ReturnsOnePhrase()
+	public void GeneratePatterns_ForPhraseWithOnePattern_ReturnsOnePattern()
 	{
 		var phrase = new Phrase
 		{
@@ -24,6 +24,7 @@ public class DleTxtPatternGeneratorTests
 		Assert.Single(result);
 		Assert.Equal(new PhrasePattern
         {
+			Phrase = phrase.Value,
 			Variant = phrase.Value,
 			Pattern = phrase.Value,
 			BaseWord = phrase.BaseWord,
@@ -32,7 +33,7 @@ public class DleTxtPatternGeneratorTests
 	}
 
 	[Fact]
-	public void GeneratePatterns_ForPhraseWithMultiplePatterns_ReturnsMultiplePhrases()
+	public void GeneratePatterns_ForPhraseWithMultiplePatterns_ReturnsMultiplePatterns()
 	{
 		var phrase = new Phrase
 		{
@@ -43,6 +44,7 @@ public class DleTxtPatternGeneratorTests
         };
         var expectedPattern = new PhrasePattern
         {
+			Phrase = "estar, o ir, aviado, da",
 			Variant = "estar aviado",
 			Pattern = "estar aviado",
             BaseWord = "aviado, da",

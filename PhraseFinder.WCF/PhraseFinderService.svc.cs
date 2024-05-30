@@ -22,9 +22,16 @@ namespace PhraseFinder.WCF
 
         static PhraseFinderService()
         {
-            using (var phrasesService = new PhrasePatternService())
+            try
             {
-                Phrases = phrasesService.GetPhrasePatterns().ToArray();
+                using (var phrasesService = new PhrasePatternService())
+                {
+                    Phrases = phrasesService.GetPhrasePatterns().ToArray();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error from phrase pattern service: " + e.Message);
             }
         }
 
@@ -45,7 +52,14 @@ namespace PhraseFinder.WCF
             
             var foundPhrases = FindPhrasesInSentences(sentences, paragraphs).ToArray();
 
-            IncludeDefinitions(ref foundPhrases);
+            try 
+            {
+                IncludeDefinitions(ref foundPhrases);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error when including definitions: " + e.Message);
+            }
 
             return new PhraseAnalysis
             {
@@ -142,7 +156,7 @@ namespace PhraseFinder.WCF
                         yield return new FoundPhrase
                         {
                             PhraseId = phrase.PhraseId,
-                            Phrase = phrase.Value,
+                            Phrase = phrase.Phrase,
                             BaseWord = phrase.BaseWord,
                             StartIndex = sentenceIndex + sentence.StartIndexOfWord(i),
                             Match = phraseMatch,

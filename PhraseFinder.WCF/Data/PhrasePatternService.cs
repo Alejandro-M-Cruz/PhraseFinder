@@ -28,7 +28,7 @@ select
     D.[Definicion] as [Definition], 
     E.[Ejemplo] as [Example] 
 from 
-    Locuciones_y_expresiones as P left join Definiciones as D left join Ejemplos as E on D.[ID_Definicion] = E.[ID_Definicion] 
+    Definiciones as D left join Ejemplos as E on D.[ID_Definicion] = E.[ID_Definicion] 
 where 
     D.ID_Locucion in @PhraseIds;";
 

@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using PhraseFinder.WCF.Models;
-using PhraseFinder.WCF.ServicioLematizacion;
 using ProcesarTextos;
 
 namespace PhraseFinder.WCF.Extensions
@@ -57,7 +55,7 @@ namespace PhraseFinder.WCF.Extensions
         public static bool IsPlaceholderWord(this string word, PhrasePattern phrasePattern)
         {
             return PlaceholderWords.Any(w => word == w && phrasePattern.BaseWord != w) &&
-                   phrasePattern.Value.Split(' ').Length > 2;
+                   phrasePattern.Phrase.Split(' ').Length > 2;
         }
     }
 }

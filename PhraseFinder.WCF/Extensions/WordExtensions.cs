@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using PhraseFinder.WCF.Models;
 using PhraseFinder.WCF.ServicioLematizacion;
 
