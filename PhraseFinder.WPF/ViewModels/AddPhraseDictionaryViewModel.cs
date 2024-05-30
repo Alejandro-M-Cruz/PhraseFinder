@@ -11,6 +11,9 @@ internal partial class AddPhraseDictionaryViewModel(
     IPhraseDictionaryService phraseDictionaryService,
     INavigationService navigationService) : ObservableObject
 {
+    [ObservableProperty] 
+    private bool _displayErrorMessage;
+
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(AddPhraseDictionaryCommand))]
     private string? _phraseDictionaryName = string.Empty;
@@ -47,6 +50,7 @@ internal partial class AddPhraseDictionaryViewModel(
     [RelayCommand(CanExecute = nameof(CanAddPhraseDictionary))]
     public async Task AddPhraseDictionary()
     {
+        DisplayErrorMessage = false;
         var phraseDictionary = new PhraseDictionary
         {
             Name = PhraseDictionaryName!,
@@ -59,29 +63,31 @@ internal partial class AddPhraseDictionaryViewModel(
         var token = _cancellationTokenSource.Token;
         try
         {
-	        _addPhraseDictionaryTask = Task.Run(
-		        () => phraseDictionaryService.AddPhraseDictionaryFromFileAsync(phraseDictionary, token),
-		        token);
+            _addPhraseDictionaryTask = Task.Run(
+                () => phraseDictionaryService.AddPhraseDictionaryFromFileAsync(phraseDictionary, token),
+                token);
             await _addPhraseDictionaryTask;
         }
         catch (OperationCanceledException)
+        { }
+        catch
         {
-
+            DisplayErrorMessage = true;
         }
         finally
         {
 	        IsDictionaryBeingAdded = false;
-	        navigationService.NavigateTo<PhraseDictionariesViewModel>();
+            if (!DisplayErrorMessage)
+            {
+	            navigationService.NavigateTo<PhraseDictionariesViewModel>();
+            }
         }
     }
 
     [RelayCommand(CanExecute = nameof(IsPhraseDictionaryFileNotPicked))]
     public void PickPhraseDictionaryFile()
     {
-        OpenFileDialog openFileDialog = new()
-        {
-            Multiselect = false
-        };
+        OpenFileDialog openFileDialog = new() { Multiselect = false };
         if (openFileDialog.ShowDialog() == true)
         {
             PhraseDictionaryFilePath = openFileDialog.FileName;

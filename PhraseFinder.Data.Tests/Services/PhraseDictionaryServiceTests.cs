@@ -125,8 +125,6 @@ public class PhraseDictionaryServiceTests : IDisposable
                 {
                     Value = "test",
                     BaseWord = "test",
-                    Variant = "test",
-                    Pattern = "test",
                     Categories = "",
                     Definitions = []
                 }

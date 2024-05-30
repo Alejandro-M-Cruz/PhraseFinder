@@ -21,14 +21,14 @@ namespace PhraseFinder.WCF.Extensions
             return str.Equals(other, System.StringComparison.OrdinalIgnoreCase);
         }
 
-        public static PhraseTag GetTag(this string str, Phrase phrase = null)
+        public static PhraseTag GetTag(this string str, PhrasePattern phrasePattern = null)
         {
             if (str.Length < 3)
             {
                 return null;
             }
 
-            if (phrase != null && str.IsPlaceholderWord(phrase))
+            if (phrasePattern != null && str.IsPlaceholderWord(phrasePattern))
             {
                 return new PhraseTag
                 {
@@ -54,10 +54,10 @@ namespace PhraseFinder.WCF.Extensions
             return null;
         }
 
-        public static bool IsPlaceholderWord(this string word, Phrase phrase)
+        public static bool IsPlaceholderWord(this string word, PhrasePattern phrasePattern)
         {
-            return PlaceholderWords.Any(w => word == w && phrase.BaseWord != w) &&
-                   phrase.Value.Split(' ').Length > 2;
+            return PlaceholderWords.Any(w => word == w && phrasePattern.BaseWord != w) &&
+                   phrasePattern.Value.Split(' ').Length > 2;
         }
     }
 }

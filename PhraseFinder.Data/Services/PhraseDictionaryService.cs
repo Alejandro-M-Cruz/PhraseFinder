@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using PhraseFinder.Domain.Models;
 using PhraseFinder.Domain.Services.FileReaders;
@@ -22,7 +23,6 @@ public class PhraseDictionaryService(PhraseFinderDbContext dbContext) : IPhraseD
 	    PhraseDictionary phraseDictionary, 
 	    CancellationToken cancellationToken = default)
     {
-	    var addedPatterns = new HashSet<string>();
         var dleTxtReader = PhraseDictionaryFileReaderFactory.CreateReader(
 	        phraseDictionary.Format, 
             filePath: phraseDictionary.FilePath);
@@ -30,14 +30,11 @@ public class PhraseDictionaryService(PhraseFinderDbContext dbContext) : IPhraseD
         await foreach (var phraseEntry in dleTxtReader.ReadPhraseEntriesAsync(cancellationToken))
         {
             var phrase = phraseEntry.ToPhrase();
-            foreach (var p in patternGenerator.GeneratePatterns(phrase))
+            if (!phraseDictionary.Phrases.Add(phrase))
             {
-	            if (!addedPatterns.Add(p.Pattern))
-	            {
-					continue;
-				}
-	            phraseDictionary.Phrases.Add(p);
+                continue;
             }
+            phrase.Patterns = patternGenerator.GeneratePatterns(phrase).ToArray();
         }
         dbContext.PhraseDictionaries.Add(phraseDictionary);
         await dbContext.SaveChangesAsync(cancellationToken);

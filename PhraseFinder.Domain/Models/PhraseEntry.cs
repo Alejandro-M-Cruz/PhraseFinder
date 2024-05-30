@@ -14,8 +14,6 @@ public class PhraseEntry
         {
             Value = Name,
             BaseWord = BaseWord,
-            Variant = Name,
-            Pattern = Name,
             Categories = string.Join(", ", Categories),
             Definitions = DefinitionToExamples.Select(d =>
             {

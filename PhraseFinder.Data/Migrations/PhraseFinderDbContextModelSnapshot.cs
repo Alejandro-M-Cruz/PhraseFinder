@@ -41,12 +41,6 @@ namespace PhraseFinder.Data.Migrations
                         .HasColumnType("varchar(255)")
                         .HasColumnName("Categorias");
 
-                    b.Property<string>("Pattern")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("Patron");
-
                     b.Property<int>("PhraseDictionaryId")
                         .HasColumnType("integer")
                         .HasColumnName("ID_Diccionario");
@@ -57,20 +51,10 @@ namespace PhraseFinder.Data.Migrations
 
                     b.Property<string>("Value")
                         .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("Locucion");
-
-                    b.Property<string>("Variant")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar(255)")
-                        .HasColumnName("Variante");
+                        .HasColumnType("longchar")
+                        .HasColumnName("Locucion_o_expresion");
 
                     b.HasKey("PhraseId");
-
-                    b.HasIndex("Pattern")
-                        .IsUnique();
 
                     b.HasIndex("PhraseDictionaryId");
 
@@ -168,15 +152,56 @@ namespace PhraseFinder.Data.Migrations
                     b.ToTable("Ejemplos");
                 });
 
+            modelBuilder.Entity("PhraseFinder.Domain.Models.PhrasePattern", b =>
+                {
+                    b.Property<int>("PhrasePatternId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("ID_Patron")
+                        .HasAnnotation("Jet:ValueGenerationStrategy", JetValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("BaseWord")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("Palabra_base");
+
+                    b.Property<string>("Pattern")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("Patron");
+
+                    b.Property<string>("Phrase")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("Locucion_o_expresion");
+
+                    b.Property<int>("PhraseId")
+                        .HasColumnType("integer")
+                        .HasColumnName("ID_Locucion");
+
+                    b.Property<string>("Variant")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("Variante");
+
+                    b.HasKey("PhrasePatternId");
+
+                    b.HasIndex("PhraseId");
+
+                    b.ToTable("Patrones");
+                });
+
             modelBuilder.Entity("PhraseFinder.Domain.Models.Phrase", b =>
                 {
-                    b.HasOne("PhraseFinder.Domain.Models.PhraseDictionary", "PhraseDictionary")
+                    b.HasOne("PhraseFinder.Domain.Models.PhraseDictionary", null)
                         .WithMany("Phrases")
                         .HasForeignKey("PhraseDictionaryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("PhraseDictionary");
                 });
 
             modelBuilder.Entity("PhraseFinder.Domain.Models.PhraseDefinition", b =>
@@ -197,9 +222,20 @@ namespace PhraseFinder.Data.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("PhraseFinder.Domain.Models.PhrasePattern", b =>
+                {
+                    b.HasOne("PhraseFinder.Domain.Models.Phrase", null)
+                        .WithMany("Patterns")
+                        .HasForeignKey("PhraseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("PhraseFinder.Domain.Models.Phrase", b =>
                 {
                     b.Navigation("Definitions");
+
+                    b.Navigation("Patterns");
                 });
 
             modelBuilder.Entity("PhraseFinder.Domain.Models.PhraseDefinition", b =>

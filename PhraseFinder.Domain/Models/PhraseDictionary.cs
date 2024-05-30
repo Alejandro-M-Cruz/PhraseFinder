@@ -27,5 +27,5 @@ public class PhraseDictionary
     [Column("Fecha_creacion")]
     public DateTime AddedAt { get; set; }
     
-    public ICollection<Phrase> Phrases { get; set; } = [];
+    public ISet<Phrase> Phrases { get; set; } = new HashSet<Phrase>();
 }

@@ -9,25 +9,16 @@ public record Phrase
     [Column("ID_Locucion")]
     public int PhraseId { get; set; }
 
-    [Column("Locucion")]
-    [MaxLength(255)]
-    public required string Value { get; set; }
+    [Column("Locucion_o_expresion")]
+    public required string Value { get; init; }
 
     [Column("Palabra_base")]
     [MaxLength(255)]
-    public required string BaseWord { get; set; }
-
-    [Column("Variante")]
-    [MaxLength(255)]
-    public string Variant { get; set; }
-
-    [Column("Patron")]
-    [MaxLength(255)]
-    public string Pattern { get; set; }
+    public required string BaseWord { get; init; }
 
     [Column("Categorias")]
     [MaxLength(255)]
-    public string Categories { get; set; }
+    public required string Categories { get; init; }
 
     [Column("Revisado")] 
     public bool Reviewed { get; set; } = false;
@@ -35,12 +26,29 @@ public record Phrase
     [Column("ID_Diccionario")]
     public int PhraseDictionaryId { get; set; }
 
-    public PhraseDictionary PhraseDictionary { get; set; }
-    
     public ICollection<PhraseDefinition> Definitions { get; set; } = [];
+
+    public ICollection<PhrasePattern> Patterns { get; set; } = [];
     
     public override string ToString()
     {
-        return $"{Value}; {Variant}; {Pattern}";
+        return $"{Value} ({BaseWord})";
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(Value, BaseWord, Categories);
+    }
+
+    public virtual bool Equals(Phrase? other)
+    {
+        if (other is null)
+        {
+            return false;
+        }
+
+        return Value == other.Value && 
+               BaseWord == other.BaseWord && 
+               Categories == other.Categories;
     }
 }

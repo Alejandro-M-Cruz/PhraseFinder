@@ -99,15 +99,11 @@
             RowHeaderWidth="60"
             SelectionMode="Single">
             <DataGrid.Columns>
-                <DataGridTextColumn
-                    Binding="{Binding PhraseId}"
-                    Header="ID"
-                    SortMemberPath="PhraseId" />
-                <DataGridTextColumn
-                    Binding="{Binding Value}"
-                    Header="Expresión o locución"
-                    SortMemberPath="Value" />
+                <DataGridTextColumn Binding="{Binding PhraseId}" Header="ID" />
+                <DataGridTextColumn Binding="{Binding Value}" Header="Expresión o locución" />
                 <DataGridTextColumn Binding="{Binding BaseWord}" Header="Palabra base" />
+                <DataGridTextColumn Binding="{Binding Categories}" Header="Categorías" />
+                <DataGridCheckBoxColumn Binding="{Binding Reviewed}" Header="Revisado" />
             </DataGrid.Columns>
         </DataGrid>
 

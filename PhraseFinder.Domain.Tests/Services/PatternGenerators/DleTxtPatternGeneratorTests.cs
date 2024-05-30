@@ -13,17 +13,22 @@ public class DleTxtPatternGeneratorTests
 	{
 		var phrase = new Phrase
 		{
+			PhraseId = 3,
 			BaseWord = "cuenta",
-			Value = "a buena cuenta"
+			Value = "a buena cuenta",
+			Categories = "loc. adv."
 		};
 
 		var result = _patternGenerator.GeneratePatterns(phrase).ToArray();
 
 		Assert.Single(result);
-		Assert.Equal(phrase with {
-			Variant = "a buena cuenta",
-			Pattern = "a buena cuenta"
-		}, result.Single());
+		Assert.Equal(new PhrasePattern
+        {
+			Variant = phrase.Value,
+			Pattern = phrase.Value,
+			BaseWord = phrase.BaseWord,
+			PhraseId = phrase.PhraseId
+        }, result.Single());
 	}
 
 	[Fact]
@@ -31,27 +36,32 @@ public class DleTxtPatternGeneratorTests
 	{
 		var phrase = new Phrase
 		{
+			PhraseId = 23,
 			BaseWord = "aviado, da",
-			Value = "estar, o ir, aviado, da"
-		};
-		HashSet<Phrase> expectedResults =
+			Value = "estar, o ir, aviado, da",
+            Categories = "loc. adv."
+        };
+        var expectedPattern = new PhrasePattern
+        {
+			Variant = "estar aviado",
+			Pattern = "estar aviado",
+            BaseWord = "aviado, da",
+            PhraseId = phrase.PhraseId
+        };
+		HashSet<PhrasePattern> expectedResults =
 		[
-			phrase with
-			{
-				Variant = "estar aviado",
-				Pattern = "estar aviado"
-			},
-			phrase with
+			expectedPattern,
+            expectedPattern with
 			{
 				Variant = "estar aviada",
 				Pattern = "estar aviada"
 			},
-			phrase with
+            expectedPattern with
 			{
 				Variant = "ir aviado",
 				Pattern = "ir aviado"
 			},
-			phrase with
+            expectedPattern with
 			{
 				Variant = "ir aviada",
 				Pattern = "ir aviada"

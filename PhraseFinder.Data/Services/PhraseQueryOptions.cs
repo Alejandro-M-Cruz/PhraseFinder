@@ -13,7 +13,19 @@ public enum PhraseOrderByOption
 	[Display(Name = "Expresión o locución asc.")]
 	Value,
 	[Display(Name = "Expresión o locución desc.")]
-	ValueDesc
+	ValueDesc,
+	[Display(Name = "Palabra base asc.")]
+	BaseWord,
+    [Display(Name = "Palabra base desc.")]
+    BaseWordDesc,
+	[Display(Name = "Categorías asc.")]
+	Categories,
+	[Display(Name = "Categorías desc.")]
+    CategoriesDesc,
+	[Display(Name = "Revisado asc.")]
+	Reviewed,
+	[Display(Name = "Revisado desc.")]
+	ReviewedDesc
 }
 
 public class PhraseQueryOptions
@@ -39,10 +51,12 @@ public class PhraseQueryOptions
 		TotalPages = phrases.GetTotalPages(PageSize);
 		Page = Math.Min(Math.Max(1, Page), TotalPages);
 
-		if (CurrentState != _previousState)
-		{
-			Page = 1;
-			_previousState = CurrentState;
-		}
-	}
+        if (CurrentState == _previousState)
+        {
+            return;
+        }
+
+        Page = 1;
+        _previousState = CurrentState;
+    }
 }

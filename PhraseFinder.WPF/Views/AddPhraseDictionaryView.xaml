@@ -33,13 +33,17 @@
             Margin="10,10,10,10" />
 
         <hc:ScrollViewer Grid.Row="2">
-            <hc:SimpleStackPanel MaxWidth="400" Orientation="Vertical">
+            <hc:SimpleStackPanel
+                MaxWidth="600"
+                Margin="10"
+                Orientation="Vertical">
                 <hc:TextBox
                     Margin="10,15"
                     hc:InfoElement.Necessary="True"
                     hc:InfoElement.Placeholder="DLE 23"
                     hc:TitleElement.Title="Nombre"
                     hc:TitleElement.TitlePlacement="Top"
+                    FontSize="14"
                     Text="{Binding PhraseDictionaryName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <hc:TextBox
                     Margin="10,15"
@@ -48,6 +52,7 @@
                     hc:TitleElement.Title="Descripción"
                     hc:TitleElement.TitlePlacement="Top"
                     AcceptsReturn="True"
+                    FontSize="14"
                     SpellCheck.IsEnabled="True"
                     Text="{Binding PhraseDictionaryDescription, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"
                     TextWrapping="Wrap"
@@ -57,6 +62,7 @@
                     hc:InfoElement.Necessary="True"
                     hc:TitleElement.Title="Formato"
                     hc:TitleElement.TitlePlacement="Top"
+                    FontSize="14"
                     ItemsSource="{extensions:EnumValues EnumType=models:PhraseDictionaryFormat}"
                     SelectedItem="{Binding SelectedPhraseDictionaryFormat, Mode=TwoWay}">
                     <ComboBox.ItemTemplate>
@@ -67,18 +73,23 @@
                 </hc:ComboBox>
 
                 <Button
+                    Height="36"
                     Margin="10,20,10,0"
-                    HorizontalAlignment="Stretch"
+                    HorizontalAlignment="Center"
                     hc:IconElement.Geometry="{StaticResource SearchGeometry}"
-                    hc:IconElement.Width="12"
+                    hc:IconElement.Width="14"
                     Command="{Binding PickPhraseDictionaryFileCommand}"
                     Content="Seleccionar fichero"
+                    FontSize="14"
                     IsEnabled="{Binding PhraseDictionaryFilePath, Converter={StaticResource NullableToBooleanConverter}}"
                     Style="{StaticResource ButtonPrimary}" />
 
                 <hc:Tag
+                    Height="36"
                     Margin="10"
+                    Padding="16,0,12,1"
                     Content="{Binding PhraseDictionaryFilePath, Mode=OneWay}"
+                    FontSize="14"
                     Selectable="False"
                     ShowCloseButton="True"
                     Visibility="{Binding PhraseDictionaryFilePath, Converter={StaticResource NullableToVisibilityConverter}}">
@@ -89,19 +100,34 @@
                     </hc:Interaction.Triggers>
                 </hc:Tag>
 
+                <TextBlock
+                    Margin="10,20,10,10"
+                    HorizontalAlignment="Center"
+                    FontSize="14"
+                    FontWeight="SemiBold"
+                    Style="{StaticResource TextBlockDefaultDanger}"
+                    Text="Se ha producido un error al añadir el diccionario. Por favor, asegúrese de que el nombre y la descripción no sean demasiado largos."
+                    TextAlignment="Center"
+                    TextWrapping="Wrap"
+                    Visibility="{Binding DisplayErrorMessage, Converter={StaticResource BooleanVisibilityConverter}}" />
+
                 <hc:SimpleStackPanel
                     Margin="10,20"
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
                     <Button
+                        Height="36"
                         Margin="10,0"
                         Command="{Binding CancelCommand}"
                         Content="Cancelar"
+                        FontSize="14"
                         Style="{StaticResource ButtonWarning}" />
                     <Button
+                        Height="36"
                         Margin="10,0"
                         Command="{Binding AddPhraseDictionaryCommand}"
                         Content="Confirmar"
+                        FontSize="14"
                         Style="{StaticResource ButtonSuccess}" />
                 </hc:SimpleStackPanel>
 

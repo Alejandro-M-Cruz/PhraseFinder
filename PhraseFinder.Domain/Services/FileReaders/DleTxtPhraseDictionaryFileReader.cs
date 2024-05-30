@@ -23,16 +23,18 @@ public class DleTxtPhraseDictionaryFileReader(string filePath) : IPhraseDictiona
 {
     private const string PhrasePrefix = "[loc6]";
     private const string PhraseExamplePrefix = "[Ejem]";
+
+    public static readonly Regex EntryRegex = new(@"^.+#\w+", RegexOptions.Compiled);
     public static readonly Regex PhraseDefinitionRegex = new(
-		@"^\d+\. ((?:loc\.|locs\.|expr\.|exprs\.) (?:[a-z]+\. )*)", RegexOptions.Compiled);
-    private static readonly Regex EntryNumberRegex = new(
-		@"\[\d+\]", RegexOptions.Compiled);
+		@"^\d+\. ((?:loc\.|locs\.|expr\.|exprs\.) (?:[a-z]+\. )*)", 
+        RegexOptions.Compiled);
+    private static readonly Regex EntryNumberRegex = new(@"\[\d+\]", RegexOptions.Compiled);
 
     public async IAsyncEnumerable<PhraseEntry> ReadPhraseEntriesAsync(
 	    [EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
         using var reader = new StreamReader(filePath);
-        string? currentLine = null;
+        string? currentLine;
         string? currentWord = null;
         PhraseEntry? currentPhraseEntry = null;
         string? currentPhraseDefinition = null;
@@ -49,7 +51,7 @@ public class DleTxtPhraseDictionaryFileReader(string filePath) : IPhraseDictiona
                 currentPhraseEntry = null;
                 currentPhraseDefinition = null;
             }
-            else if (currentLine.Contains('#'))
+            else if (EntryRegex.IsMatch(currentLine))
             {
 	            var entry = currentLine.Split('#').Last();
                 var entryNumberMatch = EntryNumberRegex.Match(entry);

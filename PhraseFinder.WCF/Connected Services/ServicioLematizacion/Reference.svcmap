@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="6b622964-dd54-491e-97f3-97feaa372aaf" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ID="a392ec73-762b-4fc8-80da-bfd7ecbbbf8b" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -24,12 +24,12 @@
     <MetadataSource Address="https://appstip.iatext.ulpgc.es/ServicioLematizacionWCF/ServicioLematizacion.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ServicioLematizacion.xsd" MetadataType="Schema" ID="6f08fe76-5a1d-46bf-83d0-05d8fc14e49d" SourceId="1" SourceUrl="https://appstip.iatext.ulpgc.es/ServicioLematizacionWCF/ServicioLematizacion.svc?xsd=xsd1" />
-    <MetadataFile FileName="ServicioLematizacion1.xsd" MetadataType="Schema" ID="30f75d22-140d-4ff8-9ef1-25fb19656147" SourceId="1" SourceUrl="https://appstip.iatext.ulpgc.es/ServicioLematizacionWCF/ServicioLematizacion.svc?xsd=xsd0" />
-    <MetadataFile FileName="ServicioLematizacion2.xsd" MetadataType="Schema" ID="625a57c9-1128-482f-a076-9c75e0dfe955" SourceId="1" SourceUrl="https://appstip.iatext.ulpgc.es/ServicioLematizacionWCF/ServicioLematizacion.svc?xsd=xsd3" />
-    <MetadataFile FileName="ServicioLematizacion3.xsd" MetadataType="Schema" ID="c050fb01-e151-454d-b57f-b4a957877e2d" SourceId="1" SourceUrl="https://appstip.iatext.ulpgc.es/ServicioLematizacionWCF/ServicioLematizacion.svc?xsd=xsd2" />
-    <MetadataFile FileName="ServicioLematizacion.wsdl" MetadataType="Wsdl" ID="c439229c-e9a1-4b2c-8561-879434dd1d70" SourceId="1" SourceUrl="https://appstip.iatext.ulpgc.es/ServicioLematizacionWCF/ServicioLematizacion.svc?wsdl" />
-    <MetadataFile FileName="ServicioLematizacion.disco" MetadataType="Disco" ID="e4a77ec4-28bc-42fc-b917-f72969ba35f9" SourceId="1" SourceUrl="https://appstip.iatext.ulpgc.es/ServicioLematizacionWCF/ServicioLematizacion.svc?disco" />
+    <MetadataFile FileName="ServicioLematizacion.xsd" MetadataType="Schema" ID="48d7b0cc-d2c7-45e9-ae7d-c7374615d02c" SourceId="1" SourceUrl="https://appstip.iatext.ulpgc.es/ServicioLematizacionWCF/ServicioLematizacion.svc?xsd=xsd1" />
+    <MetadataFile FileName="ServicioLematizacion1.xsd" MetadataType="Schema" ID="77b9378c-ac75-4d20-a3da-0a89dd15d930" SourceId="1" SourceUrl="https://appstip.iatext.ulpgc.es/ServicioLematizacionWCF/ServicioLematizacion.svc?xsd=xsd0" />
+    <MetadataFile FileName="ServicioLematizacion2.xsd" MetadataType="Schema" ID="2a77f013-f105-4b0a-bc41-ab6d5fa9146f" SourceId="1" SourceUrl="https://appstip.iatext.ulpgc.es/ServicioLematizacionWCF/ServicioLematizacion.svc?xsd=xsd3" />
+    <MetadataFile FileName="ServicioLematizacion3.xsd" MetadataType="Schema" ID="7817b892-9945-4c53-92d3-f8bb310ad60d" SourceId="1" SourceUrl="https://appstip.iatext.ulpgc.es/ServicioLematizacionWCF/ServicioLematizacion.svc?xsd=xsd2" />
+    <MetadataFile FileName="ServicioLematizacion.wsdl" MetadataType="Wsdl" ID="1fa201a0-4c1b-4b78-9dbd-13be8b037c1b" SourceId="1" SourceUrl="https://appstip.iatext.ulpgc.es/ServicioLematizacionWCF/ServicioLematizacion.svc?wsdl" />
+    <MetadataFile FileName="ServicioLematizacion.disco" MetadataType="Disco" ID="6c98fe0b-e526-49b1-a806-71e5522686fc" SourceId="1" SourceUrl="https://appstip.iatext.ulpgc.es/ServicioLematizacionWCF/ServicioLematizacion.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

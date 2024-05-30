@@ -16,15 +16,15 @@ namespace PhraseFinder.WCF
     {
         private static readonly ServicioLematizacionClient ServicioLematizacion = 
             new ServicioLematizacionClient("BasicHttpsBinding_IServicioLematizacion");
-        private static readonly Phrase[] Phrases;
+        private static readonly PhrasePattern[] Phrases;
         private const string SentenceSeparator = " ";
         private static readonly string ParagraphSeparator = Environment.NewLine + Environment.NewLine;
 
         static PhraseFinderService()
         {
-            using (var phrasesService = new PhrasesService())
+            using (var phrasesService = new PhrasePatternService())
             {
-                Phrases = phrasesService.GetPhrases().ToArray();
+                Phrases = phrasesService.GetPhrasePatterns().ToArray();
             }
         }
 
@@ -170,7 +170,7 @@ namespace PhraseFinder.WCF
 
         private static void IncludeDefinitions(ref FoundPhrase[] foundPhrases)
         {
-            using (var phrasesService = new PhrasesService())
+            using (var phrasesService = new PhrasePatternService())
             {
                 phrasesService.LoadPhraseDefinitions(foundPhrases.Select(fp => fp.PhraseId).ToArray());
 

@@ -112,35 +112,6 @@
     <Content Include="DLL\ProcesarTextos.pdb" />
     <Content Include="PhraseFinderService.svc" />
     <Content Include="Web.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Connected Services\ServicioLematizacion\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Contracts\FoundPhrase.cs" />
-    <Compile Include="Contracts\PhraseAnalysis.cs" />
-    <Compile Include="Contracts\PhraseDefinition.cs" />
-    <Compile Include="Data\PhrasesService.cs" />
-    <Compile Include="Extensions\ParagraphExtensions.cs" />
-    <Compile Include="Extensions\SentenceExtensions.cs" />
-    <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Extensions\WordExtensions.cs" />
-    <Compile Include="Models\Phrase.cs" />
-    <Compile Include="Models\PhraseTag.cs" />
-    <Compile Include="Models\PhraseTagCategory.cs" />
-    <Compile Include="PhraseFinderService.svc.cs">
-      <DependentUpon>PhraseFinderService.svc</DependentUpon>
-    </Compile>
-    <Compile Include="IPhraseFinderService.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Connected Services\ServicioLematizacion\ServicioLematizacion.wsdl" />
     <None Include="Connected Services\ServicioLematizacion\ServicioLematizacion.xsd">
       <SubType>Designer</SubType>
@@ -154,6 +125,35 @@
     <None Include="Connected Services\ServicioLematizacion\ServicioLematizacion3.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Connected Services\ServicioLematizacion\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Contracts\FoundPhrase.cs" />
+    <Compile Include="Contracts\PhraseAnalysis.cs" />
+    <Compile Include="Contracts\PhraseDefinition.cs" />
+    <Compile Include="Data\PhrasePatternService.cs" />
+    <Compile Include="Extensions\ParagraphExtensions.cs" />
+    <Compile Include="Extensions\SentenceExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\WordExtensions.cs" />
+    <Compile Include="Models\PhrasePattern.cs" />
+    <Compile Include="Models\PhraseTag.cs" />
+    <Compile Include="Models\PhraseTagCategory.cs" />
+    <Compile Include="PhraseFinderService.svc.cs">
+      <DependentUpon>PhraseFinderService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="IPhraseFinderService.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
