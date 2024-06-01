@@ -17,14 +17,20 @@ public class DleTxtPhraseCleaner : IPhraseCleaner
         phrase = RemoveSpecification(phrase);
         return RemoveExtraSections(phrase);
     }
-
-    private string RemoveSpecification(string phrase)
+    
+    private static string RemoveSpecification(string phrase)
     {
-        var match = SpecificationRegex.Match(phrase);
-        return match.Success ? phrase.Replace(match.Value, "") : phrase;
+        var matches = SpecificationRegex.Matches(phrase);
+        
+        foreach (var match in matches.AsEnumerable())
+        {
+            phrase = phrase.Replace(match.Value, "");
+        }
+
+        return phrase;
     }
 
-    private string RemoveExtraSections(string phrase)
+    private static string RemoveExtraSections(string phrase)
     {
         var match = ExtraSectionsRegex.Match(phrase);
         return match.Success ? phrase.Remove(match.Index) : phrase;

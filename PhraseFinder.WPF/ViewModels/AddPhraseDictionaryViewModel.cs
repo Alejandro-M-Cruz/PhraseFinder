@@ -76,6 +76,7 @@ internal partial class AddPhraseDictionaryViewModel(
         }
         finally
         {
+            _addPhraseDictionaryTask = null;
 	        IsDictionaryBeingAdded = false;
             if (!DisplayErrorMessage)
             {

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace PhraseFinder.Domain.Models;
 
 [Table("Locuciones_y_expresiones")]
-public record Phrase
+public class Phrase
 {
     [Column("ID_Locucion")]
     public int PhraseId { get; set; }
@@ -40,13 +40,14 @@ public record Phrase
         return HashCode.Combine(Value, BaseWord, Categories);
     }
 
-    public virtual bool Equals(Phrase? other)
+    public override bool Equals(object? obj)
     {
-        if (other is null)
+        if (obj == null || GetType() != obj.GetType())
         {
             return false;
         }
 
+        var other = (Phrase)obj;
         return Value == other.Value && 
                BaseWord == other.BaseWord && 
                Categories == other.Categories;

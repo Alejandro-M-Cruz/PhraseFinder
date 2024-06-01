@@ -18,5 +18,4 @@ public class PhraseService(PhraseFinderDbContext dbContext) : IPhraseService
 		options.UpdatePagination(phrases);
 		return phrases.Paginate(options.Page, options.PageSize);
 	}
-        
 }

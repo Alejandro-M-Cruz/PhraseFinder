@@ -42,7 +42,7 @@ internal static class ApplicationBuilderExtensions
             .AddTransient<PhrasesViewModel>();
     }
 
-    private static void AddViews(this IHostApplicationBuilder builder)
+    private static void AddWindows(this IHostApplicationBuilder builder)
     {
         builder.Services.AddSingleton<MainWindow>(provider =>
             new MainWindow { DataContext = provider.GetRequiredService<MainViewModel>() });
@@ -62,7 +62,7 @@ internal static class ApplicationBuilderExtensions
         builder.AddDbContext();
         builder.AddDbServices();
         builder.AddViewModels();
-        builder.AddViews();
+        builder.AddWindows();
         builder.AddNavigation();
     }
 }
