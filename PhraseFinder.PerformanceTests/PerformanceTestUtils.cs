@@ -3,14 +3,14 @@ using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore;
 using PhraseFinder.Data;
 using PhraseFinder.Domain.Models;
-using PhraseFinder.Domain.Services.FileReaders;
+using PhraseFinder.Domain.Services.PhraseDictionaryReaders;
 
 namespace PhraseFinder.Domain.PerformanceTests;
 
 public static partial class PerformanceTestUtils
 {
     public static readonly PhraseFinderDbContext DbContext;
-    private static readonly IPhraseDictionaryFileReader _reader;
+    private static readonly IPhraseDictionaryReader _reader;
 
     static PerformanceTestUtils()
     {
@@ -18,7 +18,7 @@ public static partial class PerformanceTestUtils
         optionsBuilder.UseJetOleDb("Data Source=PerformanceTests.accdb");
         DbContext = new PhraseFinderDbContext(optionsBuilder.Options);
         ResetDatabase();
-		_reader = PhraseDictionaryFileReaderFactory.CreateReader(
+		_reader = PhraseDictionaryReaderFactory.CreateReader(
             PhraseDictionaryFormat.DleTxt,
             "D:\\Proyectos\\dotNet\\TFT\\DLE.txt");
     }

@@ -1,8 +1,8 @@
 using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 using PhraseFinder.Domain.Models;
-using PhraseFinder.Domain.Services.FileReaders;
 using PhraseFinder.Domain.Services.PatternGenerators;
+using PhraseFinder.Domain.Services.PhraseDictionaryReaders;
 
 namespace PhraseFinder.Data.Services;
 
@@ -23,7 +23,7 @@ public class PhraseDictionaryService(PhraseFinderDbContext dbContext) : IPhraseD
 	    PhraseDictionary phraseDictionary, 
 	    CancellationToken cancellationToken = default)
     {
-        var dleTxtReader = PhraseDictionaryFileReaderFactory.CreateReader(
+        var dleTxtReader = PhraseDictionaryReaderFactory.CreateReader(
 	        phraseDictionary.Format, 
             filePath: phraseDictionary.FilePath);
         var patternGenerator = PatternGeneratorFactory.CreateGenerator(phraseDictionary.Format);
