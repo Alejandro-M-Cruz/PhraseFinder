@@ -8,7 +8,7 @@ public class PhraseFinderDbContextFactory : IDesignTimeDbContextFactory<PhraseFi
     public PhraseFinderDbContext CreateDbContext(string[] args)
     {
         var optionsBuilder = new DbContextOptionsBuilder<PhraseFinderDbContext>();
-        optionsBuilder.UseJetOleDb("Data Source=expresiones-y-locuciones.accdb");
+        optionsBuilder.UseJetOleDb("Data Source=PhraseFinder.accdb");
         return new PhraseFinderDbContext(optionsBuilder.Options);
     }
 }

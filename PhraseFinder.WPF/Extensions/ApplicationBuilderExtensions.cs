@@ -1,4 +1,5 @@
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,12 +17,10 @@ internal static class ApplicationBuilderExtensions
     {
         builder.Services.AddDbContext<PhraseFinderDbContext>(optionsBuilder =>
         {
-            const Environment.SpecialFolder localAppDataFolder = Environment.SpecialFolder.ApplicationData;
-            string dbDirectory = Path.Join(Environment.GetFolderPath(localAppDataFolder), "PhraseFinder");
-            Directory.CreateDirectory(dbDirectory);
-            string dbPath = Path.Join(dbDirectory, "expresiones-y-locuciones.accdb");
-            optionsBuilder.UseJetOleDb($"Data Source={dbPath}");
-            Console.WriteLine($"Database path: {dbPath}");
+            var connectionString = GetConnectionString();
+            optionsBuilder.UseJetOleDb(connectionString);
+            Console.WriteLine($"Connection string: {connectionString}");
+            Debug.WriteLine($"Connection string: {connectionString}");
         });
     }
 
@@ -64,5 +63,22 @@ internal static class ApplicationBuilderExtensions
         builder.AddViewModels();
         builder.AddWindows();
         builder.AddNavigation();
+    }
+
+    private static string GetConnectionString()
+    {
+        var appBaseDir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd(
+            Path.DirectorySeparatorChar);
+        var debugSubDir = "bin" + Path.DirectorySeparatorChar +
+                          "Debug" + Path.DirectorySeparatorChar +
+                          "net8.0-windows";
+        if (appBaseDir.TrimEnd(Path.DirectorySeparatorChar).EndsWith(debugSubDir))
+        {
+            appBaseDir = appBaseDir[..^debugSubDir.Length];
+        }
+        var dbDir = Path.Combine(appBaseDir, "Data");
+        Directory.CreateDirectory(dbDir);
+        var dbPath = Path.Combine(dbDir, "PhraseFinder.accdb");
+        return $"Data Source={dbPath}";
     }
 }
