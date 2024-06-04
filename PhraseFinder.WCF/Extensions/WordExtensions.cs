@@ -18,7 +18,7 @@ namespace PhraseFinder.WCF.Extensions
             return word.IdCategoria == 20;
         }
 
-        public static bool CoincidesWith(this InfoUnaPalabra word, string otherWord)
+        public static bool SameWordAs(this InfoUnaPalabra word, string otherWord)
         {
             var phraseTag = otherWord.GetTag();
 

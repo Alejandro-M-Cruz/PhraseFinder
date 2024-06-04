@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.ServiceModel;
 using System.Threading.Tasks;
 using PhraseFinder.WCF.Contracts;
 using PhraseFinder.WCF.Data;
@@ -12,22 +13,23 @@ using ProcesarTextos;
 
 namespace PhraseFinder.WCF
 {
-    public class PhraseFinderService : IPhraseFinderService
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    public class PhraseFinderService : IPhraseFinderService, IDisposable
     {
-        private static readonly ServicioLematizacionClient ServicioLematizacion = 
-            new ServicioLematizacionClient("BasicHttpsBinding_IServicioLematizacion");
-        private static readonly PhrasePattern[] Phrases;
+        private readonly ServicioLematizacionClient _servicioLematizacion;
+        private readonly PhrasePatternService _phrasePatternService;
+        private readonly PhrasePattern[] _patterns;
         private const string SentenceSeparator = " ";
         private static readonly string ParagraphSeparator = Environment.NewLine + Environment.NewLine;
 
-        static PhraseFinderService()
+        public PhraseFinderService()
         {
+            _servicioLematizacion = new ServicioLematizacionClient(
+                "BasicHttpsBinding_IServicioLematizacion");
+            _phrasePatternService = new PhrasePatternService();
             try
             {
-                using (var phrasesService = new PhrasePatternService())
-                {
-                    Phrases = phrasesService.GetPhrasePatterns().ToArray();
-                }
+                _patterns = _phrasePatternService.GetPhrasePatterns().ToArray();
             }
             catch (Exception e)
             {
@@ -42,7 +44,7 @@ namespace PhraseFinder.WCF
 
             try
             {
-                sentences = await ServicioLematizacion
+                sentences = await _servicioLematizacion
                     .NuevoReconocerFrasesAsync(sentences, idioma: "es", multiPref: false);
             }
             catch (Exception e)
@@ -68,100 +70,29 @@ namespace PhraseFinder.WCF
             };
         }
 
-        private static IEnumerable<FoundPhrase> FindPhrasesInSentences(
+        private IEnumerable<FoundPhrase> FindPhrasesInSentences(
             IReadOnlyCollection<InfoUnaFrase> sentences, IReadOnlyCollection<Paragraph> paragraphs)
         {
-            if (Phrases.Length == 0 || sentences.Count == 0 || paragraphs.Count == 0)
+            if (_patterns.Length == 0 || sentences.Count == 0 || paragraphs.Count == 0)
             {
                 yield break;
             }
 
             var paragraphSentenceCounts = paragraphs.Select(p => p.GetSentences().Length).ToArray();
 
-            foreach (var phrase in Phrases)
+            foreach (var pattern in _patterns)
             {
-                var phraseWords = phrase.Pattern.Split(' ').Select(w => w.TrimEnd(',')).ToArray();
-                var firstWordInPhrase = phraseWords.First();
                 var sentenceIndex = 0;
-                var anyWords = 0;
                 var currentSentenceInParagraph = 0;
                 var currentParagraph = 0;
 
                 foreach (var sentence in sentences)
                 {
-                    for (var i = 0; i < sentence.Palabras.Count; i++)
+                    var foundPhrase = pattern.FindPhrase(sentence, sentenceIndex);
+
+                    if (foundPhrase != null)
                     {
-                        var word = sentence.Palabras[i];
-
-                        if (!word.CoincidesWith(firstWordInPhrase))
-                        {
-                            continue;
-                        }
-
-                        var wordIndex = i + 1;
-                        var isMatch = true;
-
-                        for (var phraseWordIndex = 1; phraseWordIndex < phraseWords.Length; phraseWordIndex++)
-                        {
-                            var phraseWord = phraseWords[phraseWordIndex];
-
-                            if (phraseWord.GetTag(phrase)?.Category == PhraseTagCategory.PlaceholderWord)
-                            {
-                                if (phraseWordIndex == phraseWords.Length - 1)
-                                {
-                                    break;
-                                }
-
-                                wordIndex = Math.Max(0, wordIndex - 1);
-                                anyWords += 3;
-                                continue;
-                            }
-
-                            if (wordIndex >= sentence.Palabras.Count)
-                            {
-                                isMatch = false;
-                                break;
-                            }
-
-                            var w = sentence.Palabras[wordIndex++];
-
-                            if (w.IsPunctuationMark())
-                            {
-                                phraseWordIndex--;
-                                continue;
-                            }
-
-                            if (w.CoincidesWith(phraseWord))
-                            {
-                                continue;
-                            }
-
-                            if (phraseWordIndex == phraseWords.Length - 1 || anyWords < 1)
-                            {
-                                isMatch = false;
-                                break;
-                            }
-
-                            anyWords--;
-                            phraseWordIndex--;
-                        }
-
-                        if (!isMatch)
-                        {
-                            continue;
-                        }
-
-                        var phraseMatch = sentence.SubstringInWordRange(i, wordIndex - i);
-
-                        yield return new FoundPhrase
-                        {
-                            PhraseId = phrase.PhraseId,
-                            Phrase = phrase.Phrase,
-                            BaseWord = phrase.BaseWord,
-                            StartIndex = sentenceIndex + sentence.StartIndexOfWord(i),
-                            Match = phraseMatch,
-                            Length = phraseMatch.Length
-                        };
+                        yield return foundPhrase;
                     }
 
                     sentenceIndex += sentence.Frase.Length;
@@ -182,17 +113,20 @@ namespace PhraseFinder.WCF
             }
         }
 
-        private static void IncludeDefinitions(ref FoundPhrase[] foundPhrases)
+        private void IncludeDefinitions(ref FoundPhrase[] foundPhrases)
         {
-            using (var phrasesService = new PhrasePatternService())
-            {
-                phrasesService.LoadPhraseDefinitions(foundPhrases.Select(fp => fp.PhraseId).ToArray());
+            _phrasePatternService.LoadPhraseDefinitions(
+                foundPhrases.Select(fp => fp.PhraseId).ToArray());
 
-                foreach (var foundPhrase in foundPhrases)
-                {
-                    foundPhrase.Definitions = phrasesService.GetPhraseDefinitions(foundPhrase.PhraseId);
-                }
+            foreach (var foundPhrase in foundPhrases)
+            {
+                foundPhrase.Definitions = _phrasePatternService.GetPhraseDefinitions(foundPhrase.PhraseId);
             }
+        }
+
+        public void Dispose()
+        {
+            _phrasePatternService.Dispose();
         }
     }
 }

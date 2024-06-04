@@ -7,7 +7,7 @@ namespace PhraseFinder.WCF.Extensions
 {
     public static class SentenceExtensions
     {
-        public static int StartIndexOfWord(this InfoUnaFrase sentence, int wordIndex)
+        public static int IndexOfWord(this InfoUnaFrase sentence, int wordIndex)
         {
             var word = sentence.Palabras[wordIndex].Palabra;
             var wordRegex = new Regex($@"\b{word}\b");
@@ -24,14 +24,14 @@ namespace PhraseFinder.WCF.Extensions
 
         public static string SubstringInWordRange(this InfoUnaFrase sentence, int firstWordIndex, int wordCount)
         {
-            var startIndex = sentence.StartIndexOfWord(firstWordIndex);
+            var startIndex = sentence.IndexOfWord(firstWordIndex);
 
             if (startIndex == -1)
             {
                 return string.Empty;
             }
 
-            var lastWordStartIndex = sentence.StartIndexOfWord(firstWordIndex + wordCount - 1);
+            var lastWordStartIndex = sentence.IndexOfWord(firstWordIndex + wordCount - 1);
 
             if (lastWordStartIndex == -1)
             {
@@ -42,5 +42,6 @@ namespace PhraseFinder.WCF.Extensions
                 .Palabras[firstWordIndex + wordCount - 1].Palabra.Length;
             return sentence.Frase.Substring(startIndex, lastWordEndIndex - startIndex);
         }
+
     }
 }

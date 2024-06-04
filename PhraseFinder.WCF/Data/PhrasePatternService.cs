@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.OleDb;
-using System.IO;
 using System.Linq;
 using Dapper;
 using PhraseFinder.WCF.Contracts;
@@ -16,7 +15,6 @@ namespace PhraseFinder.WCF.Data
         private const string PhrasePatternQuery = @"
 select 
     [Locucion_o_expresion] as [Phrase],
-    [Variante] as [Variant], 
     [Patron] as [Pattern], 
     [Palabra_base] as [BaseWord], 
     [ID_Locucion] as [PhraseId] 
@@ -89,7 +87,8 @@ where
 
         public void Dispose()
         {
-            _dbConnection?.Dispose();
+            _dbConnection.Close();
+            _dbConnection.Dispose();
         }
     }
 }
