@@ -42,6 +42,5 @@ namespace PhraseFinder.WCF.Extensions
                 .Palabras[firstWordIndex + wordCount - 1].Palabra.Length;
             return sentence.Frase.Substring(startIndex, lastWordEndIndex - startIndex);
         }
-
     }
 }

@@ -27,41 +27,18 @@ namespace PhraseFinder.WCF
             _servicioLematizacion = new ServicioLematizacionClient(
                 "BasicHttpsBinding_IServicioLematizacion");
             _phrasePatternService = new PhrasePatternService();
-            try
-            {
-                _patterns = _phrasePatternService.GetPhrasePatterns().ToArray();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Error from phrase pattern service: " + e.Message);
-            }
+            _patterns = _phrasePatternService.GetPhrasePatterns().ToArray();
         }
 
         public async Task<PhraseAnalysis> FindPhrasesAsync(string text)
         {
             var paragraphs = text.GetParagraphs();
             var sentences = paragraphs.SelectAllSentences().ToList();
-
-            try
-            {
-                sentences = await _servicioLematizacion
-                    .NuevoReconocerFrasesAsync(sentences, idioma: "es", multiPref: false);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Error from servicio lematizacion: " + e.Message);
-            }
-            
+            sentences = await _servicioLematizacion
+                .NuevoReconocerFrasesAsync(sentences, idioma: "es", multiPref: false);
+        
             var foundPhrases = FindPhrasesInSentences(sentences, paragraphs).ToArray();
-
-            try 
-            {
-                IncludeDefinitions(ref foundPhrases);
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("Error when including definitions: " + e.Message);
-            }
+            IncludeDefinitions(ref foundPhrases);
 
             return new PhraseAnalysis
             {
@@ -88,11 +65,11 @@ namespace PhraseFinder.WCF
 
                 foreach (var sentence in sentences)
                 {
-                    var foundPhrase = pattern.FindPhrase(sentence, sentenceIndex);
+                    var matches = pattern.FindPhrase(sentence, sentenceIndex);
 
-                    if (foundPhrase != null)
+                    foreach (var match in matches)
                     {
-                        yield return foundPhrase;
+                        yield return match;
                     }
 
                     sentenceIndex += sentence.Frase.Length;
