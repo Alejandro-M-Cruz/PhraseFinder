@@ -3,7 +3,6 @@ using PhraseFinder.WCF.Extensions;
 using PhraseFinder.WCF.ServicioLematizacion;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace PhraseFinder.WCF.Models
@@ -21,6 +20,7 @@ namespace PhraseFinder.WCF.Models
             "se", "te", "le", "les", "lo", "los", "la", "las", "me", "os", "nos"
         };
         private string[] _patternWords;
+        private const int MaxIterations = 1000;
         
         public IEnumerable<FoundPhrase> FindPhrase(InfoUnaFrase sentence, int sentenceIndexInText)
         {
@@ -40,11 +40,30 @@ namespace PhraseFinder.WCF.Models
             }
 
             var firstWordInPattern = _patternWords[0];
-            var anyWords = 0;
 
             for (var i = 0; i < sentence.Palabras.Count; i++)
             {
                 var word = sentence.Palabras[i];
+
+                if (_patternWords.Length == 1)
+                {
+                    if (word.Palabra.EqualsIgnoreCase(firstWordInPattern))
+                    {
+                        yield return new FoundPhrase
+                        {
+                            PhraseId = PhraseId,
+                            Phrase = Phrase,
+                            BaseWord = BaseWord,
+                            StartIndex = sentenceIndexInText + sentence.IndexOfWord(i),
+                            Match = word.Palabra,
+                            Length = word.Palabra.Length
+                        };
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
 
                 if (!word.SameWordAs(firstWordInPattern))
                 {
@@ -52,10 +71,15 @@ namespace PhraseFinder.WCF.Models
                 }
 
                 var wordIndex = i + 1;
+                var anyWords = 0;
+                var n = 0;
                 var isMatch = true;
 
-                for (var patternWordIndex = 1; patternWordIndex < _patternWords.Length; patternWordIndex++)
+                for (var patternWordIndex = 1; 
+                     patternWordIndex < _patternWords.Length && n < MaxIterations; 
+                     patternWordIndex++)
                 {
+                    n++;
                     var patternWord = _patternWords[patternWordIndex];
                     var tag = GetTag(patternWord);
 
@@ -71,7 +95,7 @@ namespace PhraseFinder.WCF.Models
                             }
 
                             wordIndex = Math.Max(0, wordIndex - 1);
-                            anyWords += 3;
+                            anyWords += 4;
                             patternWordIndex += wildcardWordCount - 1;
                             continue;
                         }
@@ -111,7 +135,7 @@ namespace PhraseFinder.WCF.Models
                         continue;
                     }
 
-                    if (anyWords < 1 || patternWordIndex == _patternWords.Length - 1)
+                    if (anyWords < 1)
                     {
                         isMatch = false;
                         break;

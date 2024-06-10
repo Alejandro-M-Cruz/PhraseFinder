@@ -21,8 +21,8 @@ namespace PhraseFinder.Domain.Services.PhraseDictionaryReaders;
 // </summary>
 public class DleTxtPhraseDictionaryReader(string filePath) : IPhraseDictionaryReader
 {
-    private const string PhrasePrefix = "[loc6]";
-    private const string PhraseExamplePrefix = "[Ejem]";
+    private const string PhraseTag = "[loc6]";
+    private const string PhraseExampleTag = "[Ejem]";
 
     public static readonly Regex EntryRegex = new(@"^.+#\w+", RegexOptions.Compiled);
     public static readonly Regex PhraseDefinitionRegex = new(
@@ -38,10 +38,10 @@ public class DleTxtPhraseDictionaryReader(string filePath) : IPhraseDictionaryRe
         string? currentWord = null;
         PhraseEntry? currentPhraseEntry = null;
         string? currentPhraseDefinition = null;
+        Match phraseDefinitionMatch;
+
         while ((currentLine = await reader.ReadLineAsync(cancellationToken)) != null)
         {
-            var phraseDefinitionMatch = PhraseDefinitionRegex.Match(currentLine);
-
             if (string.IsNullOrWhiteSpace(currentLine) && currentPhraseEntry != null)
             {
                 if (currentPhraseEntry.Categories.Count > 0)
@@ -60,7 +60,7 @@ public class DleTxtPhraseDictionaryReader(string filePath) : IPhraseDictionaryRe
                     entry;
                 currentPhraseDefinition = null;
             }
-            else if (currentLine.StartsWith(PhrasePrefix))
+            else if (currentLine.StartsWith(PhraseTag))
             {
                 if (currentPhraseEntry?.Categories.Count > 0)
                 {
@@ -68,22 +68,24 @@ public class DleTxtPhraseDictionaryReader(string filePath) : IPhraseDictionaryRe
                 }
                 currentPhraseEntry = new PhraseEntry
                 {
-                    Name = currentLine[PhrasePrefix.Length..],
+                    Name = currentLine[PhraseTag.Length..],
                     BaseWord = currentWord ?? ""
                 };
                 currentPhraseDefinition = null;
             }
-            else if (phraseDefinitionMatch.Success && currentPhraseEntry != null)
+            else if (
+                (phraseDefinitionMatch = PhraseDefinitionRegex.Match(currentLine)).Success && 
+                currentPhraseEntry != null)
             {
                 currentPhraseDefinition = currentLine;
                 currentPhraseEntry.DefinitionToExamples.Add(currentPhraseDefinition, []);
                 currentPhraseEntry.Categories.Add(phraseDefinitionMatch.Groups[1].Value.TrimEnd());
             }
-            else if (currentLine.StartsWith(PhraseExamplePrefix) && currentPhraseDefinition != null)
+            else if (currentLine.StartsWith(PhraseExampleTag) && currentPhraseDefinition != null)
             {
                 currentPhraseEntry?
                     .DefinitionToExamples[currentPhraseDefinition]
-                    .Add(currentLine[PhraseExamplePrefix.Length..]);
+                    .Add(currentLine[PhraseExampleTag.Length..]);
             }
         }
         if (currentPhraseEntry?.Categories.Count > 0)

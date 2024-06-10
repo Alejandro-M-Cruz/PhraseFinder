@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
@@ -13,7 +12,9 @@ using ProcesarTextos;
 
 namespace PhraseFinder.WCF
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    [ServiceBehavior(
+        InstanceContextMode = InstanceContextMode.Single, 
+        ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class PhraseFinderService : IPhraseFinderService, IDisposable
     {
         private readonly ServicioLematizacionClient _servicioLematizacion;
@@ -37,7 +38,9 @@ namespace PhraseFinder.WCF
             sentences = await _servicioLematizacion
                 .NuevoReconocerFrasesAsync(sentences, idioma: "es", multiPref: false);
         
-            var foundPhrases = FindPhrasesInSentences(sentences, paragraphs).ToArray();
+            var foundPhrases = FindPhrasesInSentences(sentences, paragraphs)
+                .Distinct()
+                .ToArray();
             IncludeDefinitions(ref foundPhrases);
 
             return new PhraseAnalysis

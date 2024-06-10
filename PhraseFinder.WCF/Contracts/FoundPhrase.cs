@@ -26,6 +26,34 @@ namespace PhraseFinder.WCF.Contracts
 
         [DataMember]
         public PhraseDefinition[] Definitions { get; set; } = Array.Empty<PhraseDefinition>();
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            return obj.GetType() == GetType() && Equals((FoundPhrase)obj);
+        }
+
+        protected bool Equals(FoundPhrase other)
+        {
+            return PhraseId == other.PhraseId && StartIndex == other.StartIndex;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (PhraseId * 397) ^ StartIndex;
+            }
+        }
     }
 
     //[DataContract]
