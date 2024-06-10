@@ -7,15 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.Domain", "Phra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.Domain.Tests", "PhraseFinder.Domain.Tests\PhraseFinder.Domain.Tests.csproj", "{639B035B-4A81-4A52-9242-04655328C3C5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.PerformanceTests", "PhraseFinder.PerformanceTests\PhraseFinder.PerformanceTests.csproj", "{0717D560-6DAA-48C4-A51A-8EFD5E93BC93}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.Data", "PhraseFinder.Data\PhraseFinder.Data.csproj", "{75730D3D-6D5A-4D44-8771-AFBD6FDADF1C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.Data.Tests", "PhraseFinder.Data.Tests\PhraseFinder.Data.Tests.csproj", "{21B08096-AB54-46CB-8F5C-8F2E5573CE7B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.WPF", "PhraseFinder.WPF\PhraseFinder.WPF.csproj", "{D1F56D32-C0B0-4385-902F-7C169C7E8AD0}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.WCF.PerformanceTests", "PhraseFinder.WCF.PerformanceTests\PhraseFinder.WCF.PerformanceTests.csproj", "{EF1C30AF-932B-49A0-94E6-1835D5E5D01C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.WebApp", "PhraseFinder.WebApp\PhraseFinder.WebApp.csproj", "{2F6FDBD5-1EA1-4483-830A-F95CE86F2F76}"
 EndProject
@@ -37,10 +33,6 @@ Global
 		{639B035B-4A81-4A52-9242-04655328C3C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{639B035B-4A81-4A52-9242-04655328C3C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{639B035B-4A81-4A52-9242-04655328C3C5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0717D560-6DAA-48C4-A51A-8EFD5E93BC93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0717D560-6DAA-48C4-A51A-8EFD5E93BC93}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0717D560-6DAA-48C4-A51A-8EFD5E93BC93}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0717D560-6DAA-48C4-A51A-8EFD5E93BC93}.Release|Any CPU.Build.0 = Release|Any CPU
 		{75730D3D-6D5A-4D44-8771-AFBD6FDADF1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{75730D3D-6D5A-4D44-8771-AFBD6FDADF1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75730D3D-6D5A-4D44-8771-AFBD6FDADF1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -53,10 +45,6 @@ Global
 		{D1F56D32-C0B0-4385-902F-7C169C7E8AD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D1F56D32-C0B0-4385-902F-7C169C7E8AD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1F56D32-C0B0-4385-902F-7C169C7E8AD0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EF1C30AF-932B-49A0-94E6-1835D5E5D01C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF1C30AF-932B-49A0-94E6-1835D5E5D01C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF1C30AF-932B-49A0-94E6-1835D5E5D01C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF1C30AF-932B-49A0-94E6-1835D5E5D01C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2F6FDBD5-1EA1-4483-830A-F95CE86F2F76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2F6FDBD5-1EA1-4483-830A-F95CE86F2F76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F6FDBD5-1EA1-4483-830A-F95CE86F2F76}.Release|Any CPU.ActiveCfg = Release|Any CPU
