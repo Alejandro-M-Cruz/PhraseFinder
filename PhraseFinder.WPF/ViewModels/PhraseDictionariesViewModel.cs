@@ -13,7 +13,8 @@ using PhraseFinder.WPF.Views;
 
 namespace PhraseFinder.WPF.ViewModels;
 
-internal partial class PhraseDictionariesViewModel : ObservableObject
+internal partial class PhraseDictionariesViewModel : 
+    ObservableObject, IRecipient<PhraseDictionaryRequestMessage>
 {
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(
@@ -37,20 +38,19 @@ internal partial class PhraseDictionariesViewModel : ObservableObject
         _phraseDictionaryService = phraseDictionaryService;
         _navigationService = navigationService;
         LoadPhraseDictionariesCommand.Execute(null);
-        WeakReferenceMessenger.Default
-	        .Register<PhraseDictionariesViewModel, PhraseDictionaryRequestMessage>(
-		        this, OnPhraseDictionaryRequestMessageReceived);
+        WeakReferenceMessenger.Default.Register(this);
     }
 
-    private void OnPhraseDictionaryRequestMessageReceived(
-	    PhraseDictionariesViewModel recipient, 
-	    PhraseDictionaryRequestMessage message)
+    public void Receive(PhraseDictionaryRequestMessage message)
     {
-	    if (!message.HasReceivedResponse)
-	    {
-		    message.Reply(recipient.SelectedPhraseDictionary!);
-	    }
-	}
+        if (!message.HasReceivedResponse)
+        {
+            message.Reply(SelectedPhraseDictionary!);
+        }
+
+        WeakReferenceMessenger.Default
+            .Unregister<PhraseDictionaryRequestMessage>(this);
+    }
 
     [RelayCommand]
     public async Task LoadPhraseDictionaries()

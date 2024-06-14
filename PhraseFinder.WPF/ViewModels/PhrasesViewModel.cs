@@ -30,10 +30,18 @@ internal partial class PhrasesViewModel : ObservableObject
     public PhrasesViewModel(IPhraseService phraseService, INavigationService navigationService)
     {
         _navigationService = navigationService;
-        PhraseDictionary = 
-            WeakReferenceMessenger.Default.Send<PhraseDictionaryRequestMessage>();
         _phraseService = phraseService;
-        LoadPhrases();
+        try
+        {
+            PhraseDictionary = 
+                WeakReferenceMessenger.Default.Send<PhraseDictionaryRequestMessage>();
+            LoadPhrases();
+        }
+        catch
+        {
+            _navigationService.NavigateTo<PhraseDictionariesViewModel>();
+            PhraseDictionary = default!;
+        }
     }
 
     [RelayCommand]
