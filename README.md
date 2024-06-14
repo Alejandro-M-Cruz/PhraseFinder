@@ -1,6 +1,8 @@
 # PhraseFinder
 
-PhraseFinder es una herramienta que detecta automáticamente expresiones y locuciones de la lengua española en cualquier texto. Se trata de un Trabajo de Fin de Título del Grado en Ingeniería Informática,  
+PhraseFinder es el resultado del desarrollo del Trabajo de Fin de Título _Detección automática de expresiones y locuciones en textos_, correspondiente a la titulación de Grado en Ingeniería Informática de la Universidad de Las Palmas de Gran Canaria. 
+
+Se trata de una herramienta que detecta automáticamente expresiones y locuciones de la lengua española en cualquier texto. 
 El sistema se divide en las siguientes aplicaciones:
 
 ## PhraseFinder.WPF
