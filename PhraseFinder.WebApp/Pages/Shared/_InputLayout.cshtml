@@ -6,11 +6,12 @@
 }
 
 <div class="container">
-	<h2 class="pb-2 mb-4">Texto a examinar</h2>
-	
     <div class="card shadow">
-        <nav class="p-0 m-0">
-            <ul class="card-header nav nav-tabs justify-content-center pb-0">
+        <nav>
+            <ul class="card-header nav nav-tabs justify-content-center align-items-baseline flex-wrap pb-0">
+                <li class="flex-grow-1 col-md" style="flex-basis: 500px;">
+                    <h2 class="text-center text-wrap">Locuciones TIP</h2>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link@(isIndexPage ? " active" : "")" asp-page="/Index" aria-current="@(isIndexPage ? "page" : null)">
                         <span class="d-none d-sm-inline">Introducir un texto</span>
