@@ -11,5 +11,5 @@
 }
 
 .selected-phrase-link {
-    color: var(--bs-primary) !important;
+    color: var(--theme-primary) !important;
 }

@@ -16,8 +16,8 @@ builder.Services.Configure<TextFileValidationOptions>(
     builder.Configuration.GetSection("Validation:TextFile"));
 
 // PhraseFinderService
-builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceClient>();
-//builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceDev>();
+//builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceClient>();
+builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceDev>();
 
 builder.Services.AddMvc().AddSessionStateTempDataProvider();
 builder.Services.AddSession();

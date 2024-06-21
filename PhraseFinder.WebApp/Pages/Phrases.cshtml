@@ -14,7 +14,9 @@
         <a asp-page="/Index" class="d-print-none col-auto btn btn-link back-button">
             <img src="~/assets/arrow-left-circle.svg" width="24" height="24" alt="Icono de vuelta atrás" />
         </a>
-        <h2 class="col p-0 m-0">Expresiones y locuciones@(Model.PhrasesAreLoaded ? " encontradas" : "")</h2>
+        <h2 class="col p-0 m-0 text-primary">
+            Expresiones y locuciones@(Model.PhrasesAreLoaded ? " encontradas" : "")
+        </h2>
         
         <noscript>
             <style>
@@ -27,7 +29,7 @@
         <div id="download-as-pdf-button-container" class="mt-4 mt-md-0 col-12 col-md-auto">
             @if (Model.FoundPhrases != null)
             {
-                <button class="d-print-none mx-auto btn btn-secondary d-flex flex-row align-items-center gap-2" onclick="print()">
+                <button class="d-print-none mx-auto btn btn-primary d-flex flex-row align-items-center gap-2" onclick="print()">
                     <img style="filter: invert(100%);"
                          src="~/assets/file-earmark-arrow-down.svg"
                          width="24"
@@ -103,10 +105,8 @@
                 <div class="col mb-4">
                     <article id="phrase-@n" class="card shadow-md h-100">
                         <div class="card-header">
-                            <span class="card-subtitle fw-bolder">@n</span>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">
+                            <span class="card-subtitle fw-bolder rounded-3 text-primary">@n. </span>
+                            <h3 class="card-title d-inline fs-4 ms-2 fw-normal">
                                 @{
                                     var encodedPhrase = Html.Encode(phrase.Phrase);
                                     var encodedBaseWord = Html.Encode(phrase.BaseWord);
@@ -117,9 +117,11 @@
                                         encodedBaseWord, 
                                         $"<em class=\"fst-normal text-decoration-underline\">{encodedBaseWord}</em>"))
                             </h3>
+                        </div>
+                        <div class="card-body">
                             @foreach (var definition in phrase.Definitions)
                             {
-                                <p class="mt-4"><strong class="fw-semibold">@definition.Definition</strong></p>
+                                <p class="mt-4"><strong class="fw-normal text-primary">@definition.Definition</strong></p>
                                 if (definition.Examples.Length > 0)
                                 {
                                     <ul class="list-group">

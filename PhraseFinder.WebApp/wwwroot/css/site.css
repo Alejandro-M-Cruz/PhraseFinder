@@ -1,3 +1,9 @@
+:root {
+    --theme-primary: #3F51B5;
+    --theme-primary-accent: #384598;
+    --theme-danger: #E74C3C;
+}
+
 html {
     font-size: 14px;
     position: relative;
@@ -13,17 +19,6 @@ html {
 body {
     padding-bottom: 40px;
 }
-
-@media print {
-    #navbar-header {
-        display: none;
-    }
-
-    body {
-        padding-top: 20px;
-    }
-}
-
 
 
 /* Custom classes */
@@ -42,4 +37,51 @@ body {
 
 .back-button:hover {
     background-color: var(--bs-light);
+}
+
+@media (min-width: 576px) {
+    .text-sm-justify {
+        text-align: justify;
+    }
+}
+
+
+/* Bootstrap overrides */
+
+.text-primary {
+    color: var(--theme-primary) !important;
+}
+
+.text-danger{
+    color: var(--theme-danger) !important;
+}
+
+.btn-primary {
+    background-color: var(--theme-primary) !important;
+    border-color: var(--theme-primary) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--theme-primary-accent) !important;
+    border-color: var(--theme-primary-accent) !important;
+}
+
+.btn-outline-danger {
+    border-color: var(--theme-danger) !important;
+}
+
+.btn-outline-danger:not(:hover) {
+    color: var(--theme-danger) !important;
+}
+
+.btn-outline-danger:hover {
+    background-color: var(--theme-danger) !important;
+}
+
+a:not(.active) {
+    color: var(--theme-primary);
+}
+
+a:not(.active):hover {
+    color: var(--theme-danger);
 }

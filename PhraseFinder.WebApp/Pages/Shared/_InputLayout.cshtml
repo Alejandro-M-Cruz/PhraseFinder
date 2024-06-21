@@ -10,7 +10,9 @@
         <nav>
             <ul class="card-header nav nav-tabs justify-content-center align-items-baseline flex-wrap pb-0">
                 <li class="flex-grow-1 col-md" style="flex-basis: 500px;">
-                    <h2 class="text-center text-wrap">Locuciones TIP</h2>
+                    <h2 class="text-center text-wrap text-primary">
+                        Locuciones TIP
+                    </h2>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link@(isIndexPage ? " active" : "")" asp-page="/Index" aria-current="@(isIndexPage ? "page" : null)">
@@ -31,6 +33,36 @@
         </div>
     </div>
 </div>
+
+<section class="container my-5 text-sm-justify text-primary" style="max-width: 800px;">
+    <p>
+        <h5 class="text-danger d-inline">Locuciones TIP</h5> muestra las expresiones y locuciones de la lengua española presentes en cualquier texto
+        introducido, junto con sus correpondientes categorías, significados y ejemplos de uso. Además de introducir el texto manualmente, también es 
+        posible subir un fichero de texto plano. 
+        Toda la información ha sido extraída de la versión en línea del 
+        <a href="https://dle.rae.es" target="_blank" rel="noreferrer">Diccionario de la lengua española</a>, 
+        publicado y editado por la Real Academia Española.
+    </p>
+
+    <p>
+        Este sistema ha sido desarrollado principalmente por 
+        <a href="https://github.com/Alejandro-M-Cruz" target="_blank" rel="noreferrer">Alejandro Matías Cruz de la Cruz</a>,
+        como parte de un Trabajo de Fin de Título del Grado en Ingeniería Informática de la 
+        <a href="https://www.ulpgc.es" target="_blank">Universidad de Las Palmas de Gran Canaria</a>. 
+        El trabajo se denomina <em>Detección automática de expresiones y locuciones en textos</em> y ha sido
+        tutorizado por Francisco Javier Carreras Riudavets, autor de la idea detrás del trabajo y miembro del 
+        <a href="https://iatext.ulpgc.es" target="_blank">IATEXT</a>.
+    </p>
+    
+    <h5 class="mt-4">¿Qué son las expresiones y locuciones?</h5>
+    
+    <p>
+        Las expresiones y locuciones son secuencias de palabras cuyo significado no se obtiene del significado literal de las palabras que las forman.
+        Por tanto, son construcciones lingüísticas desafiantes, en especial para para estudiantes de la lengua española y personas no familiarizadas
+        con ellas. Lo son también para los sistemas de traducción automática,que a menudo se muestran imprecisos a la hora de analizar el significado
+        de expresiones y locuciones.
+    </p>
+</section>
 
 @section Scripts {
 	@{
