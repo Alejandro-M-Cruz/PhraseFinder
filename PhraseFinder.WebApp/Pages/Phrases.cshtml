@@ -118,19 +118,21 @@
                                         $"<em class=\"fst-normal text-decoration-underline\">{encodedBaseWord}</em>"))
                             </h3>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body d-flex flex-column gap-4">
                             @foreach (var definition in phrase.Definitions)
                             {
-                                <p class="mt-4"><strong class="fw-normal text-primary">@definition.Definition</strong></p>
-                                if (definition.Examples.Length > 0)
-                                {
-                                    <ul class="list-group">
-                                        @foreach (var example in definition.Examples)
-                                        {
-                                            <li class="list-group-item fw-medium"><em>@example</em></li>
-                                        }
-                                    </ul>
-                                }
+                                <div>
+                                    <p class="p-0 m-0"><strong class="fw-normal text-primary">@definition.Definition</strong></p>
+                                    @if (definition.Examples.Length > 0)
+                                    {
+                                        <ul class="list-group mt-3">
+                                            @foreach (var example in definition.Examples)
+                                            {
+                                                <li class="list-group-item fw-medium"><em>@example</em></li>
+                                            }
+                                        </ul>
+                                    }
+                                </div>
                             }
                         </div>
                     </article>

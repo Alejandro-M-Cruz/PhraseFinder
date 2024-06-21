@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.ServiceModel;
 using System.Threading.Tasks;
@@ -35,10 +37,17 @@ namespace PhraseFinder.WCF
         {
             var paragraphs = text.GetParagraphs();
             var sentences = paragraphs.SelectAllSentences().ToList();
-            sentences = await _servicioLematizacion
-                .NuevoReconocerFrasesAsync(sentences, idioma: "es", multiPref: false);
-        
-            var foundPhrases = FindPhrasesInSentences(sentences, paragraphs)
+            try
+            {
+                sentences = await _servicioLematizacion
+                    .NuevoReconocerFrasesAsync(sentences, idioma: "es", multiPref: false);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Error en ServicioLematizacion: {e.Message}");
+            }
+            
+            var foundPhrases = FindPhrasesInSentencesParallel(sentences, paragraphs)
                 .Distinct()
                 .ToArray();
             IncludeDefinitions(ref foundPhrases);
@@ -50,17 +59,20 @@ namespace PhraseFinder.WCF
             };
         }
 
-        private IEnumerable<FoundPhrase> FindPhrasesInSentences(
-            IReadOnlyCollection<InfoUnaFrase> sentences, IReadOnlyCollection<Paragraph> paragraphs)
+        private IEnumerable<FoundPhrase> FindPhrasesInSentencesParallel(
+            IReadOnlyCollection<InfoUnaFrase> sentences, 
+            IReadOnlyCollection<Paragraph> paragraphs)
         {
             if (_patterns.Length == 0 || sentences.Count == 0 || paragraphs.Count == 0)
             {
-                yield break;
+                return Enumerable.Empty<FoundPhrase>();
             }
 
             var paragraphSentenceCounts = paragraphs.Select(p => p.GetSentences().Length).ToArray();
 
-            foreach (var pattern in _patterns)
+            var foundPhrases = new ConcurrentBag<FoundPhrase>();
+
+            Parallel.ForEach(_patterns, pattern =>
             {
                 var sentenceIndex = 0;
                 var currentSentenceInParagraph = 0;
@@ -72,12 +84,12 @@ namespace PhraseFinder.WCF
 
                     foreach (var match in matches)
                     {
-                        yield return match;
+                        foundPhrases.Add(match);
                     }
 
                     sentenceIndex += sentence.Frase.Length;
-                    
-                    if (currentParagraph < paragraphs.Count && 
+
+                    if (currentParagraph < paragraphs.Count &&
                         currentSentenceInParagraph >= paragraphSentenceCounts[currentParagraph] - 1)
                     {
                         sentenceIndex += ParagraphSeparator.Length;
@@ -90,7 +102,9 @@ namespace PhraseFinder.WCF
                         currentSentenceInParagraph++;
                     }
                 }
-            }
+            });
+
+            return foundPhrases.AsEnumerable();
         }
 
         private void IncludeDefinitions(ref FoundPhrase[] foundPhrases)
