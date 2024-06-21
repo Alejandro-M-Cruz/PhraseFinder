@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.WPF", "PhraseF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.WebApp", "PhraseFinder.WebApp\PhraseFinder.WebApp.csproj", "{2F6FDBD5-1EA1-4483-830A-F95CE86F2F76}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PhraseFinder.WCF.Tests", "PhraseFinder.WCF.Tests\PhraseFinder.WCF.Tests.csproj", "{D022F0DD-390F-4290-85D3-65619AE557DD}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PhraseFinder.WCF", "PhraseFinder.WCF\PhraseFinder.WCF.csproj", "{A84C7DDB-5E6F-4E4B-8292-3C71A53D946E}"
 EndProject
 Global
@@ -49,10 +47,6 @@ Global
 		{2F6FDBD5-1EA1-4483-830A-F95CE86F2F76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2F6FDBD5-1EA1-4483-830A-F95CE86F2F76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2F6FDBD5-1EA1-4483-830A-F95CE86F2F76}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D022F0DD-390F-4290-85D3-65619AE557DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D022F0DD-390F-4290-85D3-65619AE557DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D022F0DD-390F-4290-85D3-65619AE557DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D022F0DD-390F-4290-85D3-65619AE557DD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A84C7DDB-5E6F-4E4B-8292-3C71A53D946E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A84C7DDB-5E6F-4E4B-8292-3C71A53D946E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A84C7DDB-5E6F-4E4B-8292-3C71A53D946E}.Release|Any CPU.ActiveCfg = Release|Any CPU
