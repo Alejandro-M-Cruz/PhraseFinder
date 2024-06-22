@@ -1,5 +1,7 @@
 using PhraseFinder.WebApp.Options;
 using PhraseFinderServiceReference;
+using System.ServiceModel;
+using System.Xml;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +18,28 @@ builder.Services.Configure<TextFileValidationOptions>(
     builder.Configuration.GetSection("Validation:TextFile"));
 
 // PhraseFinderService
-builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceClient>();
+builder.Services.AddSingleton<IPhraseFinderService>(_ =>
+{
+    var client = new PhraseFinderServiceClient();
+
+    if (client.Endpoint.Binding is not HttpBindingBase binding)
+    {
+        return client;
+    }
+
+    const int maxSize = 2_000_000_000;
+    binding.MaxReceivedMessageSize = maxSize;
+    binding.MaxBufferSize = maxSize;
+    binding.MaxBufferPoolSize = maxSize;
+    binding.ReaderQuotas = new XmlDictionaryReaderQuotas
+    {
+        MaxArrayLength = maxSize,
+        MaxBytesPerRead = maxSize,
+        MaxStringContentLength = maxSize
+    };
+
+    return new PhraseFinderServiceClient(binding, new EndpointAddress(client.Endpoint.Address.Uri.ToString()));
+});
 //builder.Services.AddSingleton<IPhraseFinderService, PhraseFinderServiceDev>();
 
 builder.Services.AddMvc().AddSessionStateTempDataProvider();
